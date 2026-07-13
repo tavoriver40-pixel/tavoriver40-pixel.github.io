@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consorcio Tato Joven — Consultas</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0e0d0b;font-family:'Geist Mono',monospace;color:#fff;min-height:100vh;display:flex;flex-direction:column;}
+.header{padding:24px 32px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:18px;background:#0e0d0b;}
+.logo-circle{width:48px;height:48px;background:transparent;border:1.5px solid #c9921a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.header-text{display:flex;flex-direction:column;gap:3px;}
+.header-title{font-family:'Instrument Serif',serif;font-size:26px;color:#fff;font-style:italic;letter-spacing:.3px;line-height:1;}
+.header-sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:1px;}
+.header-badge{margin-left:auto;background:transparent;border:1px solid rgba(29,107,62,.4);color:#4ade80;font-size:8px;padding:4px 12px;border-radius:20px;letter-spacing:1.5px;}
+.chat-wrap{flex:1;overflow-y:auto;padding:20px 16px;display:flex;flex-direction:column;gap:12px;max-width:700px;width:100%;margin:0 auto;}
+.bienvenida{text-align:center;padding:32px 16px;}
+.bienvenida h2{font-family:'Instrument Serif',serif;font-size:24px;color:#fff;margin-bottom:8px;}
+.bienvenida p{font-size:10px;color:rgba(255,255,255,.4);line-height:1.9;}
+.bienvenida .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;font-size:10px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;}
+.chip:hover{background:rgba(201,146,26,.15);border-color:rgba(201,146,26,.4);color:#c9921a;}
+.msg{display:flex;flex-direction:column;max-width:85%;}
+.msg.user{align-self:flex-end;align-items:flex-end;}
+.msg.bot{align-self:flex-start;align-items:flex-start;}
+.msg-bubble{padding:11px 15px;border-radius:16px;font-size:11px;line-height:1.75;white-space:pre-wrap;}
+.msg.user .msg-bubble{background:#c9921a;color:#12110f;border-radius:16px 16px 2px 16px;}
+.msg.bot .msg-bubble{background:rgba(255,255,255,.04);color:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.07);border-radius:16px 16px 16px 2px;font-family:'Caveat',cursive;font-size:16px;line-height:1.8;}
+.bienvenida h2{font-family:'Caveat',cursive;font-size:32px;}
+.bienvenida p{font-family:'Caveat',cursive;font-size:16px;}
+.msg-time{font-size:8px;color:rgba(255,255,255,.2);margin-top:3px;padding:0 4px;}
+.typing-bubble{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px 16px 16px 2px;padding:12px 16px;display:flex;gap:5px;align-items:center;}
+.dot{width:6px;height:6px;background:rgba(255,255,255,.3);border-radius:50%;animation:bounce .9s infinite;}
+.dot:nth-child(2){animation-delay:.15s;}
+.dot:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+.input-area{border-top:1px solid rgba(255,255,255,.08);padding:14px 16px;display:flex;gap:10px;align-items:flex-end;max-width:700px;width:100%;margin:0 auto;}
+textarea{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;font-family:'Geist Mono',monospace;font-size:11px;color:#fff;resize:none;min-height:46px;max-height:120px;outline:none;transition:border .15s;line-height:1.5;}
+textarea::placeholder{color:rgba(255,255,255,.25);}
+textarea:focus{border-color:rgba(201,146,26,.5);}
+.send-btn{width:46px;height:46px;background:#c9921a;border:none;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s;flex-shrink:0;}
+.send-btn:hover{background:#b5820f;}
+.send-btn:disabled{background:rgba(255,255,255,.1);cursor:not-allowed;}
+.footer{text-align:center;padding:8px;font-size:8px;color:rgba(255,255,255,.15);letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-circle">🏠</div>
+  <div class="header-text">
+    <div class="header-title">Consorcio Tato Joven</div>
+    <div class="header-sub">Asistente de Propietarios</div>
+  </div>
+  <div class="header-badge">● En línea</div>
+</div>
+
+<div class="chat-wrap" id="chat">
+  <div class="bienvenida" id="bienvenida">
+    <h2>¡Bienvenido/a! 👋</h2>
+    <p>Soy el asistente del <strong>Consorcio Tato Joven</strong>.<br>Podés consultarme sobre expensas, vencimientos,<br>pagos y todo lo relacionado con el consorcio.</p>
+    <div class="chips">
+      <div class="chip" onclick="enviarChip('¿Cuándo vence la expensa?')">¿Cuándo vence la expensa?</div>
+      <div class="chip" onclick="enviarChip('¿Cuánto tengo que pagar?')">¿Cuánto tengo que pagar?</div>
+      <div class="chip" onclick="enviarChip('¿Qué pasa si pago tarde?')">¿Qué pasa si pago tarde?</div>
+      <div class="chip" onclick="enviarChip('Quiero hacer un convenio de pago')">Quiero hacer un convenio</div>
+      <div class="chip" onclick="enviarChip('¿Cuál es el saldo del consorcio?')">Saldo del consorcio</div>
+      <div class="chip" onclick="enviarChip('¿Cómo me contacto con la administración?')">Contactar administración</div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:700px;width:100%;margin:0 auto;">
+  <div class="input-area">
+    <textarea id="inp" placeholder="Escribí tu consulta acá..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviar();}"></textarea>
+    <button class="send-btn" id="send-btn" onclick="enviar()">↑</button>
+  </div>
+</div>
+<div class="footer">CONSORCIO TATO JOVEN · SISTEMA DE CONSULTAS</div>
+
+<script>
+const API_KEY = 'REEMPLAZAR_CON_TU_API_KEY';
+const SYSTEM = `Sos el asistente oficial del Consorcio Tato Joven, un edificio de 10 unidades funcionales (UF 11 a UF 20) ubicado en el conurbano bonaerense, Argentina.
+
+ROL: Asistir al administrador y responder consultas de propietarios con tono profesional, cordial y claro. Siempre tratamiento de "usted". Nunca des información de otros propietarios a quien consulta.
+
+EXPENSA Y MORA:
+- Expensa fija: $50.000/mes por unidad
+- Vencimiento: día 10 de cada mes
+- Recargo por mora: 10% ($5.000) a partir del día 11
+- El recargo se acumula mes a mes hasta regularizar
+
+PROPIETARIOS:
+- UF 11: Sergio
+- UF 12: Ivana y Daniel
+- UF 13: Estela
+- UF 14: Ivana y Sebastián
+- UF 15: Mariana y Pedro
+- UF 16: Marianela y Fernando
+- UF 17: Daniela y Gustavo
+- UF 18: Erik
+- UF 19: Cecilia y Leo
+- UF 20: Soledad
+
+ESTADO FINANCIERO — JUNIO 2026:
+- Saldo en caja: $342.597,59
+- Ingresos del mes: $352.000
+- Egresos del mes: $363.756,52
+- Expensas cobradas: UF 12, UF 15, UF 16, UF 17  Y UF 19 al día. Resto pendiente.
+- Convenio registrado: UF 17 Daniela y Gustavo pagaron $102.000 por convenio deuda AySA
+
+GASTOS DEL MES:
+- Luz/Electricidad: $3.005,59
+- Agua AySA: $360.750,93
+
+POLÍTICAS DEL CONSORCIO:
+- Los comprobantes originales están disponibles para consulta de cualquier propietario
+- Para acordar un convenio de pago contactar a la administración
+- Los gastos extraordinarios se distribuyen en partes iguales entre las 10 unidades y se notifican previamente
+- Las reuniones de propietarios se convocan con al menos 5 días de anticipación por WhatsApp
+
+PREGUNTAS FRECUENTES:
+- Si preguntan cómo pagar: el pago se realiza directamente al administrador del consorcio
+- Si preguntan por reparaciones o problemas edilicios: derivar a la administración
+- Si preguntan por reuniones: las convocatorias se informan con al menos 5 días de anticipación por WhatsApp
+- Si preguntan quién es el administrador: pueden contactarse por WhatsApp con la administración del Consorcio Tato Joven
+- Si saludan o agradecen: respondé amablemente y ofrecé ayuda adicional
+- Si preguntan algo que no sabés: decí "Voy a consultar con la administración y le haremos llegar la respuesta a la brevedad"
+
+CÓMO RESPONDÉS:
+- Siempre en español
+- Tono formal y amable, tratamiento de "usted"
+- Respuestas claras, concretas y breves
+- Nunca des información de otros propietarios
+- Nunca inventes números ni datos que no tengas
+- Firmá siempre como: Administración — Consorcio Tato Joven`;
+
+let historial = [];
+
+function hora(){const n=new Date();return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;}
+
+function agregarMsg(rol, texto){
+  const b=document.getElementById('bienvenida');if(b)b.remove();
+  const chat=document.getElementById('chat');
+  const div=document.createElement('div');div.className=`msg ${rol}`;
+  div.innerHTML=`<div class="msg-bubble">${texto}</div><div class="msg-time">${hora()}</div>`;
+  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
+}
+
+function mostrarTyping(){
+  const b=document.getElementById('bienvenida');if(b)b.remove();
+  const chat=document.getElementById('chat');
+  const div=document.createElement('div');div.className='msg bot';div.id='typing';
+  div.innerHTML=`<div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
+}
+function quitarTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+
+function enviarChip(txt){document.getElementById('inp').value=txt;enviar();}
+
+async function enviar(){
+  const inp=document.getElementById('inp');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  document.getElementById('send-btn').disabled=true;
+  agregarMsg('user',txt);
+  historial.push({role:'user',content:txt});
+  mostrarTyping();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:800,system:SYSTEM,messages:historial})
+    });
+    const d=await r.json();
+    quitarTyping();
+    if(d.content&&d.content[0]){
+      const resp=d.content[0].text;
+      historial.push({role:'assistant',content:resp});
+      agregarMsg('bot',resp);
+    } else {
+      agregarMsg('bot','Disculpe, hubo un inconveniente. Por favor intente nuevamente.');
+    }
+  }catch(e){
+    quitarTyping();
+    agregarMsg('bot','Disculpe, no es posible conectarse en este momento. Por favor comuníquese directamente con la administración.');
+  }
+  document.getElementById('send-btn').disabled=false;
+  document.getElementById('inp').focus();
+}
+</script>
+</body>
+</html>

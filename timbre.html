@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timbre — Consorcio Tato Joven</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0e0d0b;font-family:'Geist Mono',monospace;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.card{background:#1a1917;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:32px 28px;width:100%;max-width:420px;}
+.header{text-align:center;margin-bottom:28px;}
+.logo{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;color:#fff;margin-bottom:4px;}
+.sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.step{margin-bottom:24px;}
+.step-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;}
+.step-title{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:12px;}
+select{width:100%;background:#0e0d0b;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 14px;font-family:'Geist Mono',monospace;font-size:12px;color:#fff;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;}
+select:focus{border-color:rgba(201,146,26,.6);}
+.motivos{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.motivo-btn{background:#0e0d0b;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 8px;font-family:'Geist Mono',monospace;font-size:10px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;text-align:center;line-height:1.4;}
+.motivo-btn:hover{border-color:rgba(201,146,26,.5);color:rgba(255,255,255,.9);}
+.motivo-btn.selected{border-color:#c9921a;background:rgba(201,146,26,.1);color:#c9921a;}
+.motivo-btn .emoji{font-size:18px;display:block;margin-bottom:4px;}
+.btn-timbre{width:100%;background:#c9921a;border:none;border-radius:10px;padding:16px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#0e0d0b;cursor:pointer;font-weight:600;transition:all .2s;margin-top:8px;}
+.btn-timbre:hover{background:#b5820f;transform:scale(1.01);}
+.btn-timbre:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.3);cursor:not-allowed;transform:none;}
+.status{text-align:center;padding:16px;border-radius:8px;font-size:11px;margin-top:12px;display:none;line-height:1.7;}
+.status.success{background:rgba(29,107,62,.2);border:1px solid rgba(29,107,62,.4);color:#4ade80;display:block;}
+.status.error{background:rgba(185,28,28,.2);border:1px solid rgba(185,28,28,.4);color:#f87171;display:block;}
+.status.loading{background:rgba(201,146,26,.1);border:1px solid rgba(201,146,26,.3);color:#fcd34d;display:block;}
+.divider{height:1px;background:rgba(255,255,255,.06);margin:20px 0;}
+.footer{text-align:center;font-size:8px;color:rgba(255,255,255,.15);margin-top:20px;letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div style="font-size:32px;margin-bottom:8px;">🔔</div>
+    <div class="logo">Consorcio Tato Joven</div>
+    <div class="sub">Timbre Digital</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label">Paso 1</div>
+    <div class="step-title">¿A quién buscás?</div>
+    <select id="sel-unidad">
+      <option value="">— Seleccioná una unidad —</option>
+      <option value="UF 11 — Sergio">UF 11 — Sergio</option>
+      <option value="UF 12 — Ivana y Daniel">UF 12 — Ivana y Daniel</option>
+      <option value="UF 13 — Estelita">UF 13 — Estelita</option>
+      <option value="UF 14 — Ivana y Sebastián">UF 14 — Ivana y Sebastián</option>
+      <option value="UF 15 — Mariana y Pedro">UF 15 — Mariana y Pedro</option>
+      <option value="UF 16 — Marianela y Fernando">UF 16 — Marianela y Fernando</option>
+      <option value="UF 17 — Daniela y Gustavo">UF 17 — Daniela y Gustavo</option>
+      <option value="UF 18 — Erik">UF 18 — Erik</option>
+      <option value="UF 19 — Cecilia y Leo">UF 19 — Cecilia y Leo</option>
+      <option value="UF 20 — Soledad">UF 20 — Soledad</option>
+    </select>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="step">
+    <div class="step-label">Paso 2</div>
+    <div class="step-title">¿Quién sos?</div>
+    <div class="motivos">
+      <button class="motivo-btn" onclick="selMotivo(this,'Mercado Libre / Paquete')"><span class="emoji">📦</span>Mercado Libre</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Edenor — Medicion de Luz')"><span class="emoji">⚡</span>Edenor — Luz</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Gas Natural — Medicion')"><span class="emoji">🔥</span>Gas Natural</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Repartidor de Agua')"><span class="emoji">💧</span>Agua</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Andreani / Correo')"><span class="emoji">📬</span>Andreani</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Familiar / Visita')"><span class="emoji">👨‍👩‍👧</span>Visita / Familiar</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Tecnico / Service')"><span class="emoji">🔧</span>Técnico</button>
+      <button class="motivo-btn" onclick="selMotivo(this,'Otro')"><span class="emoji">👤</span>Otro</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <button class="btn-timbre" id="btn-timbre" onclick="tocarTimbre()" disabled>
+    🔔 Tocar Timbre
+  </button>
+
+  <div class="status" id="status"></div>
+</div>
+
+<div class="footer">CONSORCIO TATO JOVEN — SAN MIGUEL, BUENOS AIRES</div>
+
+<script>
+var BOT_TOKEN = '8849053702:AAFVB77nf_RBfo3EZI4otZnP0HKw3rLWAN4';
+var ADMIN_ID = '6224813556';
+
+var PROPIETARIOS = {
+  'UF 11 — Sergio':              null,
+  'UF 12 — Ivana y Daniel':      null,
+  'UF 13 — Estelita':            null,
+  'UF 14 — Ivana y Sebastian':   null,
+  'UF 15 — Mariana y Pedro':     null,
+  'UF 16 — Marianela y Fernando':null,
+  'UF 17 — Daniela y Gustavo':   '5902051337',
+  'UF 18 — Erik':                null,
+  'UF 19 — Cecilia y Leo':       null,
+  'UF 20 — Soledad':             null
+};
+
+var motivoSeleccionado = '';
+
+function selMotivo(btn, motivo){
+  document.querySelectorAll('.motivo-btn').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  motivoSeleccionado = motivo;
+  verificarFormulario();
+}
+
+function verificarFormulario(){
+  var unidad = document.getElementById('sel-unidad').value;
+  document.getElementById('btn-timbre').disabled = !(unidad && motivoSeleccionado);
+}
+
+document.getElementById('sel-unidad').addEventListener('change', verificarFormulario);
+
+function enviarMensaje(chatId, texto){
+  return fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({chat_id: chatId, text: texto, parse_mode: 'Markdown'})
+  });
+}
+
+async function tocarTimbre(){
+  var unidad = document.getElementById('sel-unidad').value;
+  var motivo = motivoSeleccionado;
+  var btn = document.getElementById('btn-timbre');
+  var status = document.getElementById('status');
+  var hora = new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+
+  btn.disabled = true;
+  status.className = 'status loading';
+  status.innerHTML = 'Enviando notificacion...';
+
+  var mensaje = 'TIMBRE - Consorcio Tato Joven\n\n' +
+    'Unidad: ' + unidad + '\n' +
+    'Visita: ' + motivo + '\n' +
+    'Hora: ' + hora + '\n\n' +
+    'Hay alguien esperando en la puerta de ingreso.';
+
+  try {
+    await enviarMensaje(ADMIN_ID, mensaje);
+    var propChatId = PROPIETARIOS[unidad];
+    if(propChatId){
+      await enviarMensaje(propChatId, mensaje);
+    }
+    status.className = 'status success';
+    status.innerHTML = 'Notificacion enviada!<br>El propietario fue avisado.<br>Por favor espera en la puerta.';
+    setTimeout(function(){
+      document.getElementById('sel-unidad').value = '';
+      document.querySelectorAll('.motivo-btn').forEach(function(b){b.classList.remove('selected');});
+      motivoSeleccionado = '';
+      btn.disabled = true;
+      status.className = 'status';
+      status.innerHTML = '';
+    }, 8000);
+  } catch(e){
+    status.className = 'status error';
+    status.innerHTML = 'Error al enviar. Intenta de nuevo.';
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
