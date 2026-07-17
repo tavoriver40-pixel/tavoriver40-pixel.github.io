@@ -147,19 +147,16 @@ async function tocarTimbre(){
 
   try {
     await enviarMensaje(ADMIN_ID, mensaje);
-    var propChatId = PROPIETARIOS[unidad];
+   var propChatId = PROPIETARIOS[unidad];
     if(propChatId){
-      await enviarMensaje(propChatId, mensaje);
+      if(Array.isArray(propChatId)){
+        for(var i=0;i<propChatId.length;i++){
+          await enviarMensaje(propChatId[i], mensaje);
+        }
+      } else {
+        await enviarMensaje(propChatId, mensaje);
+      }
     }
-    status.className = 'status success';
-    status.innerHTML = 'Notificacion enviada!<br>El propietario fue avisado.<br>Por favor espera en la puerta.';
-    setTimeout(function(){
-      document.getElementById('sel-unidad').value = '';
-      document.querySelectorAll('.motivo-btn').forEach(function(b){b.classList.remove('selected');});
-      motivoSeleccionado = '';
-      btn.disabled = true;
-      status.className = 'status';
-      status.innerHTML = '';
     }, 8000);
   } catch(e){
     status.className = 'status error';
