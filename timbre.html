@@ -104,6 +104,17 @@ var PROPIETARIOS = {
   'UF 20 — Soledad':             null
 };
 
+var MOTIVO_EMOJI = {
+  'Mercado Libre / Paquete': '📦',
+  'Edenor — Medicion de Luz': '⚡',
+  'Gas Natural — Medicion': '🔥',
+  'Repartidor de Agua': '💧',
+  'Andreani / Correo': '📬',
+  'Familiar / Visita': '👥',
+  'Tecnico / Service': '🔧',
+  'Otro': '👤'
+};
+
 var motivoSeleccionado = '';
 
 function selMotivo(btn, motivo){
@@ -139,11 +150,13 @@ async function tocarTimbre(){
   status.className = 'status loading';
   status.innerHTML = 'Enviando notificacion...';
 
-  var mensaje = 'TIMBRE - Consorcio Tato Joven\n\n' +
-    'Unidad: ' + unidad + '\n' +
-    'Visita: ' + motivo + '\n' +
-    'Hora: ' + hora + '\n\n' +
-    'Hay alguien esperando en la puerta de ingreso.';
+  var emo = MOTIVO_EMOJI[motivo] || '';
+  var mensaje = '🔔 *TIMBRE* — Consorcio Tato Joven\n\n' +
+    '📍 *Unidad:* ' + unidad + '\n' +
+    '👤 *Visita:* ' + (emo ? emo + ' ' : '') + motivo + '\n' +
+    '🕐 *Hora:* ' + hora + '\n\n' +
+    '_Hay alguien esperando en la puerta de ingreso._\n' +
+    '_Por favor, acercate a la entrada._';
 
   try {
     await enviarMensaje(ADMIN_ID, mensaje);
@@ -157,6 +170,11 @@ async function tocarTimbre(){
         await enviarMensaje(propChatId, mensaje);
       }
     }
+    status.className = 'status success';
+    status.innerHTML = '¡Timbre enviado! Ya avisamos que llegó alguien.<br>Aguardá en la entrada, por favor.';
+    setTimeout(function(){
+      status.className = 'status';
+      btn.disabled = false;
     }, 8000);
   } catch(e){
     status.className = 'status error';
