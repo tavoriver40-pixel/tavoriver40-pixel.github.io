@@ -27,7 +27,7 @@ select:focus{border-color:rgba(201,146,26,.6);}
 .btn-timbre:hover{background:#b5820f;}
 .btn-timbre:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.3);cursor:not-allowed;}
 .status{text-align:center;padding:16px;border-radius:8px;font-size:11px;margin-top:12px;display:none;line-height:1.7;}
-.status.success{background:rgba(29,107,62,.2);border:1px solid rgba(29,107,62,.4);color:#4ade80;display:block;}
+.status.success{background:rgba(29,107,62,.2);border:1px solid rgba(29,107,62,.4);color:#4ade80;display:block;font-size:12.5px;padding:22px 18px;}
 .status.error{background:rgba(185,28,28,.2);border:1px solid rgba(185,28,28,.4);color:#f87171;display:block;}
 .status.loading{background:rgba(201,146,26,.1);border:1px solid rgba(201,146,26,.3);color:#fcd34d;display:block;}
 .divider{height:1px;background:rgba(255,255,255,.06);margin:20px 0;}
@@ -35,11 +35,12 @@ select:focus{border-color:rgba(201,146,26,.6);}
 #video{width:100%;border-radius:10px;background:#000;transform:scaleX(-1);}
 .cam-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.6);margin:12px 0;}
 .footer{text-align:center;font-size:8px;color:rgba(255,255,255,.15);margin-top:20px;letter-spacing:1px;}
+.geo-debug{text-align:center;font-size:10px;color:rgba(255,255,255,.4);margin-top:12px;letter-spacing:.5px;min-height:14px;}
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="pruebatag">★ Versión de prueba — con cámara ★</div>
+  <div class="pruebatag">★ Versión de prueba — con cámara + geo ★</div>
   <div class="header">
     <div style="font-size:32px;margin-bottom:8px;">🔔</div>
     <div class="logo">Consorcio Tato Joven</div>
@@ -84,18 +85,19 @@ select:focus{border-color:rgba(201,146,26,.6);}
 
     <div class="divider"></div>
 
-    <button class="btn-timbre" id="btn-timbre" onclick="iniciarCamara()" disabled>
+    <button class="btn-timbre" id="btn-timbre" onclick="tocarTimbre()" disabled>
       🔔 Tocar Timbre
     </button>
   </div>
 
   <div class="cam-wrap" id="cam-wrap">
-    <div class="cam-hint">Mirá a la cámara y tocá el botón para avisar 👇</div>
+    <div class="cam-hint">📸 Mostrá tu cara para que el vecino sepa quién sos.<br>Cuando estés listo, tocá el botón.</div>
     <video id="video" autoplay playsinline muted></video>
     <button class="btn-timbre" id="btn-foto" onclick="sacarYEnviar()">📸 Sacar foto y tocar timbre</button>
   </div>
 
   <div class="status" id="status"></div>
+  <div class="geo-debug" id="geo-debug"></div>
 </div>
 
 <div class="footer">CONSORCIO TATO JOVEN — SAN MIGUEL, BUENOS AIRES</div>
@@ -130,6 +132,56 @@ var MOTIVO_EMOJI = {
 
 var motivoSeleccionado = '';
 var stream = null;
+
+// ===== MODO GEO: hay que estar cerca de la entrada para tocar =====
+var ENTRADA = { lat: -34.540041, lng: -58.729120 };
+var RADIO_METROS = 50; // radio permitido alrededor de la reja
+
+function distanciaMetros(lat1,lng1,lat2,lng2){
+  var R=6371000, toRad=function(d){return d*Math.PI/180;};
+  var dLat=toRad(lat2-lat1), dLng=toRad(lng2-lng1);
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function verificarUbicacion(){
+  return new Promise(function(resolve){
+    if(!navigator.geolocation){ resolve({ok:false, motivo:'sin-soporte'}); return; }
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var d = distanciaMetros(pos.coords.latitude, pos.coords.longitude, ENTRADA.lat, ENTRADA.lng);
+      var acc = pos.coords.accuracy || 0;
+      var permitido = d <= (RADIO_METROS + Math.min(acc, 60));
+      resolve({ok:permitido, dist:Math.round(d), acc:Math.round(acc)});
+    }, function(err){
+      resolve({ok:false, motivo: (err && err.code===1) ? 'denegado' : 'error'});
+    }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
+  });
+}
+
+async function tocarTimbre(){
+  var btn = document.getElementById('btn-timbre');
+  var status = document.getElementById('status');
+  btn.disabled = true;
+  status.className = 'status loading';
+  status.innerHTML = 'Verificando que estés en la entrada... 📍';
+
+  var geo = await verificarUbicacion();
+  var dbg = document.getElementById('geo-debug');
+  if(dbg){ dbg.innerHTML = (geo.dist!==undefined) ? ('📍 Medición: ~' + geo.dist + ' m de la reja (precisión ±' + geo.acc + ' m)') : ''; }
+  if(!geo.ok){
+    status.className = 'status error';
+    if(geo.motivo === 'denegado'){
+      status.innerHTML = 'Necesito tu ubicación para confirmar que estás en la puerta.<br>Activá el permiso de ubicación y probá de nuevo.';
+    } else if(geo.motivo === 'sin-soporte' || geo.motivo === 'error'){
+      status.innerHTML = 'No pude leer tu ubicación. Revisá que el GPS esté activado y probá de nuevo.';
+    } else {
+      status.innerHTML = 'Parece que no estás en la entrada del barrio (estás a ~' + geo.dist + ' m).<br>Acercate a la puerta de ingreso para tocar el timbre.';
+    }
+    btn.disabled = false;
+    return;
+  }
+  iniciarCamara();
+}
 
 function selMotivo(btn, motivo){
   document.querySelectorAll('.motivo-btn').forEach(function(b){b.classList.remove('selected');});
@@ -190,6 +242,7 @@ async function iniciarCamara(){
     document.getElementById('video').srcObject = stream;
     document.getElementById('form-zone').style.display = 'none';
     document.getElementById('cam-wrap').style.display = 'block';
+    status.className = 'status'; status.innerHTML = '';
   } catch(e){
     status.className = 'status loading';
     status.innerHTML = 'No se pudo abrir la cámara. Avisamos igual, sin foto...';
@@ -230,13 +283,13 @@ async function sacarYEnviar(){
     }
     document.getElementById('cam-wrap').style.display = 'none';
     status.className = 'status success';
-    status.innerHTML = '¡Timbre enviado con foto! Ya avisamos que llegaste.<br>Aguardá en la entrada, por favor.';
+    status.innerHTML = '✅ <b>¡Listo! Ya avisamos.</b><br>El vecino recibió tu aviso y tu foto.<br>Aguardá un momento en la entrada, por favor. 🔔';
   } catch(e){
     detenerCamara();
     try {
       for(var k=0;k<lista.length;k++){ await enviarMensaje(lista[k], texto); }
       status.className = 'status success';
-      status.innerHTML = 'Timbre enviado (sin foto). Aguardá en la entrada.';
+      status.innerHTML = '✅ ¡Listo! Avisamos al vecino (sin foto).<br>Aguardá un momento en la entrada. 🔔';
     } catch(e2){
       status.className = 'status error';
       status.innerHTML = 'Error al enviar. Intentá de nuevo.';
@@ -254,7 +307,7 @@ async function enviarSoloTexto(){
   try {
     for(var i=0;i<lista.length;i++){ await enviarMensaje(lista[i], texto); }
     status.className = 'status success';
-    status.innerHTML = 'Timbre enviado (sin foto). Aguardá en la entrada.';
+    status.innerHTML = '✅ ¡Listo! Avisamos al vecino (sin foto).<br>Aguardá un momento en la entrada. 🔔';
   } catch(e){
     status.className = 'status error';
     status.innerHTML = 'Error al enviar. Intentá de nuevo.';
