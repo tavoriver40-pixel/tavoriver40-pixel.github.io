@@ -1,0 +1,15 @@
+{
+  "name": "Timbre Consorcio Tato Joven",
+  "short_name": "Timbre TJ",
+  "description": "Timbre digital del Consorcio Tato Joven",
+  "start_url": "https://tavoriver40-pixel.github.io/timbre.html",
+  "scope": "https://tavoriver40-pixel.github.io/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e0d0b",
+  "theme_color": "#0e0d0b",
+  "icons": [
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
