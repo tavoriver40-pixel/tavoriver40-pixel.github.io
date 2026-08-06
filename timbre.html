@@ -4,19 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Timbre — Consorcio Tato Joven</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e0d0b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Timbre TJ">
+<link rel="apple-touch-icon" href="icon-512.png">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#0e0d0b;font-family:'Geist Mono',monospace;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
 .card{background:#1a1917;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:32px 28px;width:100%;max-width:420px;}
 .header{text-align:center;margin-bottom:28px;}
+.bell-badge{width:88px;height:88px;border-radius:50%;background:rgba(201,146,26,.08);border:1px solid rgba(201,146,26,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:40px;}
 .logo{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;color:#fff;margin-bottom:4px;}
 .sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);}
 .step{margin-bottom:24px;}
 .step-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;}
 .step-title{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:12px;}
-select{width:100%;background:#0e0d0b;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 14px;font-family:'Geist Mono',monospace;font-size:12px;color:#fff;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;}
-select:focus{border-color:rgba(201,146,26,.6);}
+select,input[type=text]{width:100%;background:#0e0d0b;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 14px;font-family:'Geist Mono',monospace;font-size:12px;color:#fff;outline:none;}
+select{cursor:pointer;appearance:none;-webkit-appearance:none;}
+select:focus,input[type=text]:focus{border-color:rgba(201,146,26,.6);}
+input[type=text]::placeholder{color:rgba(255,255,255,.3);}
 .motivos{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .motivo-btn{background:#0e0d0b;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 8px;font-family:'Geist Mono',monospace;font-size:10px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;text-align:center;line-height:1.4;}
 .motivo-btn:hover{border-color:rgba(201,146,26,.5);color:rgba(255,255,255,.9);}
@@ -39,7 +49,7 @@ select:focus{border-color:rgba(201,146,26,.6);}
 <body>
 <div class="card">
   <div class="header">
-    <div style="font-size:32px;margin-bottom:8px;">🔔</div>
+    <div class="bell-badge">🔔</div>
     <div class="logo">Consorcio Tato Joven</div>
     <div class="sub">Timbre Digital</div>
   </div>
@@ -78,6 +88,14 @@ select:focus{border-color:rgba(201,146,26,.6);}
         <button class="motivo-btn" onclick="selMotivo(this,'Tecnico / Service')"><span class="emoji">🔧</span>Técnico</button>
         <button class="motivo-btn" onclick="selMotivo(this,'Otro')"><span class="emoji">👤</span>Otro</button>
       </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="step">
+      <div class="step-label">Paso 3</div>
+      <div class="step-title">Tu nombre</div>
+      <input type="text" id="inp-nombre" placeholder="Nombre y apellido" autocomplete="name">
     </div>
 
     <div class="divider"></div>
@@ -182,10 +200,12 @@ function selMotivo(btn, motivo){
 
 function verificarFormulario(){
   var unidad = document.getElementById('sel-unidad').value;
-  document.getElementById('btn-timbre').disabled = !(unidad && motivoSeleccionado);
+  var nombre = document.getElementById('inp-nombre').value.trim();
+  document.getElementById('btn-timbre').disabled = !(unidad && motivoSeleccionado && nombre);
 }
 
 document.getElementById('sel-unidad').addEventListener('change', verificarFormulario);
+document.getElementById('inp-nombre').addEventListener('input', verificarFormulario);
 
 function destinatarios(unidad){
   var lista = [ADMIN_ID];
@@ -194,12 +214,13 @@ function destinatarios(unidad){
   return lista;
 }
 
-function armarTexto(unidad, motivo){
+function armarTexto(unidad, motivo, nombre){
   var hora = new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
   var emo = MOTIVO_EMOJI[motivo] || '';
   return '🔔 *TIMBRE* — Consorcio Tato Joven\n\n' +
     '📍 *Unidad:* ' + unidad + '\n' +
     '👤 *Visita:* ' + (emo ? emo + ' ' : '') + motivo + '\n' +
+    '✍️ *Nombre:* ' + nombre + '\n' +
     '🕐 *Hora:* ' + hora + '\n\n' +
     '_Hay alguien esperando en la puerta de ingreso._\n' +
     '_Por favor, acercate a la entrada._';
@@ -247,6 +268,7 @@ function detenerCamara(){
 async function sacarYEnviar(){
   var unidad = document.getElementById('sel-unidad').value;
   var motivo = motivoSeleccionado;
+  var nombre = document.getElementById('inp-nombre').value.trim();
   var btn = document.getElementById('btn-foto');
   var status = document.getElementById('status');
   var video = document.getElementById('video');
@@ -255,7 +277,7 @@ async function sacarYEnviar(){
   status.className = 'status loading';
   status.innerHTML = 'Enviando foto y aviso...';
 
-  var texto = armarTexto(unidad, motivo);
+  var texto = armarTexto(unidad, motivo, nombre);
   var lista = destinatarios(unidad);
 
   try {
@@ -291,8 +313,9 @@ async function sacarYEnviar(){
 async function enviarSoloTexto(){
   var unidad = document.getElementById('sel-unidad').value;
   var motivo = motivoSeleccionado;
+  var nombre = document.getElementById('inp-nombre').value.trim();
   var status = document.getElementById('status');
-  var texto = armarTexto(unidad, motivo);
+  var texto = armarTexto(unidad, motivo, nombre);
   var lista = destinatarios(unidad);
   try {
     for(var i=0;i<lista.length;i++){ await enviarMensaje(lista[i], texto); }
