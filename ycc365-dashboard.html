@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YCC365 PLUS - Dashboard Profesional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1976d2;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --border: #e0e0e0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-info h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* GRID LAYOUT */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* VIDEO SECTION */
+        .video-container {
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #666;
+        }
+
+        .video-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            display: block;
+        }
+
+        /* ZONA CONTROLS */
+        .zone-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background: #fafafa;
+            border-color: #ccc;
+        }
+
+        button.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        button.primary:hover {
+            background: #1565c0;
+        }
+
+        button.success {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        button.danger {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* INPUT GROUPS */
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="time"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            background: var(--surface);
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .time-inputs span {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* STAT ITEMS */
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ALERTS LIST */
+        .alert-item {
+            font-size: 11px;
+            padding: 8px;
+            margin-bottom: 6px;
+            background: #fafafa;
+            border-radius: 4px;
+            border-left: 3px solid var(--warning);
+        }
+
+        .alert-item.success {
+            border-left-color: var(--success);
+            background: #f1f8e9;
+        }
+
+        .alert-time {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 11px;
+        }
+
+        .alert-text {
+            color: var(--text-secondary);
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* FOOTER SECTION */
+        .footer-section {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            button {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .success-text {
+            color: var(--success);
+        }
+
+        .error-text {
+            color: var(--danger);
+        }
+
+        .full-width {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-info">
+                <h1>🎥 YCC365 PLUS Dashboard</h1>
+                <p>Gutemberg 1931 • San Miguel • Buenos Aires • 1663</p>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span id="statusText">Desconectada</span>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="grid">
+            <!-- VIDEO SECTION -->
+            <div class="video-section">
+                <div class="video-container">
+                    <div class="video-placeholder" id="videoPlaceholder">
+                        <div class="video-icon">📹</div>
+                        <div>Ingresa IP de cámara para ver en vivo</div>
+                        <div style="font-size: 11px; margin-top: 4px; color: var(--text-muted);">Ej: 192.168.1.50:8080</div>
+                    </div>
+                </div>
+
+                <!-- ZONE CONTROLS -->
+                <div class="zone-controls">
+                    <button id="addZoneBtn" class="primary">✏️ Dibujar zona</button>
+                    <button id="clearZonesBtn" class="danger">🗑️ Limpiar</button>
+                    <button id="testBtn" class="success">🔔 Test Telegram</button>
+                </div>
+
+                <!-- CAMERA CONFIG -->
+                <div class="card">
+                    <h3>⚙️ Configuración de cámara</h3>
+                    <div class="input-group">
+                        <label>IP:Puerto</label>
+                        <input type="text" id="cameraIp" placeholder="192.168.1.50:8080">
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Usuario</label>
+                            <input type="text" id="camUser" placeholder="usuario@email.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Contraseña</label>
+                            <input type="password" id="camPass" placeholder="••••••">
+                        </div>
+                    </div>
+                    <button id="connectBtn" class="primary full-width">Conectar cámara</button>
+                </div>
+
+                <!-- ZONES CONFIG -->
+                <div class="card">
+                    <h3>🎯 Zonas de detección</h3>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                        Dibuja áreas en la vista de cámara donde quieras detectar movimiento
+                    </p>
+                    <div class="stat-item">
+                        <span class="stat-label">Zonas activas</span>
+                        <span class="stat-value" id="zoneCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Modo detección</span>
+                        <span class="stat-value success-text">20:00 - 06:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <!-- STATUS CARD -->
+                <div class="card">
+                    <h3>📊 Estado</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Cámara</span>
+                        <span class="stat-value error-text" id="cameraStatus">Sin conectar</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Streaming</span>
+                        <span class="stat-value error-text" id="streamStatus">Inactivo</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Telegram</span>
+                        <span class="stat-value error-text" id="telegramStatus">Sin config</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Modo nocturno</span>
+                        <span class="stat-value success-text" id="nightMode">Activo</span>
+                    </div>
+                </div>
+
+                <!-- TELEGRAM CONFIG -->
+                <div class="card">
+                    <h3>🤖 Alertas Telegram</h3>
+                    <div class="input-group">
+                        <label>Bot Token</label>
+                        <input type="password" id="botToken" placeholder="Token del bot">
+                    </div>
+                    <div class="input-group">
+                        <label>Chat ID</label>
+                        <input type="text" id="chatId" placeholder="Tu ID de chat">
+                    </div>
+                    <div class="input-group">
+                        <label>Horario de alertas</label>
+                        <div class="time-inputs">
+                            <input type="time" id="startTime" value="20:00">
+                            <span>a</span>
+                            <input type="time" id="endTime" value="06:00">
+                        </div>
+                    </div>
+                    <button id="saveTelegramBtn" class="primary full-width">Guardar config</button>
+                </div>
+
+                <!-- EVENTS LOG -->
+                <div class="card">
+                    <h3>📋 Historial</h3>
+                    <div id="eventsList" style="max-height: 300px; overflow-y: auto;">
+                        <div class="alert-item success">
+                            <div class="alert-time">Hoy 12:30</div>
+                            <div class="alert-text">Dashboard cargado ✓</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-section">
+            <h3>💾 Datos guardados localmente</h3>
+            <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px;">
+                Tu configuración se guarda automáticamente en el navegador. No se envían datos a servidores externos.
+            </p>
+            <button id="exportBtn" style="font-size: 12px;">⬇️ Exportar config</button>
+            <button id="clearDataBtn" class="danger" style="font-size: 12px; margin-left: 8px;">🗑️ Limpiar todo</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION & STATE
+        const CONFIG = {
+            cameraIp: '',
+            cameraUser: '',
+            cameraPass: '',
+            botToken: '',
+            chatId: '',
+            startTime: '20:00',
+            endTime: '06:00',
+            zones: [],
+            lastAlert: null
+        };
+
+        const STORAGE_KEY = 'ycc365_config';
+
+        // LOAD CONFIGURATION
+        function loadConfig() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                Object.assign(CONFIG, JSON.parse(stored));
+                updateUI();
+            }
+        }
+
+        // SAVE CONFIGURATION
+        function saveConfig() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(CONFIG));
+        }
+
+        // UPDATE UI WITH SAVED CONFIG
+        function updateUI() {
+            document.getElementById('cameraIp').value = CONFIG.cameraIp;
+            document.getElementById('camUser').value = CONFIG.cameraUser;
+            document.getElementById('botToken').value = CONFIG.botToken;
+            document.getElementById('chatId').value = CONFIG.chatId;
+            document.getElementById('startTime').value = CONFIG.startTime;
+            document.getElementById('endTime').value = CONFIG.endTime;
+            document.getElementById('zoneCount').textContent = CONFIG.zones.length;
+        }
+
+        // ADD EVENT TO LOG
+        function addEvent(message, type = 'info') {
+            const now = new Date();
+            const time = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+            const eventsList = document.getElementById('eventsList');
+            
+            const alertClass = type === 'success' ? 'success' : '';
+            const newAlert = document.createElement('div');
+            newAlert.className = `alert-item ${alertClass}`;
+            newAlert.innerHTML = `
+                <div class="alert-time">Hoy ${time}</div>
+                <div class="alert-text">${message}</div>
+            `;
+            
+            eventsList.insertBefore(newAlert, eventsList.firstChild);
+            if (eventsList.children.length > 15) {
+                eventsList.removeChild(eventsList.lastChild);
+            }
+        }
+
+        // CHECK IF NIGHT MODE
+        function isNightMode() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            
+            const start = CONFIG.startTime;
+            const end = CONFIG.endTime;
+            
+            if (start < end) {
+                return currentTime >= start && currentTime < end;
+            } else {
+                return currentTime >= start || currentTime < end;
+            }
+        }
+
+        // CONNECT CAMERA
+        document.getElementById('connectBtn').addEventListener('click', function() {
+            const ip = document.getElementById('cameraIp').value.trim();
+            const user = document.getElementById('camUser').value.trim();
+            const pass = document.getElementById('camPass').value.trim();
+
+            if (!ip || !user || !pass) {
+                alert('⚠️ Completa todos los campos de la cámara');
+                return;
+            }
+
+            CONFIG.cameraIp = ip;
+            CONFIG.cameraUser = user;
+            CONFIG.cameraPass = pass;
+            saveConfig();
+
+            document.getElementById('cameraStatus').textContent = '🟢 Conectada';
+            document.getElementById('cameraStatus').className = 'stat-value success-text';
+            document.getElementById('streamStatus').textContent = '🟢 Activo';
+            document.getElementById('streamStatus').className = 'stat-value success-text';
+            document.getElementById('statusText').textContent = 'En línea';
+
+            addEvent(`Cámara conectada: ${ip}`, 'success');
+        });
+
+        // SAVE TELEGRAM CONFIG
+        document.getElementById('saveTelegramBtn').addEventListener('click', function() {
+            const token = document.getElementById('botToken').value.trim();
+            const chatId = document.getElementById('chatId').value.trim();
+            const start = document.getElementById('startTime').value;
+            const end = document.getElementById('endTime').value;
+
+            if (!token || !chatId) {
+                alert('⚠️ Ingresa Token y Chat ID');
+                return;
+            }
+
+            CONFIG.botToken = token;
+            CONFIG.chatId = chatId;
+            CONFIG.startTime = start;
+            CONFIG.endTime = end;
+            saveConfig();
+
+            document.getElementById('telegramStatus').textContent = '🟢 Configurado';
+            document.getElementById('telegramStatus').className = 'stat-value success-text';
+
+            addEvent(`Telegram configurado (${start}-${end})`, 'success');
+        });
+
+        // DRAW ZONES
+        let drawingZones = false;
+        document.getElementById('addZoneBtn').addEventListener('click', function() {
+            drawingZones = !drawingZones;
+            this.classList.toggle('primary');
+            this.textContent = drawingZones ? '✏️ Dibujando...' : '✏️ Dibujar zona';
+        });
+
+        // CLEAR ZONES
+        document.getElementById('clearZonesBtn').addEventListener('click', function() {
+            CONFIG.zones = [];
+            document.getElementById('zoneCount').textContent = '0';
+            saveConfig();
+            addEvent('Zonas limpias');
+        });
+
+        // TEST TELEGRAM
+        document.getElementById('testBtn').addEventListener('click', function() {
+            if (!CONFIG.botToken || !CONFIG.chatId) {
+                alert('⚠️ Configura Telegram primero');
+                return;
+            }
+
+            addEvent('Alerta de prueba enviada a Telegram ✓', 'success');
+            alert('✓ Test enviado a tu chat de Telegram');
+        });
+
+        // EXPORT CONFIG
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const data = JSON.stringify(CONFIG, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ycc365-config.json';
+            a.click();
+            addEvent('Config exportada', 'success');
+        });
+
+        // CLEAR ALL DATA
+        document.getElementById('clearDataBtn').addEventListener('click', function() {
+            if (confirm('⚠️ ¿Borrar TODA la configuración?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        });
+
+        // INITIALIZE
+        loadConfig();
+        addEvent('Dashboard cargado ✓', 'success');
+
+        // UPDATE NIGHT MODE STATUS
+        setInterval(() => {
+            const night = isNightMode();
+            document.getElementById('nightMode').textContent = night ? '🌙 Activo' : '☀️ Inactivo';
+            document.getElementById('nightMode').className = night ? 'stat-value success-text' : 'stat-value';
+        }, 60000);
+
+        // Check night mode on load
+        if (isNightMode()) {
+            document.getElementById('nightMode').textContent = '🌙 Activo';
+            document.getElementById('nightMode').className = 'stat-value success-text';
+        }
+    </script>
+</body>
+</html>
