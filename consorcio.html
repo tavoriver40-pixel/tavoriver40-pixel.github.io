@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consorcio Tato Joven</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Caveat:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5f0;--white:#fff;--ink:#12110f;--ink2:#3d3b36;--muted:#9b9790;--line:#e4e1da;--green:#1d6b3e;--green-bg:#edf7f1;--red:#b91c1c;--red-bg:#fef2f2;--amber:#b45309;--amber-bg:#fffbeb;--blue:#1e40af;--blue-bg:#eff6ff;--purple:#6d28d9;--purple-bg:#f5f3ff;--gold:#c9921a;--mono:'Geist Mono',monospace;--serif:'Instrument Serif',serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);font-family:var(--mono);color:var(--ink);min-height:100vh;}
+.app{display:flex;min-height:100vh;}
+.sidebar{width:270px;flex-shrink:0;background:var(--ink);padding:24px 0;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;}
+.main{margin-left:270px;flex:1;}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:12px;text-align:center;}
+.logo-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;}
+.logo-name{font-family:var(--serif);font-size:18px;color:#fff;line-height:1.2;font-style:italic;}
+.logo-name span{color:var(--gold);font-style:normal;}
+.logo-spin-wrap{perspective:800px;display:flex;justify-content:center;margin-bottom:6px;}
+.sidebar-logo-img{width:120px;max-width:80%;height:auto;transform-style:preserve-3d;animation:logoSpin 9s linear infinite;}
+@keyframes logoSpin{from{transform:rotateY(0deg);}to{transform:rotateY(360deg);}}
+@media(prefers-reduced-motion:reduce){.sidebar-logo-img{animation:none;}}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:12.5px;color:rgba(255,255,255,0.4);cursor:pointer;transition:all .15s;border-left:2px solid transparent;}
+.nav-item:hover{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.04);}
+.nav-item.active{color:#fff;border-left-color:var(--gold);background:rgba(255,255,255,0.06);}
+.nav-item .icon{font-size:15px;width:18px;text-align:center;}
+.nav-section{font-size:9px;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.18);padding:14px 20px 5px;}
+.sidebar-footer{margin-top:auto;padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(255,255,255,.22);line-height:1.7;}
+.month-switcher{padding:10px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:8px;}
+.month-btn{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.45);cursor:pointer;transition:all .15s;}
+.month-btn:hover{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.8);}
+.month-btn.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:600;}
+.topbar{background:var(--white);border-bottom:1px solid var(--line);padding:13px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:var(--serif);font-size:21px;color:var(--ink);font-style:italic;}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.period-badge{background:var(--amber-bg);color:var(--amber);font-size:12px;padding:4px 10px;border-radius:20px;border:1px solid #fde68a;}
+.save-badge{background:var(--green-bg);color:var(--green);font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;display:none;}
+.save-badge.show{display:inline-block;}
+.btn{font-family:var(--mono);font-size:12px;letter-spacing:0.8px;text-transform:uppercase;padding:7px 14px;border-radius:3px;cursor:pointer;border:none;transition:all .15s;}
+.btn-primary{background:var(--ink);color:#fff;}.btn-primary:hover{background:var(--gold);color:var(--ink);}
+.btn-success{background:var(--green);color:#fff;}.btn-success:hover{background:#155e32;}
+.btn-purple{background:var(--purple);color:#fff;}.btn-purple:hover{background:#5b21b6;}
+.btn-gold{background:var(--gold);color:var(--ink);}.btn-gold:hover{background:#b5820f;}
+.btn-blue{background:var(--blue);color:#fff;}.btn-blue:hover{background:#1e3a8a;}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--line);}.btn-ghost:hover{border-color:var(--ink);color:var(--ink);}
+.btn-danger{background:var(--red);color:#fff;}.btn-danger:hover{background:#991b1b;}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.page{padding:24px 32px 48px;display:none;}
+.page.active{display:block;}
+.page-header{margin-bottom:22px;}
+.page-eyebrow{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.page-title{font-family:var(--serif);font-size:29px;color:var(--ink);}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;position:relative;}
+.dash-watermark-bg{position:fixed;inset:0;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;transform:rotate(-30deg) scale(1.4);opacity:.04;pointer-events:none;z-index:0;}
+.dash-watermark-bg span{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--ink);white-space:nowrap;padding:20px 32px;}
+.kpi{background:var(--white);border:1px solid var(--line);padding:16px 18px;border-radius:4px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi.k-green::before{background:var(--green);}.kpi.k-red::before{background:var(--red);}
+.kpi.k-amber::before{background:var(--amber);}.kpi.k-blue::before{background:var(--blue);}
+.kpi.k-gold::before{background:var(--gold);}
+.kpi-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.kpi-value{font-family:var(--serif);font-size:25px;color:var(--ink);line-height:1;}
+.kpi-value.green{color:var(--green);}.kpi-value.red{color:var(--red);}.kpi-value.amber{color:var(--amber);}.kpi-value.blue{color:var(--blue);}.kpi-value.gold{color:var(--gold);}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.section-title{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);font-weight:600;}
+.table-wrap{background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:22px;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:#fafaf8;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);padding:10px 13px;text-align:left;border-bottom:1px solid var(--line);}
+th.r,td.r{text-align:right;}th.c,td.c{text-align:center;}
+tbody tr{border-bottom:1px solid var(--line);transition:background .1s;}
+tbody tr:last-child{border-bottom:none;}tbody tr:hover{background:#fafaf8;}
+tbody td{padding:11px 13px;font-size:13px;color:var(--ink2);}
+.uf{display:inline-block;background:var(--ink);color:#fff;font-size:10px;padding:2px 6px;border-radius:2px;}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;}
+.badge-green{background:var(--green-bg);color:var(--green);}.badge-red{background:var(--red-bg);color:var(--red);}
+.badge-amber{background:var(--amber-bg);color:var(--amber);}.badge-blue{background:var(--blue-bg);color:var(--blue);}
+.badge-purple{background:var(--purple-bg);color:var(--purple);}.badge-gold{background:#fef3c7;color:var(--gold);}
+.val-green{color:var(--green);font-weight:600;}.val-red{color:var(--red);font-weight:600;}
+.val-amber{color:var(--amber);font-weight:600;}.val-purple{color:var(--purple);font-weight:600;}.val-blue{color:var(--blue);font-weight:600;}
+.val-gold{color:var(--gold);font-weight:600;}.val-muted{color:var(--muted);}
+.total-row td{background:#f7f5f0;font-weight:600;font-size:13px;border-top:1.5px solid var(--line);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.cadena-box{background:var(--ink);border-radius:4px;padding:18px 24px;margin-bottom:22px;display:flex;align-items:center;}
+.cadena-item{flex:1;padding:0 14px;}.cadena-item:first-child{padding-left:0;}.cadena-item:last-child{padding-right:0;}
+.cadena-div{width:1px;background:rgba(255,255,255,.1);align-self:stretch;}
+.cadena-arrow{font-size:16px;color:rgba(255,255,255,.2);padding:0 4px;align-self:center;}
+.cadena-label{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px;}
+.cadena-value{font-family:var(--serif);font-size:21px;line-height:1;}
+.cv-blue{color:#93c5fd;}.cv-green{color:#4ade80;}.cv-red{color:#f87171;}.cv-amber{color:#fcd34d;}.cv-gold{color:var(--gold);}
+.cadena-sub{font-size:10px;color:rgba(255,255,255,.22);margin-top:3px;}
+.form-section{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:22px;margin-bottom:18px;}
+.form-title{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.form-group{display:flex;flex-direction:column;gap:4px;}
+.form-group.full{grid-column:1/-1;}.form-group.half{grid-column:span 2;}
+label{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);}
+input,select,textarea{font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:9px 11px;outline:none;transition:border .15s;width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);background:var(--white);}
+textarea{resize:vertical;min-height:54px;}
+.form-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
+.alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--green);padding:10px 14px;border-radius:4px;font-size:12px;margin-bottom:14px;display:none;}
+.alert-success.show{display:block;}
+.mora-banner{background:var(--red-bg);border:1px solid #fecaca;border-radius:4px;padding:11px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.mora-banner p{font-size:12px;color:var(--red);line-height:1.6;}
+.convenio-banner{background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:4px;padding:11px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.convenio-banner p{font-size:12px;color:var(--purple);line-height:1.6;}
+.mora-calc{background:var(--red-bg);border:1px solid #fecaca;border-radius:4px;padding:14px 16px;margin-top:10px;}
+.mora-calc-title{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;font-weight:600;}
+.mora-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px dashed #fecaca;}
+.mora-row:last-child{border-bottom:none;font-weight:700;font-size:13px;padding-top:7px;}
+.nota{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:14px 16px;position:relative;overflow:hidden;}
+.nota::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;}
+.nota.n-blue::before{background:var(--blue);}.nota.n-amber::before{background:var(--amber);}
+.nota.n-green::before{background:var(--green);}.nota.n-red::before{background:var(--red);}
+.nota.n-purple::before{background:var(--purple);}
+.nota-num{font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.nota-title{font-family:var(--serif);font-size:16px;color:var(--ink);margin-bottom:4px;}
+.nota-body{font-size:12px;color:var(--ink2);line-height:1.7;}
+.prop-card{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:14px;}
+.prop-uf{font-size:10.5px;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase;}
+.prop-name{font-family:var(--serif);font-size:17px;color:var(--ink);margin:3px 0 8px;}
+.prop-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
+.prop-row .lbl{color:var(--muted);}.prop-row .val{color:var(--ink2);font-weight:600;}
+.prop-row .val.mora{color:var(--red);}.prop-row .val.convenio{color:var(--purple);}
+.prop-divider{height:1px;background:var(--line);margin:6px 0;}
+.hist-curr td{background:rgba(201,146,26,.06);}
+.hist-init{color:#60a5fa;}.hist-ing{color:#4ade80;}.hist-eg{color:#f87171;}
+.hist-net-pos{color:#4ade80;font-weight:700;}.hist-net-neg{color:#f87171;font-weight:700;}
+.hist-acum{color:var(--gold);font-weight:700;}
+/* ACTA — GHOST MODE */
+.acta-preview{background:#0e0d0b;border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:40px 48px;max-width:750px;line-height:2;font-family:'Caveat',cursive;font-size:19px;color:rgba(255,255,255,.85);}
+.acta-preview h2{font-family:'Caveat',cursive;font-size:32px;color:#fff;margin-bottom:4px;font-weight:700;}
+.acta-preview .acta-meta{font-family:'Geist Mono',monospace;font-size:10px;color:rgba(255,255,255,.25);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);}
+.acta-preview h4{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#c9921a;margin:20px 0 8px;}
+.acta-preview p{margin-bottom:10px;color:rgba(255,255,255,.8);}
+.acta-preview ul{margin-left:20px;margin-bottom:10px;}
+.acta-preview li{margin-bottom:4px;color:rgba(255,255,255,.8);}
+.acta-preview strong{color:#fff;font-weight:700;}
+.acta-firmas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:40px;}
+.firma-box{border-top:1px solid rgba(255,255,255,.15);padding-top:8px;font-family:'Caveat',cursive;font-size:16px;color:rgba(255,255,255,.4);text-align:center;}
+#acta-resoluciones, #acta-tema-input{font-family:'Caveat',cursive;font-size:16px;background:#0e0d0b;color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.1);}
+#acta-temas-list div{font-family:'Caveat',cursive;font-size:16px;background:#1a1917;color:rgba(255,255,255,.8);}
+/* RECIBOS */
+.recibo-preview{background:#fff;border:1px solid #c8e6c9;border-radius:4px;padding:40px 48px;max-width:680px;color:#1b5e20;position:relative;font-family:'Great Vibes',cursive;}
+.recibo-preview::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#1b5e20,#4caf50,#1b5e20);}
+.recibo-encabezado{text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(76,175,80,.3);}
+.recibo-cons{font-family:'Great Vibes',cursive;font-size:42px;color:#1b5e20;line-height:1;}
+.recibo-subtitulo{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#81c784;margin-top:2px;}
+.recibo-num-fecha{display:flex;justify-content:space-between;margin-bottom:20px;font-family:'Geist Mono',monospace;font-size:11px;color:#4caf50;}
+.recibo-num-fecha strong{color:#1b5e20;font-size:13px;}
+.recibo-campo{margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(76,175,80,.25);}
+.recibo-campo-label{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#81c784;margin-bottom:4px;}
+.recibo-campo-valor{font-family:'Great Vibes',cursive;font-size:28px;color:#1b5e20;line-height:1.2;}
+.recibo-campo-valor.monto{font-size:38px;color:#2e7d32;}
+.recibo-campo-valor.letras{font-size:20px;color:#388e3c;letter-spacing:.5px;line-height:1.5;}
+.recibo-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:28px;padding-top:16px;}
+.recibo-firma-wrap{text-align:center;}
+.recibo-firma-nombre{font-family:'Great Vibes',cursive;font-size:34px;color:#1b5e20;line-height:1;}
+.recibo-firma-linea{width:180px;height:1px;background:#1b5e20;margin:6px auto 4px;}
+.recibo-firma-cargo{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:#81c784;}
+.recibo-sello{width:88px;height:88px;border:2px solid #4caf50;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;}
+.recibo-sello::before{content:'';position:absolute;inset:4px;border:1px dashed rgba(76,175,80,.4);border-radius:50%;}
+.recibo-sello-text{font-family:'Geist Mono',monospace;font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:#4caf50;text-align:center;line-height:1.5;}
+/* BACKUP */
+.backup-card{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:24px;max-width:680px;margin-bottom:18px;}
+.backup-card h3{font-family:var(--serif);font-size:20px;margin-bottom:6px;}
+.backup-card p{font-size:12px;color:var(--ink2);line-height:1.8;margin-bottom:14px;}
+.backup-card .tip{font-size:11px;color:var(--muted);background:var(--bg);padding:8px 12px;border-radius:3px;border-left:3px solid var(--gold);margin-top:10px;}
+/* AGENTE */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px;}
+.cal-head{text-align:center;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);padding:4px 0;}
+.cal-day{background:var(--white);border:1px solid var(--line);border-radius:3px;padding:6px 5px;min-height:64px;position:relative;}
+.cal-day.empty{background:transparent;border-color:transparent;}
+.cal-day.today{border-color:var(--gold);background:#fffbeb;}
+.cal-day .cal-num{font-size:12px;color:var(--muted);margin-bottom:2px;}
+.cal-day.today .cal-num{color:var(--gold);font-weight:700;}
+.cal-event{font-size:9.5px;padding:1px 4px;border-radius:2px;margin-bottom:1px;line-height:1.3;}
+.cal-event.ev-venc{background:var(--amber-bg);color:var(--amber);}
+.cal-event.ev-aviso{background:var(--blue-bg);color:var(--blue);}
+.cal-event.ev-reunion{background:var(--purple-bg);color:var(--purple);}
+.cal-event.ev-pasto{background:var(--green-bg);color:var(--green);}
+.pres-bar-wrap{background:#f0f0ea;border-radius:4px;height:8px;margin-top:4px;overflow:hidden;}
+.pres-bar{height:100%;border-radius:4px;transition:width .4s;}
+.inf-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);font-size:13px;}
+.inf-row:last-child{border-bottom:none;}
+.inf-total{display:flex;justify-content:space-between;padding:8px 0;font-weight:700;font-size:14px;border-top:2px solid var(--ink);margin-top:4px;}
+.informe-preview{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:32px 40px;max-width:750px;font-size:13px;color:var(--ink2);line-height:1.8;position:relative;overflow:hidden;}
+.informe-preview .watermark-bg{position:absolute;inset:0;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;transform:rotate(-30deg) scale(1.4);opacity:.05;pointer-events:none;z-index:0;}
+.informe-preview .watermark-bg span{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink);white-space:nowrap;padding:18px 30px;}
+.informe-preview > *:not(.watermark-bg){position:relative;z-index:1;}
+.informe-preview h2{font-family:var(--serif);font-size:24px;color:var(--ink);margin-bottom:4px;}
+.informe-preview .inf-meta{font-size:11px;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--gold);}
+.informe-preview h4{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink);margin:18px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--line);}
+/* BUSCADOR DEL MENU */
+.nav-search-wrap{position:sticky;top:0;z-index:5;background:var(--ink);padding:10px 20px 11px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:6px;}
+.nav-search{font-family:var(--mono);font-size:12px;width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:#fff;border-radius:3px;padding:8px 28px 8px 10px;transition:all .15s;}
+.nav-search::placeholder{color:rgba(255,255,255,.3);}
+.nav-search:focus{border-color:var(--gold);background:rgba(255,255,255,.11);color:#fff;}
+.nav-search-clear{position:absolute;right:29px;top:19px;font-size:12px;color:rgba(255,255,255,.35);cursor:pointer;display:none;line-height:1;}
+.nav-search-clear:hover{color:#fff;}
+.nav-search-clear.show{display:block;}
+.nav-empty{display:none;padding:12px 20px;font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;}
+.nav-empty.show{display:block;}
+.nav-item.nav-hit{background:rgba(201,146,26,.16);border-left-color:var(--gold);color:#fff;}
+@media print{
+  .sidebar,.topbar,.btn,.nav-search-wrap,.nav-empty,.form-actions,.mora-banner,.convenio-banner,.month-switcher,.no-print{display:none!important;}
+  .main{margin-left:0;}
+  .page{display:none!important;padding:0;}
+  .page.active{display:block!important;}
+  .acta-preview,.informe-preview,.recibo-preview{border:none;padding:0;}
+  #page-informe .informe-preview{max-width:100%;}
+  #page-recibos .table-wrap, #page-recibos .form-section{display:none!important;}
+  #page-recibos #recibo-preview-wrap{display:block!important;}
+  #page-liquidacion .form-section{display:none!important;}
+  body{background:#fff;}
+}
+</style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-label">Sistema de Gestión</div>
+    <div class="logo-spin-wrap"><img class="sidebar-logo-img" src="https://tavoriver40-pixel.github.io/logo_full.png" alt="Consorcio Tato Joven" onerror="this.style.display='none';document.getElementById('logo-fallback-text').style.display='block';"></div>
+    <div id="logo-fallback-text" class="logo-name" style="display:none;">Consorcio<br><span>Tato Joven</span></div>
+  </div>
+  <div class="nav-search-wrap">
+    <input type="text" id="nav-search" class="nav-search" placeholder="Buscar sección…  (Ctrl+K)" autocomplete="off" oninput="filtrarNav()" onkeydown="navSearchKey(event)">
+    <span class="nav-search-clear" id="nav-search-clear" onclick="limpiarNavSearch()" title="Limpiar">&#10005;</span>
+  </div>
+  <div class="nav-empty" id="nav-empty">Nada coincide con esa búsqueda.</div>
+  <div style="padding:8px 20px 4px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.18);">Período activo</div>
+  <div class="month-switcher" id="month-switcher"></div>
+  <button class="btn btn-ghost btn-sm" onclick="showNewMonthModal()" style="margin:0 20px 10px;font-size:11px;border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.4);">+ Nuevo mes</button>
+  <div class="nav-section">Principal</div>
+  <div class="nav-item active" onclick="navigate('dashboard')"><span class="icon">◈</span> Dashboard</div>
+  <div class="nav-item" onclick="navigate('propietarios')"><span class="icon">◎</span> Propietarios</div>
+  <div class="nav-section">Ingresos</div>
+  <div class="nav-item" onclick="navigate('expensas')"><span class="icon">▦</span> Expensas del mes</div>
+  <div class="nav-item" onclick="navigate('liquidacion')"><span class="icon">🧮</span> Liquidaciones</div>
+  <div class="nav-item" onclick="navigate('extraordinaria')"><span class="icon">🏗</span> Expensa Extraordinaria</div>
+  <div class="nav-item" onclick="navigate('convenio')"><span class="icon">◉</span> Convenio / Deuda</div>
+  <div class="nav-section">Egresos</div>
+  <div class="nav-item" onclick="navigate('egresos')"><span class="icon">↓</span> Gastos del mes</div>
+  <div class="nav-item" onclick="navigate('nuevo_gasto')"><span class="icon">+</span> Registrar Gasto</div>
+  <div class="nav-section">Comunicaciones</div>
+  <div class="nav-item" onclick="navigate('avisos')"><span class="icon">💬</span> Avisos WhatsApp</div>
+  <div class="nav-item" onclick="navigate('recibos')"><span class="icon">🧾</span> Recibos de Pago</div>
+  <div class="nav-item" onclick="navigate('actas')"><span class="icon">📋</span> Actas de Reunión</div>
+  <div class="nav-item" onclick="navigate('informe')"><span class="icon">📊</span> Informe Mensual</div>
+  <div class="nav-section">Planificación</div>
+  <div class="nav-item" onclick="navigate('calendario')"><span class="icon">📅</span> Calendario</div>
+  <div class="nav-item" onclick="navigate('presupuesto')"><span class="icon">💡</span> Presupuesto Anual</div>
+  <div class="nav-section">Fondo de Obras</div>
+  <div class="nav-item" onclick="navigate('fondo_obras')"><span class="icon">🏗</span> Fondo de Obras</div>
+  <div class="nav-section">Gestión</div>
+  <div class="nav-item" onclick="navigate('mora')"><span class="icon">⚠</span> Mora y Recargos</div>
+  <div class="nav-item" onclick="navigate('historial')"><span class="icon">≡</span> Historial de Meses</div>
+  <div class="nav-item" onclick="navigate('notas')"><span class="icon">📌</span> Notas Admin.</div>
+  <div class="nav-item" onclick="navigate('backup')" style="border-top:1px solid rgba(255,255,255,.06);margin-top:6px;"><span class="icon">💾</span> Guardar / Restaurar</div>
+  <div class="sidebar-footer">Exp. Fija: $50.000/mes<br>Recargo mora: 10%<br>Vence día 10 c/mes<br>Cierre histórico Mayo: $404.354,11</div>
+</aside>
+
+<main class="main">
+<div class="topbar">
+  <div><span class="topbar-title">Consorcio <em>Tato Joven</em></span></div>
+  <div class="topbar-right">
+    <span class="save-badge" id="save-badge">✓ Guardado</span>
+    <span class="period-badge" id="topbar-period">● Junio 2026</span>
+    <span class="period-badge" id="extra-badge-topbar" style="background:var(--purple-bg);color:var(--purple);border-color:#ddd6fe;display:none;"></span>
+    <button class="btn btn-gold btn-sm" onclick="guardarDatos(true)">💾 Guardar</button>
+    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn btn-primary btn-sm" onclick="navigate('nuevo_gasto')">+ Gasto</button>
+    <button class="btn btn-success btn-sm" onclick="navigate('expensas')">+ Cobro</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="dash-watermark-bg" id="dash-watermark"></div>
+  <div class="page-header"><div class="page-eyebrow">Resumen General</div><div class="page-title">Dashboard <em id="dash-mes-title"></em></div></div>
+  <div id="backup-alert"></div>
+  <div class="kpi-grid" id="dash-kpis"></div>
+  <div class="cadena-box" id="dash-cadena"></div>
+  <div class="two-col">
+    <div><div class="section-head"><span class="section-title">Ingresos del mes</span></div>
+    <div class="table-wrap"><table><thead><tr><th>UF</th><th>Propietario</th><th>Tipo</th><th class="r">Monto</th></tr></thead><tbody id="dash-ing-tbody"></tbody></table></div></div>
+    <div><div class="section-head"><span class="section-title">Egresos del mes</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Concepto</th><th class="r">Monto</th></tr></thead><tbody id="dash-eg-tbody"></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- PROPIETARIOS -->
+<div class="page" id="page-propietarios">
+  <div class="page-header"><div class="page-eyebrow">Gestión</div><div class="page-title">Propietarios <em>& Unidades</em></div></div>
+  <div class="three-col" id="prop-grid"></div>
+</div>
+
+<!-- EXPENSAS -->
+<div class="page" id="page-expensas">
+  <div class="page-header"><div class="page-eyebrow">Ingresos</div><div class="page-title">Expensas <em id="exp-mes-title"></em></div></div>
+  <div id="alert-cobro" class="alert-success">✅ Cobro registrado y guardado.</div>
+  <div class="form-section" style="max-width:720px;">
+    <div class="form-title">Registrar Pago de Expensa</div>
+    <div id="aviso-saldo-favor" style="display:none;background:var(--green-bg);border:1px solid #bbf7d0;border-radius:4px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--green);line-height:1.7;"></div>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+      <div class="form-group"><label>Unidad Funcional</label><select id="cobro-uf" onchange="verificarSaldoFavor()"></select></div>
+      <div class="form-group"><label>Tipo</label><select id="cobro-tipo"><option value="expensa">Expensa Fija ($50.000)</option><option value="parcial">Pago Parcial</option><option value="adelanto">Adelanto</option></select></div>
+      <div class="form-group"><label>Monto ($)</label><input type="number" id="cobro-monto" value="50000" step="0.01"></div>
+      <div class="form-group"><label>Fecha</label><input type="date" id="cobro-fecha"></div>
+    </div>
+    <div class="form-group" style="margin-top:10px;"><label>Observaciones</label><input type="text" id="cobro-obs" placeholder="Opcional..."></div>
+    <div class="form-actions"><button class="btn btn-success" onclick="registrarCobro()">✓ Registrar Cobro</button></div>
+  </div>
+  <div class="section-head"><span class="section-title">Estado — <span id="exp-mes-sub"></span></span></div>
+  <div class="table-wrap"><table><thead><tr><th>UF</th><th>Propietarios</th><th class="r">Exp. Fija</th><th class="c">Estado</th><th class="r">Cobrado</th><th class="r">Recargo</th><th class="r">Total</th><th>Obs.</th></tr></thead><tbody id="exp-tbody"></tbody></table></div>
+</div>
+
+<!-- CONVENIO -->
+<div class="page" id="page-convenio">
+  <div class="page-header"><div class="page-eyebrow">Ingresos Especiales</div><div class="page-title">Convenio <em>& Pagos de Deuda</em></div></div>
+  <div class="convenio-banner"><span style="font-size:18px;">◉</span><p><strong>Pagos fuera de la expensa fija:</strong> Importes especiales como cuotas de convenio, acuerdos de pago o cobros extraordinarios.</p></div>
+  <div id="alert-convenio" class="alert-success">✅ Pago de convenio registrado y guardado.</div>
+  <div class="form-section" style="max-width:720px;">
+    <div class="form-title">Registrar Pago de Convenio</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Unidad Funcional</label><select id="conv-uf"></select></div>
+      <div class="form-group"><label>Tipo</label><select id="conv-tipo"><option value="Cuota convenio deuda">Cuota convenio de deuda</option><option value="Pago acuerdo">Pago de acuerdo</option><option value="Pago extraordinario">Pago extraordinario</option><option value="Ingreso especial">Ingreso especial</option><option value="Otro">Otro</option></select></div>
+      <div class="form-group"><label>Monto ($)</label><input type="number" id="conv-monto" step="0.01" placeholder="0,00"></div>
+      <div class="form-group"><label>Fecha</label><input type="date" id="conv-fecha"></div>
+      <div class="form-group half"><label>Descripción</label><input type="text" id="conv-desc" placeholder="Ej: Cuota 1/6 convenio deuda AySA"></div>
+      <div class="form-group"><label>N° Comprobante</label><input type="text" id="conv-comp" placeholder="Opcional"></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-purple" onclick="registrarConvenio()">◉ Registrar Pago</button></div>
+  </div>
+  <div class="section-head"><span class="section-title">Historial de Convenios</span></div>
+  <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>UF</th><th>Propietario</th><th>Tipo</th><th>Detalle</th><th>Comp.</th><th class="r">Monto</th></tr></thead><tbody id="conv-tbody"></tbody></table></div>
+</div>
+
+<!-- EGRESOS -->
+<div class="page" id="page-egresos">
+  <div class="page-header"><div class="page-eyebrow">Egresos</div><div class="page-title">Gastos <em id="eg-mes-title"></em></div></div>
+  <div class="section-head"><span class="section-title">Gastos Registrados</span><button class="btn btn-primary btn-sm" onclick="navigate('nuevo_gasto')">+ Agregar</button></div>
+  <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Categoría</th><th>Concepto</th><th>Comp.</th><th class="r">Monto</th><th>Notas</th><th class="c">Acción</th></tr></thead><tbody id="eg-tbody"></tbody></table></div>
+</div>
+
+<!-- NUEVO GASTO -->
+<div class="page" id="page-nuevo_gasto">
+  <div class="page-header"><div class="page-eyebrow">Egresos</div><div class="page-title">Registrar <em>Nuevo Gasto</em></div></div>
+  <div id="alert-gasto" class="alert-success">✅ Gasto registrado y guardado.</div>
+  <div class="form-section" style="max-width:700px;">
+    <div class="form-title">Datos del Gasto</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Categoría</label><select id="gasto-cat"><option>Servicios — Luz / Electricidad</option><option>Servicios — Agua (AySA)</option><option>Servicios — Gas</option><option>Mantenimiento — Corte de Pasto</option><option>Mantenimiento — Limpieza</option><option>Mantenimiento — Reparaciones</option><option>Administración</option><option>Gasto Extra / Imprevisto</option></select></div>
+      <div class="form-group"><label>Fecha</label><input type="date" id="gasto-fecha"></div>
+      <div class="form-group"><label>Monto ($)</label><input type="number" id="gasto-monto" step="0.01" placeholder="0,00"></div>
+      <div class="form-group half"><label>Proveedor / Descripción</label><input type="text" id="gasto-desc" placeholder="Ej: Factura Edenor Junio 2026"></div>
+      <div class="form-group"><label>N° Comprobante</label><input type="text" id="gasto-comp" placeholder="Opcional"></div>
+      <div class="form-group full"><label>Notas</label><textarea id="gasto-notas" placeholder="Información adicional..."></textarea></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="navigate('egresos')">Cancelar</button><button class="btn btn-primary" onclick="agregarGasto()">Guardar Gasto</button></div>
+  </div>
+</div>
+
+<!-- EXPENSA EXTRAORDINARIA -->
+<div class="page" id="page-extraordinaria">
+  <div class="page-header"><div class="page-eyebrow">Ingresos Especiales</div><div class="page-title">Expensa <em>Extraordinaria</em></div></div>
+
+  <div style="background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:4px;padding:11px 16px;margin-bottom:18px;font-size:12px;color:var(--purple);line-height:1.7;">
+    🏗 Registrá las expensas extraordinarias aprobadas por los propietarios. Cada propietario paga su cuota individualmente mes a mes.
+  </div>
+
+  <div id="alert-extra" class="alert-success">✅ Expensa extraordinaria creada correctamente.</div>
+
+  <!-- Formulario nueva extraordinaria -->
+  <div class="form-section" style="max-width:720px;">
+    <div class="form-title">Crear Nueva Expensa Extraordinaria</div>
+    <div class="form-grid">
+      <div class="form-group full"><label>Motivo / Descripción</label><input type="text" id="extra-motivo" placeholder="Ej: Instalación de rejillas y mejora de calle interna"></div>
+      <div class="form-group"><label>Monto por Unidad x Mes ($)</label><input type="number" id="extra-cuota-uf" value="25000" step="0.01" oninput="calcularResumenExtra()"></div>
+      <div class="form-group"><label>Cantidad de Cuotas</label><input type="number" id="extra-num-cuotas" value="3" min="1" oninput="calcularResumenExtra()"></div>
+      <div class="form-group"><label>Mes de Inicio</label>
+        <select id="extra-mes-inicio">
+          <option value="2026-07">Julio 2026</option>
+          <option value="2026-08">Agosto 2026</option>
+          <option value="2026-09">Septiembre 2026</option>
+          <option value="2026-10">Octubre 2026</option>
+          <option value="2026-11">Noviembre 2026</option>
+          <option value="2026-12">Diciembre 2026</option>
+        </select>
+      </div>
+    </div>
+    <div id="extra-resumen" style="background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:4px;padding:12px 16px;margin-top:12px;font-size:12px;color:var(--purple);line-height:1.9;"></div>
+    <div class="form-actions">
+      <button class="btn btn-purple" onclick="crearExpensaExtra()">🏗 Crear Expensa Extraordinaria</button>
+    </div>
+  </div>
+
+  <!-- Listado de extraordinarias activas -->
+  <div id="extra-activas-wrap"></div>
+
+  <!-- Historial -->
+  <div class="section-head" style="margin-top:8px;"><span class="section-title">Historial</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Motivo</th><th class="r">Cuota x UF</th><th class="c">Cuotas</th><th>Mes Inicio</th><th class="c">Estado</th><th class="c">Acción</th></tr></thead>
+      <tbody id="extra-historial-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- AVISOS WHATSAPP -->
+<div class="page" id="page-avisos">
+  <div class="page-header"><div class="page-eyebrow">Comunicaciones</div><div class="page-title">Avisos <em>por WhatsApp</em></div></div>
+  <div style="background:var(--blue-bg);border:1px solid #bfdbfe;border-radius:4px;padding:11px 16px;margin-bottom:18px;font-size:12px;color:var(--blue);line-height:1.7;">
+    📱 <strong>Celular:</strong> tocá "Enviar WA" → se abre WhatsApp con el mensaje listo. &nbsp;|&nbsp; 💻 <strong>PC:</strong> se abre WhatsApp Web (tenela iniciada en web.whatsapp.com).
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+    <button class="btn btn-primary" onclick="setTipoAviso('vencimiento')" id="btn-aviso-venc">📅 Aviso Vencimiento</button>
+    <button class="btn btn-ghost" onclick="setTipoAviso('mora')" id="btn-aviso-mora">⚠ Aviso Mora</button>
+    <button class="btn btn-ghost" onclick="setTipoAviso('personalizado')" id="btn-aviso-pers">✏ Personalizado</button>
+  </div>
+  <div style="background:var(--white);border:1px solid var(--line);border-radius:4px;padding:18px;margin-bottom:20px;max-width:700px;">
+    <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Vista previa — podés editar el texto</div>
+    <textarea id="aviso-template" style="width:100%;min-height:130px;font-size:13px;line-height:1.7;border:1px dashed var(--line);border-radius:3px;padding:10px;background:#f7f5f0;font-family:var(--mono);" oninput="renderAvisosTabla()"></textarea>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;">Variables: <code style="background:#f0f0ea;padding:1px 5px;border-radius:2px;">{nombre}</code> <code style="background:#f0f0ea;padding:1px 5px;border-radius:2px;">{uf}</code> <code style="background:#f0f0ea;padding:1px 5px;border-radius:2px;">{monto}</code> <code style="background:#f0f0ea;padding:1px 5px;border-radius:2px;">{recargo}</code> <code style="background:#f0f0ea;padding:1px 5px;border-radius:2px;">{total}</code></div>
+  </div>
+  <div class="section-head"><span class="section-title">Enviar a propietarios</span><span style="display:flex;gap:8px;"><button class="btn btn-ghost btn-sm" id="btn-toggle-tels" onclick="toggleTels()">👁 Mostrar teléfonos</button><button class="btn btn-success btn-sm" onclick="abrirTodosWhatsApp()">📲 Abrir todos en WhatsApp</button></span></div>
+  <div class="table-wrap"><table><thead><tr><th>UF</th><th>Nombre</th><th>Teléfono</th><th class="c">Estado</th><th class="r">Expensa</th><th class="r">Recargo</th><th class="c">Acción</th></tr></thead><tbody id="avisos-tbody"></tbody></table></div>
+</div>
+
+<!-- LIQUIDACIONES -->
+<div class="page" id="page-liquidacion">
+  <div class="page-header"><div class="page-eyebrow">Comprobantes</div><div class="page-title">Liquidación <em>de Expensas</em></div></div>
+
+  <div class="form-section no-print">
+    <div class="form-title">Datos de pago del consorcio</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Se cargan una sola vez y aparecen en el pie de cada liquidación. Quedan guardados con el resto de los datos.</div>
+    <div class="form-row">
+      <div class="form-group"><label>Titular de la cuenta</label><input type="text" id="pago-titular" placeholder="Consorcio Tato Joven"></div>
+      <div class="form-group"><label>Banco</label><input type="text" id="pago-banco" placeholder="Ej: Banco Nación"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>CBU / CVU</label><input type="text" id="pago-cbu" placeholder="22 dígitos"></div>
+      <div class="form-group"><label>Alias</label><input type="text" id="pago-alias" placeholder="Ej: tato.joven.exp"></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" onclick="guardarDatosPago()">Guardar datos de pago</button></div>
+  </div>
+
+  <div class="section-head no-print">
+    <span class="section-title">Liquidaciones del período</span>
+    <span style="display:flex;gap:8px;">
+      <select id="liq-uf" onchange="renderLiquidacion()" style="padding:7px 10px;border:1px solid var(--line);border-radius:3px;font-family:var(--mono);font-size:12px;"></select>
+      <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Imprimir</button>
+    </span>
+  </div>
+
+  <div id="liq-preview-wrap"></div>
+</div>
+
+<!-- RECIBOS DE PAGO -->
+<div class="page" id="page-recibos">
+  <div class="page-header"><div class="page-eyebrow">Comprobantes</div><div class="page-title">Recibos <em>de Pago</em></div></div>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <div class="form-section">
+        <div class="form-title">Generar Nuevo Recibo</div>
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="form-group"><label>N° Recibo</label><input type="number" id="rec-num" value="24" min="24"></div>
+          <div class="form-group"><label>Fecha</label><input type="date" id="rec-fecha"></div>
+          <div class="form-group"><label>Unidad Funcional</label><select id="rec-uf"></select></div>
+          <div class="form-group"><label>Medio de Pago</label>
+            <select id="rec-medio">
+              <option value="Mercado Pago">Mercado Pago</option>
+              <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+              <option value="Efectivo">Efectivo</option>
+              <option value="Cheque">Cheque</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Monto ($)</label><input type="number" id="rec-monto" step="0.01" placeholder="50000"></div>
+          <div class="form-group"><label>N° Operación (opcional)</label><input type="text" id="rec-op" placeholder="Ej: 163493669734"></div>
+        </div>
+        <div class="form-group" style="margin-top:10px;"><label>Concepto</label>
+          <select id="rec-concepto">
+            <option value="Expensa mensual">Expensa mensual</option>
+            <option value="Expensa mensual con recargo por mora">Expensa mensual con recargo por mora</option>
+            <option value="Cuota convenio de deuda">Cuota convenio de deuda</option>
+            <option value="Pago parcial de expensa">Pago parcial de expensa</option>
+            <option value="Pago extraordinario">Pago extraordinario</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-ghost" onclick="vistaPreviaRapida()">👁 Vista Previa (no guarda)</button>
+          <button class="btn btn-gold" onclick="generarRecibo()">🧾 Generar Recibo</button>
+        </div>
+      </div>
+      <div class="section-head"><span class="section-title">Recibos Emitidos</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>N°</th><th>Fecha</th><th>UF</th><th>Propietario</th><th>Concepto</th><th class="r">Monto</th><th class="c">Acción</th></tr></thead>
+          <tbody id="recibos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="section-head no-print">
+        <span class="section-title">Vista Previa</span>
+        <button class="btn btn-primary btn-sm" onclick="imprimirRecibo()">🖨 Imprimir / PDF</button>
+      </div>
+      <div id="recibo-preview-wrap">
+        <div style="text-align:center;padding:40px;color:var(--muted);font-size:12px;background:var(--white);border:1px solid var(--line);border-radius:4px;">Completá los datos y presioná<br>"Generar Recibo"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTAS DE REUNIÓN -->
+<div class="page" id="page-actas">
+  <div class="page-header"><div class="page-eyebrow">Comunicaciones</div><div class="page-title">Actas <em>de Reunión</em></div></div>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <div class="form-section">
+        <div class="form-title">Datos de la Reunión</div>
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="form-group"><label>Fecha de Reunión</label><input type="date" id="acta-fecha"></div>
+          <div class="form-group"><label>Hora</label><input type="time" id="acta-hora" value="19:00"></div>
+          <div class="form-group full"><label>Lugar</label><input type="text" id="acta-lugar" value="Salón del Consorcio Tato Joven"></div>
+          <div class="form-group full"><label>Tipo de Reunión</label>
+            <select id="acta-tipo"><option>Asamblea Ordinaria</option><option>Asamblea Extraordinaria</option><option>Reunión de Propietarios</option><option>Reunión Informativa</option></select>
+          </div>
+        </div>
+        <div class="form-title" style="margin-top:16px;">Propietarios Presentes</div>
+        <div id="acta-presentes-checks" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;"></div>
+        <div class="form-title" style="margin-top:16px;">Temas Tratados</div>
+        <div id="acta-temas-list" style="margin-bottom:8px;"></div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+          <input type="text" id="acta-tema-input" placeholder="Agregar tema tratado..." style="flex:1;">
+          <button class="btn btn-primary btn-sm" onclick="agregarTema()">+ Agregar</button>
+        </div>
+        <div class="form-group full"><label>Resoluciones / Acuerdos</label><textarea id="acta-resoluciones" placeholder="Ej: Se aprueba por unanimidad el incremento de la expensa a partir de Agosto 2026..."></textarea></div>
+        <div class="form-group full"><label>Próxima Reunión (opcional)</label><input type="date" id="acta-proxima"></div>
+        <div class="form-actions">
+          <button class="btn btn-ghost" onclick="limpiarActa()">Limpiar</button>
+          <button class="btn btn-blue" onclick="generarActa()">📋 Generar Acta</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-head"><span class="section-title">Vista Previa del Acta</span><button class="btn btn-gold btn-sm" onclick="window.print()">🖨 Imprimir</button></div>
+      <div class="acta-preview" id="acta-preview">
+        <div style="color:rgba(255,255,255,.3);font-size:15px;text-align:center;padding:40px 0;">Completá los datos y presioná "Generar Acta"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFORME MENSUAL -->
+<div class="page" id="page-informe">
+  <div class="page-header"><div class="page-eyebrow">Comunicaciones</div><div class="page-title">Informe <em>Mensual para Propietarios</em></div></div>
+  <div style="display:flex;gap:10px;margin-bottom:20px;align-items:center;flex-wrap:wrap;" class="no-print">
+    <span style="font-size:12px;color:var(--muted);">Mes del informe:</span>
+    <select id="informe-mes-sel" onchange="generarInforme()" style="width:auto;"></select>
+    <button class="btn btn-blue btn-sm" onclick="generarInforme()">↺ Actualizar</button>
+    <button class="btn btn-gold btn-sm" onclick="window.print()">🖨 Imprimir / PDF</button>
+    <button class="btn btn-success btn-sm" onclick="compartirInformeWhatsApp()">📲 Compartir por WhatsApp</button>
+  </div>
+  <div class="informe-preview" id="informe-preview"></div>
+</div>
+
+<!-- FONDO DE OBRAS -->
+<div class="page" id="page-fondo_obras">
+  <div class="page-header"><div class="page-eyebrow">Caja Separada</div><div class="page-title">Fondo <em>de Obras</em></div></div>
+
+  <div style="background:#0e0d0b;border-radius:4px;padding:12px 20px;margin-bottom:18px;font-size:11px;color:rgba(255,255,255,.4);">
+    🏗 &nbsp;Este fondo es una <strong style="color:rgba(255,255,255,.7)">caja completamente separada</strong> de la recaudación mensual del consorcio. Los montos aquí registrados <strong style="color:rgba(255,255,255,.7)">no afectan</strong> el saldo operativo ni el Dashboard principal.
+  </div>
+
+  <!-- Cuenta exclusiva del fondo -->
+  <div class="form-section">
+    <div class="form-title">Cuenta exclusiva del Fondo de Obras</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Esta cuenta recibe <strong>únicamente</strong> los aportes al Fondo de Obras. No debe usarse para las expensas mensuales, que van a la cuenta cargada en la solapa Liquidaciones.</div>
+    <div class="form-row">
+      <div class="form-group"><label>Titular de la cuenta</label><input type="text" id="fpago-titular"></div>
+      <div class="form-group"><label>Entidad</label><input type="text" id="fpago-banco"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>CBU / CVU</label><input type="text" id="fpago-cbu"></div>
+      <div class="form-group"><label>Alias</label><input type="text" id="fpago-alias"></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" onclick="guardarDatosPagoFondo()">Guardar datos del fondo</button></div>
+  </div>
+
+  <!-- KPIs del fondo -->
+  <div class="kpi-grid" id="fondo-kpis"></div>
+
+  <div class="two-col" style="align-items:start;margin-top:4px;">
+
+    <!-- Columna izquierda: cobros -->
+    <div>
+      <div class="section-head"><span class="section-title">Registrar Cobro al Fondo</span></div>
+      <div id="alert-fondo-cobro" class="alert-success">✅ Cobro registrado en el Fondo de Obras.</div>
+      <div class="form-section">
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="form-group"><label>Unidad Funcional</label><select id="fondo-cobro-uf" onchange="verificarSaldoFondoUF()"></select></div>
+          <div class="form-group"><label>Fecha</label><input type="date" id="fondo-cobro-fecha"></div>
+          <div class="form-group"><label>Monto ($)</label><input type="number" id="fondo-cobro-monto" value="25000" step="0.01"></div>
+          <div class="form-group"><label>Concepto</label>
+            <select id="fondo-cobro-concepto">
+              <option value="Cuota Fondo de Obras">Cuota Fondo de Obras</option>
+              <option value="Adelanto Fondo de Obras">Adelanto</option>
+              <option value="Pago parcial Fondo de Obras">Pago parcial</option>
+            </select>
+          </div>
+        </div>
+        <div id="aviso-fondo-uf" style="display:none;background:var(--green-bg);border:1px solid #bbf7d0;border-radius:4px;padding:8px 12px;margin-top:8px;font-size:12px;color:var(--green);"></div>
+        <div class="form-group" style="margin-top:10px;"><label>Observaciones</label><input type="text" id="fondo-cobro-obs" placeholder="Opcional..."></div>
+        <div class="form-actions"><button class="btn btn-purple" onclick="registrarCobroFondo()">✓ Registrar Cobro</button></div>
+      </div>
+
+      <!-- Estado por propietario -->
+      <div class="section-head"><span class="section-title">Estado por Propietario</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>UF</th><th>Propietario</th><th class="r">Debe</th><th class="r">Pagó</th><th class="r">Saldo</th><th class="c">Estado</th></tr></thead>
+          <tbody id="fondo-estado-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Columna derecha: gastos de obras -->
+    <div>
+      <div class="section-head"><span class="section-title">Registrar Gasto de Obra</span></div>
+      <div id="alert-fondo-gasto" class="alert-success">✅ Gasto de obra registrado.</div>
+      <div class="form-section">
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="form-group"><label>Fecha</label><input type="date" id="fondo-gasto-fecha"></div>
+          <div class="form-group"><label>Monto ($)</label><input type="number" id="fondo-gasto-monto" step="0.01" placeholder="0,00"></div>
+          <div class="form-group full"><label>Descripción / Proveedor</label><input type="text" id="fondo-gasto-desc" placeholder="Ej: Compra de rejillas pluviales — Ferretería X"></div>
+          <div class="form-group"><label>Categoría</label>
+            <select id="fondo-gasto-cat">
+              <option>Materiales</option>
+              <option>Mano de Obra</option>
+              <option>Equipamiento</option>
+              <option>Transporte</option>
+              <option>Otros</option>
+            </select>
+          </div>
+          <div class="form-group"><label>N° Comprobante</label><input type="text" id="fondo-gasto-comp" placeholder="Opcional"></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="registrarGastoFondo()">↓ Registrar Gasto de Obra</button></div>
+      </div>
+
+      <!-- Historial gastos -->
+      <div class="section-head"><span class="section-title">Gastos de Obras</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Comp.</th><th class="r">Monto</th><th class="c">✕</th></tr></thead>
+          <tbody id="fondo-gastos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rendimientos de la cuenta -->
+  <div class="section-head" style="margin-top:8px;"><span class="section-title">Rendimientos de la Cuenta</span></div>
+  <div style="background:var(--blue-bg);border:1px solid #bfdbfe;border-radius:4px;padding:12px 16px;margin-bottom:12px;font-size:12px;color:var(--blue);line-height:1.7;">
+    ℹ️ Cargá <strong>un solo asiento por mes</strong> con el total acreditado por rendimiento, tomado del resumen de la billetera. Se suma al fondo pero se informa por separado del capital aportado por los propietarios.
+  </div>
+  <div id="alert-fondo-rend" class="alert-success">✅ Rendimiento registrado.</div>
+  <div class="form-section">
+    <div class="form-grid" style="grid-template-columns:1fr 1fr 2fr;">
+      <div class="form-group"><label>Fecha de acreditación</label><input type="date" id="fondo-rend-fecha"></div>
+      <div class="form-group"><label>Monto ($)</label><input type="number" id="fondo-rend-monto" step="0.01" placeholder="0,00"></div>
+      <div class="form-group"><label>Período / Detalle</label><input type="text" id="fondo-rend-desc" placeholder="Ej: Rendimiento julio 2026"></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" onclick="registrarRendimiento()">↑ Registrar Rendimiento</button></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fecha</th><th>Período / Detalle</th><th class="r">Monto</th><th class="c">✕</th></tr></thead>
+      <tbody id="fondo-rend-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Historial completo de cobros -->
+  <div class="section-head" style="margin-top:8px;"><span class="section-title">Historial de Cobros al Fondo</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fecha</th><th>UF</th><th>Propietario</th><th>Concepto</th><th>Obs.</th><th class="r">Monto</th><th class="c">✕</th></tr></thead>
+      <tbody id="fondo-cobros-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MORA -->
+<div class="page" id="page-mora">
+  <div class="page-header"><div class="page-eyebrow">Gestión</div><div class="page-title">Mora <em>& Recargos</em></div></div>
+  <div class="mora-banner"><span style="font-size:18px;">⚠️</span><p><strong>Política de Recargos:</strong> Vencimiento día <strong>10</strong>. Desde el día <strong>11</strong> se aplica recargo del <strong>10%</strong> ($5.000). Acumulable mes a mes.</p></div>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <div class="section-head"><span class="section-title">Calculadora de Mora</span></div>
+      <div class="form-section">
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="form-group"><label>Expensa Fija</label><input type="number" id="mora-base" value="50000" oninput="calcMora()"></div>
+          <div class="form-group"><label>Meses de Atraso</label><input type="number" id="mora-meses" value="1" min="1" oninput="calcMora()"></div>
+        </div>
+        <div class="mora-calc" id="mora-result"></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-head"><span class="section-title">Estado — <span id="mora-mes-sub"></span></span></div>
+      <div class="table-wrap"><table><thead><tr><th>UF</th><th>Propietario</th><th class="r">Exp.</th><th class="c">Estado</th><th class="r">Recargo</th><th class="r">Saldo</th></tr></thead><tbody id="mora-tbody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div class="page" id="page-historial">
+  <div class="page-header"><div class="page-eyebrow">Gestión</div><div class="page-title">Historial <em>— Cadena de Saldos</em></div></div>
+  <div style="background:var(--ink);border-radius:4px;padding:12px 20px;margin-bottom:18px;font-size:11px;color:rgba(255,255,255,.4);">◈ &nbsp;Mayo 2026 parte del <strong style="color:#fbbf24">cierre histórico fijado: $404.354,11</strong>. Cada mes hereda el saldo acumulado del anterior.</div>
+  <div class="table-wrap"><table><thead><tr><th>Período</th><th class="r" style="color:#93c5fd;">Saldo Inicial</th><th class="r" style="color:#4ade80;">+ Ingresos</th><th class="r" style="color:#f87171;">− Egresos</th><th class="r">Saldo Neto</th><th class="r" style="color:#fbbf24;">Saldo Acum.</th><th class="c">Acción</th></tr></thead><tbody id="hist-tbody"></tbody></table></div>
+</div>
+
+<!-- CALENDARIO -->
+<div class="page" id="page-calendario">
+  <div class="page-header"><div class="page-eyebrow">Planificación</div><div class="page-title">Calendario <em>de Vencimientos</em></div></div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;" class="no-print">
+    <button class="btn btn-ghost btn-sm" onclick="cambiarMesCal(-1)">◀ Anterior</button>
+    <span style="font-size:15px;font-family:var(--serif);" id="cal-titulo"></span>
+    <button class="btn btn-ghost btn-sm" onclick="cambiarMesCal(1)">Siguiente ▶</button>
+  </div>
+  <div style="background:var(--white);border:1px solid var(--line);border-radius:4px;padding:18px;margin-bottom:18px;">
+    <div class="cal-grid" id="cal-grid"></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;">
+      <span style="font-size:11px;"><span class="badge badge-amber">●</span> Vencimiento expensa</span>
+      <span style="font-size:11px;"><span class="badge badge-blue">●</span> Aviso previo (día 8)</span>
+      <span style="font-size:11px;"><span class="badge badge-purple">●</span> Reunión</span>
+      <span style="font-size:11px;"><span class="badge badge-green">●</span> Mantenimiento</span>
+    </div>
+  </div>
+  <div class="form-section" style="max-width:600px;">
+    <div class="form-title">Agregar Evento al Calendario</div>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="form-group"><label>Fecha</label><input type="date" id="cal-ev-fecha"></div>
+      <div class="form-group"><label>Tipo</label><select id="cal-ev-tipo"><option value="ev-reunion">Reunión</option><option value="ev-pasto">Mantenimiento</option><option value="ev-venc">Vencimiento</option><option value="ev-aviso">Aviso</option></select></div>
+      <div class="form-group"><label>Descripción</label><input type="text" id="cal-ev-desc" placeholder="Ej: Reunión de propietarios"></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" onclick="agregarEvento()">+ Agregar Evento</button></div>
+  </div>
+</div>
+
+<!-- PRESUPUESTO ANUAL -->
+<div class="page" id="page-presupuesto">
+  <div class="page-header"><div class="page-eyebrow">Planificación</div><div class="page-title">Presupuesto <em>Anual Estimado 2026</em></div></div>
+  <div style="background:var(--blue-bg);border:1px solid #bfdbfe;border-radius:4px;padding:11px 16px;margin-bottom:20px;font-size:12px;color:var(--blue);line-height:1.7;">
+    💡 Este presupuesto es una <strong>estimación orientativa</strong> basada en los gastos históricos del consorcio. Podés ajustar los valores según tu criterio.
+  </div>
+  <div class="two-col" style="align-items:start;">
+    <div>
+      <div class="section-head"><span class="section-title">Ingresos Proyectados</span></div>
+      <div class="form-section">
+        <div id="pres-ing-rows"></div>
+        <div class="inf-total"><span>Total Ingresos Anuales</span><span id="pres-ing-total" class="val-green"></span></div>
+      </div>
+      <div class="section-head" style="margin-top:4px;"><span class="section-title">Egresos Proyectados</span></div>
+      <div class="form-section">
+        <div id="pres-eg-rows"></div>
+        <div class="inf-total"><span>Total Egresos Anuales</span><span id="pres-eg-total" class="val-red"></span></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-head"><span class="section-title">Resultado Proyectado</span></div>
+      <div class="form-section">
+        <div id="pres-resultado"></div>
+      </div>
+      <div class="section-head"><span class="section-title">Distribución de Gastos</span></div>
+      <div class="form-section" id="pres-barras"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTAS -->
+<div class="page" id="page-notas">
+  <div class="page-header"><div class="page-eyebrow">Administración</div><div class="page-title">Notas <em>& Recordatorios</em></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <div class="nota n-blue"><div class="nota-num">Nota 01</div><div class="nota-title">Aclaración de lo Recaudado</div><div class="nota-body">Los ingresos incluyen <strong>expensas atrasadas</strong> de meses anteriores y el pago del mes en curso.</div></div>
+    <div class="nota n-amber"><div class="nota-num">Nota 02</div><div class="nota-title">Plazos y Recargos por Mora</div><div class="nota-body">Vencimiento: <strong>día 10</strong>. Desde el día 11 se aplica <strong>recargo del 10%</strong> ($5.000), acumulable mes a mes.</div></div>
+    <div class="nota n-green"><div class="nota-num">Nota 03</div><div class="nota-title">Transparencia y Comprobantes</div><div class="nota-body">Todos los <strong>comprobantes originales</strong> están disponibles para verificación por cualquier propietario.</div></div>
+    <div class="nota n-red"><div class="nota-num">Nota 04</div><div class="nota-title">Unidades con Deuda Pendiente</div><div class="nota-body">Los propietarios con saldo pendiente pueden contactar a la administración para acordar un <strong>convenio de pago</strong>.</div></div>
+    <div class="nota n-purple" style="grid-column:1/-1;"><div class="nota-num">Nota 05</div><div class="nota-title">Convenios y Pagos Especiales</div><div class="nota-body">Los pagos de convenio son fuera de la expensa fija de <strong>$50.000/mes</strong>. Los gastos extraordinarios se distribuyen entre las 10 unidades y se notifican previamente.</div></div>
+  </div>
+</div>
+
+<!-- BACKUP -->
+<div class="page" id="page-backup">
+  <div class="page-header"><div class="page-eyebrow">Datos</div><div class="page-title">Guardar <em>& Restaurar</em></div></div>
+  <div class="backup-card">
+    <h3>💾 Exportar datos</h3>
+    <p>Descargá un archivo <strong>.json</strong> con todos los datos. Guardalo en Google Drive o en tu PC.</p>
+    <button class="btn btn-gold" onclick="exportarJSON()">⬇ Descargar backup (.json)</button>
+    <div class="tip">💡 Hacé un backup cada vez que cerrés el período mensual.</div>
+  </div>
+  <div class="backup-card">
+    <h3>🔗 Sincronización automática con Drive</h3>
+    <p>Conectá una vez y cada cambio que hagas se guarda solo en el mismo archivo de Drive que usa el agente — sin descargar ni subir nada a mano.</p>
+    <button class="btn btn-gold" id="btn-drive-conectar" onclick="conectarDrive()">🔗 Conectar con Google Drive</button>
+    <div class="tip" id="drive-status">Todavía no conectado en esta sesión.</div>
+  </div>
+  <div class="backup-card">
+    <h3>📂 Importar datos</h3>
+    <p>Pegá el contenido de un backup para restaurar. <strong>Esto reemplaza los datos actuales.</strong></p>
+    <textarea id="import-area" style="width:100%;min-height:90px;font-size:12px;font-family:var(--mono);" placeholder='Pegá aquí el contenido del archivo .json...'></textarea>
+    <div class="form-actions" style="margin-top:10px;">
+      <button class="btn btn-ghost" onclick="document.getElementById('import-area').value=''">Limpiar</button>
+      <button class="btn btn-danger" onclick="importarJSON()">⬆ Restaurar datos</button>
+    </div>
+  </div>
+  <div class="backup-card" style="border-left:3px solid var(--green);">
+    <h3>📋 Copiar datos al portapapeles</h3>
+    <p>Guardá los datos en cualquier lado (mail, documento, WhatsApp).</p>
+    <textarea id="export-preview" style="width:100%;min-height:100px;font-size:11px;" readonly></textarea>
+    <div class="form-actions" style="margin-top:10px;">
+      <button class="btn btn-success" onclick="copiarJSON()">📋 Copiar</button>
+      <button class="btn btn-ghost" onclick="actualizarPreview()">↺ Actualizar</button>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- MODAL NUEVO MES -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;">
+  <div style="background:var(--white);border-radius:6px;padding:28px;width:360px;">
+    <div style="font-family:var(--serif);font-size:20px;margin-bottom:16px;">Agregar Nuevo Mes</div>
+    <div class="form-group" style="margin-bottom:12px;"><label>Mes</label>
+      <select id="new-mes-sel"><option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option><option>Mayo</option><option value="Junio" selected>Junio</option><option>Julio</option><option>Agosto</option><option>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option></select>
+    </div>
+    <div class="form-group" style="margin-bottom:18px;"><label>Año</label><input type="number" id="new-ano" value="2026"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="hideModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="crearMes()">Crear Mes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var EXP_FIJA=50000, RECARGO_PCT=0.10, SALDO_CIERRE_MAYO=404354.11, STORAGE_KEY='consorcio_tato_joven_v1';
+// Mayo 2026 fue el mes de regularización de deudas heredadas (administración anterior).
+// La cuenta corriente de cada propietario arranca en Junio: antes de esa fecha no se computa.
+var MES_INICIO_CTA='2026-06';
+var datosPago={cbu:'',alias:'',titular:'Consorcio Tato Joven',banco:''};
+// Cuenta EXCLUSIVA del Fondo de Obras (Circular 004/2026). Separada de la caja operativa.
+var datosPagoFondo={cbu:'1430001713049409400019',alias:'gustavoperedo',titular:'Gustavo Fabián Peredo',banco:'Brubank — Billetera virtual'};
+var MESES_NOMBRES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var DIAS_SEMANA=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+var PROPIETARIOS_BASE=[
+  {uf:'UF 11',nombre:'Sergio',              tel:'5491134214901'},
+  {uf:'UF 12',nombre:'Ivana — Daniel',      tel:'5491163066226', tel2:'5491161412062'},
+  {uf:'UF 13',nombre:'Estela',              tel:'5491154978892'},
+  {uf:'UF 14',nombre:'Ivana — Sebastián',   tel:'5491153768955', tel2:'5491161180484'},
+  {uf:'UF 15',nombre:'Mariana — Pedro',     tel:'5491158898489', tel2:'5491165970751'},
+  {uf:'UF 16',nombre:'Marianela — Fernando',tel:'5491121568098', tel2:'5491134789646'},
+  {uf:'UF 17',nombre:'Daniela — Gustavo',   tel:'5491165564237', tel2:'5491130591621'},
+  {uf:'UF 18',nombre:'Erik',                tel:'5491168597165'},
+  {uf:'UF 19',nombre:'Cecilia — Leo',       tel:'5491166205011', tel2:'5491130491517'},
+  {uf:'UF 20',nombre:'Soledad',             tel:'5491159059075'},
+];
+
+var DATOS_INICIALES={
+  mesActivo:'2026-06', nextEgId:20, nextConvId:10,
+  meses:{
+    '2026-05':{label:'Mayo 2026',
+      cobros:[
+        {uf:'UF 11',nombre:'Sergio',              tipo:'expensa',monto:200000,fecha:'10/05/2026',obs:'Incluye atrasados'},
+        {uf:'UF 12',nombre:'Ivana — Daniel',      tipo:'expensa',monto:140000,fecha:'10/05/2026',obs:''},
+        {uf:'UF 13',nombre:'Estela',              tipo:'expensa',monto:50000, fecha:'10/05/2026',obs:''},
+        {uf:'UF 14',nombre:'Ivana — Sebastián',   tipo:'expensa',monto:60000, fecha:'10/05/2026',obs:''},
+        {uf:'UF 15',nombre:'Mariana — Pedro',     tipo:'expensa',monto:30000, fecha:'10/05/2026',obs:''},
+        {uf:'UF 16',nombre:'Marianela — Fernando',tipo:'expensa',monto:50000, fecha:'10/05/2026',obs:''},
+        {uf:'UF 17',nombre:'Daniela — Gustavo',   tipo:'expensa',monto:40000, fecha:'10/05/2026',obs:''},
+        {uf:'UF 18',nombre:'Erik',                tipo:'expensa',monto:43000, fecha:'10/05/2026',obs:''},
+        {uf:'UF 19',nombre:'Cecilia — Leo',       tipo:'expensa',monto:180000,fecha:'10/05/2026',obs:'Incluye atrasados'},
+        {uf:'UF 20',nombre:'Soledad',             tipo:'expensa',monto:43000, fecha:'10/05/2026',obs:''},
+        {uf:'—',    nombre:'Caja Chica',          tipo:'extra',  monto:4200,  fecha:'17/05/2026',obs:'Ingreso extra'},
+      ],
+      egresos:[
+        {id:1,fecha:'11/05/2026',cat:'Servicios — Agua (AySA)',        desc:'Suministro Agua Central — AySA',comp:'Fact. AySA',monto:355845.89,notas:'Pago en término'},
+        {id:2,fecha:'30/05/2026',cat:'Mantenimiento — Corte de Pasto', desc:'Corte de Pasto',               comp:'Recibo',    monto:80000,    notas:'Pago en efectivo'},
+      ],
+      convenios:[], recibos:[]},
+    '2026-06':{label:'Junio 2026',
+      cobros:[
+        {uf:'UF 12',nombre:'Ivana — Daniel',      tipo:'expensa',monto:50000,fecha:'05/06/2026',obs:'Pago expensa Junio'},
+        {uf:'UF 15',nombre:'Mariana — Pedro',     tipo:'expensa',monto:50000,fecha:'06/06/2026',obs:'Pago expensa Junio'},
+        {uf:'UF 16',nombre:'Marianela — Fernando',tipo:'expensa',monto:50000,fecha:'01/06/2026',obs:'Pago expensa Junio'},
+        {uf:'UF 17',nombre:'Daniela — Gustavo',   tipo:'expensa',monto:50000,fecha:'01/06/2026',obs:'Pago expensa Junio'},
+        {uf:'UF 19',nombre:'Cecilia — Leo',       tipo:'expensa',monto:50000,fecha:'08/06/2026',obs:'Pago expensa Junio'},
+      ],
+      egresos:[
+        {id:1,fecha:'01/06/2026',cat:'Servicios — Luz / Electricidad',desc:'Factura Luz — Junio 2026',       comp:'Fact. Luz', monto:3005.59,  notas:'Pago en término'},
+        {id:2,fecha:'01/06/2026',cat:'Servicios — Agua (AySA)',       desc:'Suministro Agua AySA Jun 2026',  comp:'Fact. AySA',monto:363756.52,notas:'Pago en término'},
+      ],
+      convenios:[
+        {id:1,uf:'UF 17',nombre:'Daniela — Gustavo',tipo:'Cuota convenio deuda',monto:102000,fecha:'02/06/2026',desc:'Convenio deuda AySA — Cuota única',comp:'—'},
+      ],
+      recibos:[]},
+  },
+  calEventos:[
+    {fecha:'2026-06-08',tipo:'ev-aviso',desc:'Enviar avisos de vencimiento'},
+    {fecha:'2026-06-10',tipo:'ev-venc', desc:'Vencimiento expensa Junio'},
+    {fecha:'2026-07-08',tipo:'ev-aviso',desc:'Enviar avisos de vencimiento'},
+    {fecha:'2026-07-10',tipo:'ev-venc', desc:'Vencimiento expensa Julio'},
+    {fecha:'2026-08-08',tipo:'ev-aviso',desc:'Enviar avisos de vencimiento'},
+    {fecha:'2026-08-10',tipo:'ev-venc', desc:'Vencimiento expensa Agosto'},
+  ],
+  actaTemas:[],
+  expensasExtra:[],
+  fondoObras:{cobros:[], gastos:[], rendimientos:[], nextCobroId:1, nextGastoId:1, nextRendId:1},
+};
+
+var meses,mesActivo,nextEgId,nextConvId,calEventos,actaTemas,expensasExtra,nextExtraId,fondoObras;
+var calYear=2026, calMonth=5;
+
+function guardarDatos(fb){
+  fb = fb || false;
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({meses:meses,mesActivo:mesActivo,nextEgId:nextEgId,nextConvId:nextConvId,calEventos:calEventos,actaTemas:actaTemas,expensasExtra:expensasExtra,nextExtraId:nextExtraId,fondoObras:fondoObras,datosPago:datosPago,datosPagoFondo:datosPagoFondo}));
+    if(fb){var b=document.getElementById('save-badge');b.classList.add('show');setTimeout(function(){b.classList.remove('show');},2500);}
+  }catch(e){alert('No se pudo guardar: '+e.message);}
+  programarSincronizacionDrive();
+}
+
+// ===== Sincronización con Google Drive =====
+var DRIVE_CLIENT_ID = '477605733339-0p11ssuu50kic8ikq07l65r1s65sk916.apps.googleusercontent.com';
+var DRIVE_FILE_ID = '14-1w3js8QmasQkJw7F4JYbOUvWMsRVEl';
+var driveToken = null;
+var driveTokenClient = null;
+var driveSyncTimeout = null;
+
+function mostrarEstadoDrive(msg){
+  var el = document.getElementById('drive-status');
+  if(el) el.textContent = msg;
+}
+
+function conectarDrive(){
+  if(!window.google || !google.accounts){ mostrarEstadoDrive('⚠️ No cargó la librería de Google todavía, esperá unos segundos y probá de nuevo.'); return; }
+  if(!driveTokenClient){
+    driveTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: DRIVE_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/drive',
+      callback: function(resp){
+        if(resp && resp.access_token){
+          driveToken = resp.access_token;
+          mostrarEstadoDrive('✅ Conectado. Sincronizando ahora mismo...');
+          sincronizarDrive();
+        } else {
+          mostrarEstadoDrive('⚠️ No se pudo conectar: ' + JSON.stringify(resp));
+        }
+      }
+    });
+  }
+  driveTokenClient.requestAccessToken();
+}
+
+function programarSincronizacionDrive(){
+  if(!driveToken) return;
+  clearTimeout(driveSyncTimeout);
+  driveSyncTimeout = setTimeout(sincronizarDrive, 3000);
+}
+
+function sincronizarDrive(){
+  if(!driveToken) return;
+  var contenido = localStorage.getItem(STORAGE_KEY);
+  if(!contenido) return;
+  fetch('https://www.googleapis.com/upload/drive/v3/files/' + DRIVE_FILE_ID + '?uploadType=media', {
+    method: 'PATCH',
+    headers: { 'Authorization': 'Bearer ' + driveToken, 'Content-Type': 'application/json' },
+    body: contenido
+  }).then(function(r){
+    if(r.ok){
+      mostrarEstadoDrive('✅ Sincronizado con Drive — ' + new Date().toLocaleTimeString('es-AR'));
+    } else if(r.status === 401){
+      driveToken = null;
+      mostrarEstadoDrive('⚠️ Se venció la conexión, apretá "Conectar con Google Drive" de nuevo.');
+    } else {
+      r.text().then(function(t){ mostrarEstadoDrive('⚠️ Error al sincronizar (' + r.status + ')'); });
+    }
+  }).catch(function(){
+    mostrarEstadoDrive('⚠️ Sin conexión a internet, no se pudo sincronizar. Se reintenta con el próximo cambio.');
+  });
+}
+function cargarDatos(){
+  try{
+    var raw=localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      var s=JSON.parse(raw);
+      meses=s.meses||DATOS_INICIALES.meses;
+      mesActivo=s.mesActivo||DATOS_INICIALES.mesActivo;
+      nextEgId=s.nextEgId||DATOS_INICIALES.nextEgId;
+      nextConvId=s.nextConvId||DATOS_INICIALES.nextConvId;
+      calEventos=s.calEventos||DATOS_INICIALES.calEventos;
+      actaTemas=s.actaTemas||[];
+      expensasExtra=s.expensasExtra||[];
+      nextExtraId=s.nextExtraId||1;
+      fondoObras=s.fondoObras||{cobros:[],gastos:[],rendimientos:[],nextCobroId:1,nextGastoId:1,nextRendId:1};
+      if(!fondoObras.rendimientos){fondoObras.rendimientos=[];}
+      if(!fondoObras.nextRendId){fondoObras.nextRendId=1;}
+      if(s.datosPago) datosPago=s.datosPago;
+    if(s.datosPagoFondo) datosPagoFondo=s.datosPagoFondo;
+      if(s.datosPagoFondo) datosPagoFondo=s.datosPagoFondo;
+      return;
+    }
+  }catch(e){}
+  meses=JSON.parse(JSON.stringify(DATOS_INICIALES.meses));
+  mesActivo=DATOS_INICIALES.mesActivo;
+  nextEgId=DATOS_INICIALES.nextEgId;
+  nextConvId=DATOS_INICIALES.nextConvId;
+  calEventos=JSON.parse(JSON.stringify(DATOS_INICIALES.calEventos));
+  actaTemas=[];
+  expensasExtra=[];
+  nextExtraId=1;
+  fondoObras={cobros:[],gastos:[],rendimientos:[],nextCobroId:1,nextGastoId:1,nextRendId:1};
+  guardarDatos();
+}
+var BACKUP_KEY='consorcio_ultimo_backup';
+function marcarBackup(){
+  try{localStorage.setItem(BACKUP_KEY,new Date().toISOString());}catch(e){}
+  renderBackupAlert();
+}
+function diasDesdeBackup(){
+  try{
+    var v=localStorage.getItem(BACKUP_KEY);
+    if(!v)return null;
+    var d=Math.floor((Date.now()-new Date(v).getTime())/86400000);
+    return d<0?0:d;
+  }catch(e){return null;}
+}
+function renderBackupAlert(){
+  var el=document.getElementById('backup-alert');
+  if(!el)return;
+  var d=diasDesdeBackup();
+  var link=' <a href="#" onclick="navigate(\'backup\');return false;" style="font-weight:600;color:inherit;">Ir a Guardar &amp; Restaurar</a>';
+  if(d===null){
+    el.innerHTML='<div style="background:var(--red-bg);border:1px solid #fecaca;border-left:3px solid var(--red);border-radius:4px;padding:12px 16px;margin-bottom:18px;font-size:12px;color:var(--red);line-height:1.7;">⚠ Todavía no descargaste ningún respaldo. Tus datos viven solamente en este navegador: si se borran, no hay forma de recuperarlos.'+link+'</div>';
+  }else if(d>=7){
+    el.innerHTML='<div style="background:var(--amber-bg);border:1px solid #fde68a;border-left:3px solid var(--amber);border-radius:4px;padding:12px 16px;margin-bottom:18px;font-size:12px;color:var(--amber);line-height:1.7;">⚠ Tu último respaldo es de hace '+d+' días. Conviene bajar uno nuevo antes de seguir cargando datos.'+link+'</div>';
+  }else{
+    el.innerHTML='<div style="background:var(--green-bg);border:1px solid #bbf7d0;border-left:3px solid var(--green);border-radius:4px;padding:10px 16px;margin-bottom:18px;font-size:12px;color:var(--green);line-height:1.7;">✓ Último respaldo: '+(d===0?'hoy':'hace '+d+(d===1?' día':' días'))+'.</div>';
+  }
+}
+
+function exportarJSON(){
+  var blob=new Blob([JSON.stringify({meses:meses,mesActivo:mesActivo,nextEgId:nextEgId,nextConvId:nextConvId,calEventos:calEventos,actaTemas:actaTemas,expensasExtra:expensasExtra,nextExtraId:nextExtraId,fondoObras:fondoObras,datosPago:datosPago,datosPagoFondo:datosPagoFondo},null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;
+  a.download='consorcio_tato_joven_backup_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(url);
+  marcarBackup();
+}
+function actualizarPreview(){
+  document.getElementById('export-preview').value=JSON.stringify({meses:meses,mesActivo:mesActivo,nextEgId:nextEgId,nextConvId:nextConvId,calEventos:calEventos,actaTemas:actaTemas,expensasExtra:expensasExtra,nextExtraId:nextExtraId,fondoObras:fondoObras,datosPago:datosPago,datosPagoFondo:datosPagoFondo},null,2);
+}
+function copiarJSON(){actualizarPreview();var ta=document.getElementById('export-preview');ta.select();document.execCommand('copy');marcarBackup();alert('✅ Copiado al portapapeles.');}
+function importarJSON(){
+  var txt=document.getElementById('import-area').value.trim();
+  if(!txt){alert('Pegá primero el backup.');return;}
+  try{
+    var s=JSON.parse(txt);if(!s.meses)throw new Error('Formato inválido');
+    if(!confirm('¿Confirmás restaurar? Se reemplazarán los datos actuales.'))return;
+    meses=s.meses;mesActivo=s.mesActivo||mesActivo;nextEgId=s.nextEgId||nextEgId;
+    nextConvId=s.nextConvId||nextConvId;calEventos=s.calEventos||calEventos;actaTemas=s.actaTemas||[];
+    expensasExtra=s.expensasExtra||[];nextExtraId=s.nextExtraId||1;
+    fondoObras=s.fondoObras||{cobros:[],gastos:[],rendimientos:[],nextCobroId:1,nextGastoId:1,nextRendId:1};
+    if(!fondoObras.rendimientos){fondoObras.rendimientos=[];}
+    if(!fondoObras.nextRendId){fondoObras.nextRendId=1;}
+    if(s.datosPago) datosPago=s.datosPago;
+    if(s.datosPagoFondo) datosPagoFondo=s.datosPagoFondo;
+    guardarDatos(true);renderMonthSwitcher();navigate('dashboard');
+    alert('✅ Datos restaurados correctamente.');
+  }catch(e){alert('Error al importar: '+e.message);}
+}
+
+function fmt(n){return '$'+Number(n).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtFecha(iso){var d=new Date(iso+'T12:00:00');return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();}
+function estadoBadge(e){
+  var map={'Al día':'<span class="badge badge-green">● Al día</span>','En mora':'<span class="badge badge-red">⚠ En mora</span>','Parcial':'<span class="badge badge-amber">~ Parcial</span>','Sin pago':'<span class="badge badge-red">✗ Sin pago</span>','Caja':'<span class="badge badge-blue">◈ Caja</span>'};
+  return map[e]||e;
+}
+function tipoBadge(t){
+  var map={expensa:'<span class="badge badge-green">Expensa</span>',parcial:'<span class="badge badge-amber">Parcial</span>',adelanto:'<span class="badge badge-blue">Adelanto</span>',extra:'<span class="badge badge-blue">Extra</span>'};
+  return map[t]||('<span class="badge badge-purple">'+t+'</span>');
+}
+
+function getMes(){return meses[mesActivo];}
+function totalIngMes(m){
+  var arr=(m.cobros||[]).concat(m.convenios||[]);
+  var t=0;for(var i=0;i<arr.length;i++)t+=arr[i].monto;
+  return t;
+}
+function totalEgMes(m){
+  var arr=m.egresos||[];var t=0;for(var i=0;i<arr.length;i++)t+=arr[i].monto;return t;
+}
+function calcularCadenaDeSaldos(){
+  var keys=Object.keys(meses).sort();var cadena=[];var saldoAcum=null;
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i];var m=meses[k];var ing=totalIngMes(m);var eg=totalEgMes(m);var neto=ing-eg;
+    var si;
+    if(k==='2026-05'){si=SALDO_CIERRE_MAYO-neto;saldoAcum=SALDO_CIERRE_MAYO;}
+    else{si=saldoAcum;saldoAcum=si+neto;}
+    cadena.push({key:k,label:m.label,saldoInicial:si,ing:ing,eg:eg,neto:neto,saldoAcum:saldoAcum});
+  }
+  return cadena;
+}
+function getCadenaEntry(key){
+  var c=calcularCadenaDeSaldos();
+  for(var i=0;i<c.length;i++) if(c[i].key===key) return c[i];
+  return null;
+}
+
+function renderMonthSwitcher(){
+  var keys=Object.keys(meses).sort();
+  var html='';
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i];
+    html+='<button class="month-btn '+(k===mesActivo?'active':'')+'" onclick="setMes(\''+k+'\')">'+meses[k].label.split(' ')[0].slice(0,3)+' '+meses[k].label.split(' ')[1]+'</button>';
+  }
+  document.getElementById('month-switcher').innerHTML=html;
+}
+function setMes(key){
+  mesActivo=key;guardarDatos();renderMonthSwitcher();
+  document.getElementById('topbar-period').textContent='● '+meses[key].label;
+  var a=document.querySelector('.page.active');
+  if(a)navigate(a.id.replace('page-',''));
+}
+
+function generarWatermarkHTML(){
+  var html='';
+  for(var i=0;i<24;i++) html+='<span>CONSORCIO TATO JOVEN</span>';
+  return html;
+}
+
+function renderDashboard(){
+  renderBackupAlert();
+  var dwm=document.getElementById('dash-watermark');
+  if(dwm && !dwm.innerHTML) dwm.innerHTML=generarWatermarkHTML();
+  var m=getMes();var ce=getCadenaEntry(mesActivo);
+  document.getElementById('dash-mes-title').innerHTML='<em>'+m.label+'</em>';
+  document.getElementById('dash-kpis').innerHTML=
+    '<div class="kpi k-blue"><div class="kpi-label">Fondo Inicial</div><div class="kpi-value blue">'+fmt(ce.saldoInicial)+'</div><div class="kpi-sub">Del período anterior</div></div>'+
+    '<div class="kpi k-green"><div class="kpi-label">Total Ingresos</div><div class="kpi-value green">'+fmt(ce.ing)+'</div><div class="kpi-sub">Expensas + convenios</div></div>'+
+    '<div class="kpi k-red"><div class="kpi-label">Total Egresos</div><div class="kpi-value red">'+fmt(ce.eg)+'</div><div class="kpi-sub">'+(m.egresos||[]).length+' gastos</div></div>'+
+    '<div class="kpi k-amber"><div class="kpi-label">Saldo Neto Mes</div><div class="kpi-value amber">'+fmt(ce.neto)+'</div><div class="kpi-sub">Ing. − Eg.</div></div>'+
+    '<div class="kpi k-gold"><div class="kpi-label">Saldo Acum. Caja</div><div class="kpi-value gold">'+fmt(ce.saldoAcum)+'</div><div class="kpi-sub">Fondo total</div></div>';
+  document.getElementById('dash-cadena').innerHTML=
+    '<div class="cadena-item"><div class="cadena-label">Fondo Inicial</div><div class="cadena-value cv-blue">'+fmt(ce.saldoInicial)+'</div><div class="cadena-sub">Inicio período</div></div>'+
+    '<div class="cadena-arrow">+</div><div class="cadena-div"></div>'+
+    '<div class="cadena-item"><div class="cadena-label">Ingresos</div><div class="cadena-value cv-green">'+fmt(ce.ing)+'</div><div class="cadena-sub">'+(m.cobros||[]).length+' cobros + '+(m.convenios||[]).length+' conv.</div></div>'+
+    '<div class="cadena-arrow">−</div><div class="cadena-div"></div>'+
+    '<div class="cadena-item"><div class="cadena-label">Egresos</div><div class="cadena-value cv-red">'+fmt(ce.eg)+'</div><div class="cadena-sub">'+(m.egresos||[]).length+' gastos</div></div>'+
+    '<div class="cadena-arrow">=</div><div class="cadena-div"></div>'+
+    '<div class="cadena-item"><div class="cadena-label">Saldo Neto</div><div class="cadena-value cv-amber">'+fmt(ce.neto)+'</div><div class="cadena-sub">Resultado</div></div>'+
+    '<div class="cadena-arrow">→</div><div class="cadena-div"></div>'+
+    '<div class="cadena-item"><div class="cadena-label">Saldo en Caja</div><div class="cadena-value cv-gold">'+fmt(ce.saldoAcum)+'</div><div class="cadena-sub">Disponible total</div></div>';
+
+  var ingHtml='';
+  var cobros=m.cobros||[];
+  for(var i=0;i<cobros.length;i++){var c=cobros[i];
+    ingHtml+='<tr><td>'+(c.uf!=='—'?'<span class="uf">'+c.uf+'</span>':'—')+'</td><td>'+c.nombre+'</td><td>'+tipoBadge(c.tipo)+'</td><td class="r val-green">'+fmt(c.monto)+'</td></tr>';
+  }
+  var convenios=m.convenios||[];
+  for(var i=0;i<convenios.length;i++){var c=convenios[i];
+    ingHtml+='<tr><td><span class="uf">'+c.uf+'</span></td><td>'+c.nombre+'</td><td><span class="badge badge-purple">Convenio</span></td><td class="r val-purple">'+fmt(c.monto)+'</td></tr>';
+  }
+  ingHtml+='<tr class="total-row"><td colspan="3" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-green">'+fmt(ce.ing)+'</td></tr>';
+  document.getElementById('dash-ing-tbody').innerHTML=ingHtml;
+
+  var egHtml='';
+  var egresos=m.egresos||[];
+  for(var i=0;i<egresos.length;i++){var e=egresos[i];
+    egHtml+='<tr><td class="val-muted">'+e.fecha+'</td><td>'+e.desc+'</td><td class="r val-red">'+fmt(e.monto)+'</td></tr>';
+  }
+  egHtml+='<tr class="total-row"><td colspan="2" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-red">'+fmt(ce.eg)+'</td></tr>';
+  document.getElementById('dash-eg-tbody').innerHTML=egHtml;
+}
+
+function renderPropietarios(){
+  var m=getMes();
+  var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    var c=null;var cobros=m.cobros||[];
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
+    var ct=0;var convenios=m.convenios||[];
+    for(var j=0;j<convenios.length;j++) if(convenios[j].uf===p.uf) ct+=convenios[j].monto;
+    var pg=c?c.monto:0;var est=!c?'Sin pago':pg>=EXP_FIJA?'Al día':'Parcial';
+    var rec=recargoMes(mesActivo,pg);
+    var saldoFavor=calcularSaldoFavorUF(p.uf);
+    html+='<div class="prop-card"><div class="prop-uf">'+p.uf+'</div><div class="prop-name">'+p.nombre+'</div><div class="prop-divider"></div>'+
+      '<div class="prop-row"><span class="lbl">Exp. Fija</span><span class="val">'+fmt(EXP_FIJA)+'</span></div>'+
+      '<div class="prop-row"><span class="lbl">Pagado este mes</span><span class="val">'+fmt(pg)+'</span></div>'+
+      '<div class="prop-row"><span class="lbl">Recargo</span><span class="val '+(rec>0?'mora':'')+'">'+fmt(rec)+'</span></div>'+
+      (ct>0?'<div class="prop-row"><span class="lbl">Convenio</span><span class="val convenio">'+fmt(ct)+'</span></div>':'')+
+      (saldoFavor>0?'<div class="prop-row"><span class="lbl">Saldo a favor</span><span class="val" style="color:var(--green);">'+fmt(saldoFavor)+'</span></div>':'')+
+      (saldoFavor<0?'<div class="prop-row"><span class="lbl">Deuda acum.</span><span class="val mora">'+fmt(Math.abs(saldoFavor))+'</span></div>':'')+
+      '<div class="prop-divider"></div><div class="prop-row"><span class="lbl">Estado</span><span>'+estadoBadge(est)+'</span></div>'+
+      '</div>';
+  }
+  document.getElementById('prop-grid').innerHTML=html;
+}
+
+function mesVencido(mesKey){
+  // El vencimiento es el día 10. Devuelve true a partir del día 11.
+  var p=mesKey.split('-');
+  var venc=new Date(parseInt(p[0],10), parseInt(p[1],10)-1, 10, 23, 59, 59);
+  return new Date()>venc;
+}
+function recargoMes(mesKey, pagado){
+  // 10% de recargo solo si quedó saldo impago y ya venció el día 10.
+  if(pagado>=EXP_FIJA) return 0;
+  if(!mesVencido(mesKey)) return 0;
+  return EXP_FIJA*RECARGO_PCT;
+}
+
+function calcularSaldoFavorUF(uf,hastaExcl){
+  // Suma los pagos de expensas del propietario y resta la expensa fija de cada mes con pago.
+  // Solo cuenta desde MES_INICIO_CTA en adelante: los meses anteriores corresponden a la
+  // regularización de deudas viejas y no forman parte de la cuenta corriente.
+  // hastaExcl (opcional): corta antes de ese mes, para obtener el saldo anterior.
+  var keys=Object.keys(meses).sort();
+  var saldo=0;
+  for(var i=0;i<keys.length;i++){
+    if(hastaExcl && keys[i]>=hastaExcl) continue;
+    if(keys[i]<MES_INICIO_CTA) continue;
+    var cobros=meses[keys[i]].cobros||[];
+    var pagado=0;
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===uf) pagado+=cobros[j].monto;
+    // Lo que tiene disponible: lo que pagó este mes más el saldo a favor que traía.
+    var cubierto=pagado+(saldo>0?saldo:0);
+    // Si no pagó, no le alcanza el saldo a favor y todavía no venció, sigue en término.
+    if(pagado===0 && cubierto<EXP_FIJA && !mesVencido(keys[i])) continue;
+    var rec=(cubierto<EXP_FIJA && mesVencido(keys[i]))?EXP_FIJA*RECARGO_PCT:0;
+    saldo+=pagado-EXP_FIJA-rec;
+  }
+  return saldo; // positivo = a favor, negativo = debe
+}
+
+function verificarSaldoFavor(){
+  var uf=document.getElementById('cobro-uf').value;
+  var saldo=calcularSaldoFavorUF(uf);
+  var aviso=document.getElementById('aviso-saldo-favor');
+  var inputMonto=document.getElementById('cobro-monto');
+
+  if(saldo>0){
+    var resta=Math.max(0, EXP_FIJA-saldo);
+    aviso.style.display='block';
+    aviso.innerHTML='✅ <strong>'+uf+'</strong> tiene <strong>'+fmt(saldo)+' a favor</strong> del mes anterior. '+
+      (resta>0?'Solo resta abonar <strong>'+fmt(resta)+'</strong> este mes.':'Ya tiene la expensa de este mes cubierta con el adelanto.');
+    if(resta>0) inputMonto.value=resta;
+    else inputMonto.value=0;
+  } else if(saldo<0){
+    aviso.style.display='block';
+    aviso.style.background='var(--red-bg)';
+    aviso.style.borderColor='#fecaca';
+    aviso.style.color='var(--red)';
+    aviso.innerHTML='⚠️ <strong>'+uf+'</strong> tiene un saldo pendiente de <strong>'+fmt(Math.abs(saldo))+'</strong> de meses anteriores.';
+    inputMonto.value=EXP_FIJA;
+  } else {
+    aviso.style.display='none';
+    aviso.style.background='var(--green-bg)';
+    aviso.style.borderColor='#bbf7d0';
+    aviso.style.color='var(--green)';
+    inputMonto.value=EXP_FIJA;
+  }
+}
+
+function populateUfSelects(){
+  var o='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){var p=PROPIETARIOS_BASE[i];o+='<option value="'+p.uf+'">'+p.uf+' — '+p.nombre+'</option>';}
+  var ids=['cobro-uf','conv-uf'];
+  for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el)el.innerHTML=o;}
+  // Verificar saldo al cargar
+  verificarSaldoFavor();
+}
+function renderExpensas(){
+  var m=getMes();
+  document.getElementById('exp-mes-title').innerHTML='<em>'+m.label+'</em>';
+  document.getElementById('exp-mes-sub').textContent=m.label;
+  var tot=0,totR=0;var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    var c=null;var cobros=m.cobros||[];
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
+    var pg=c?c.monto:0;
+    var est=!c?'Sin pago':pg>=EXP_FIJA?'Al día':'Parcial';var rec=recargoMes(mesActivo,pg);
+    tot+=pg;totR+=rec;
+    html+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td><td class="r">'+fmt(EXP_FIJA)+'</td><td class="c">'+estadoBadge(est)+'</td><td class="r '+(pg>0?'val-green':'val-muted')+'">'+fmt(pg)+'</td><td class="r '+(rec>0?'val-red':'val-muted')+'">'+fmt(rec)+'</td><td class="r val-green">'+fmt(pg+rec)+'</td><td class="val-muted" style="font-size:11px;">'+(c?c.obs:'—')+'</td></tr>';
+  }
+  html+='<tr class="total-row"><td colspan="4" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-green">'+fmt(tot)+'</td><td class="r val-red">'+fmt(totR)+'</td><td class="r val-green">'+fmt(tot+totR)+'</td><td></td></tr>';
+  document.getElementById('exp-tbody').innerHTML=html;
+}
+function registrarCobro(){
+  var uf=document.getElementById('cobro-uf').value,tipo=document.getElementById('cobro-tipo').value,
+    monto=parseFloat(document.getElementById('cobro-monto').value),
+    fechaRaw=document.getElementById('cobro-fecha').value,obs=document.getElementById('cobro-obs').value;
+  if(!monto||!fechaRaw){alert('Completá monto y fecha.');return;}
+  var m2=getMes(),prop=null;
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++) if(PROPIETARIOS_BASE[i].uf===uf) prop=PROPIETARIOS_BASE[i];
+  var nuevos=[];var cobros=m2.cobros||[];
+  for(var i=0;i<cobros.length;i++) if(cobros[i].uf!==uf) nuevos.push(cobros[i]);
+  nuevos.push({uf:uf,nombre:prop.nombre,tipo:tipo,monto:monto,fecha:fmtFecha(fechaRaw),obs:obs});
+  m2.cobros=nuevos;
+  guardarDatos();showAlert('alert-cobro');renderExpensas();renderDashboard();renderPropietarios();
+}
+
+function registrarConvenio(){
+  var uf=document.getElementById('conv-uf').value,tipo=document.getElementById('conv-tipo').value,
+    monto=parseFloat(document.getElementById('conv-monto').value),
+    fechaRaw=document.getElementById('conv-fecha').value,
+    desc=document.getElementById('conv-desc').value||tipo,comp=document.getElementById('conv-comp').value||'—';
+  if(!monto||!fechaRaw){alert('Completá monto y fecha.');return;}
+  var prop=null;for(var i=0;i<PROPIETARIOS_BASE.length;i++) if(PROPIETARIOS_BASE[i].uf===uf) prop=PROPIETARIOS_BASE[i];
+  var m2=getMes();
+  if(!m2.convenios)m2.convenios=[];
+  m2.convenios.push({id:nextConvId++,uf:uf,nombre:prop.nombre,tipo:tipo,monto:monto,fecha:fmtFecha(fechaRaw),desc:desc,comp:comp});
+  document.getElementById('conv-monto').value='';
+  document.getElementById('conv-desc').value='';
+  document.getElementById('conv-comp').value='';
+  guardarDatos();showAlert('alert-convenio');renderConvenio();renderDashboard();renderPropietarios();
+}
+function renderConvenio(){
+  var all=[];var keys=Object.keys(meses).sort();
+  for(var i=0;i<keys.length;i++){var cs=meses[keys[i]].convenios||[];for(var j=0;j<cs.length;j++)all.push(cs[j]);}
+  var tb=document.getElementById('conv-tbody');if(!tb)return;
+  if(!all.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Sin registros</td></tr>';return;}
+  var total=0;var html='';
+  for(var i=0;i<all.length;i++){var c=all[i];total+=c.monto;
+    html+='<tr><td class="val-muted">'+c.fecha+'</td><td><span class="uf">'+c.uf+'</span></td><td>'+c.nombre+'</td><td><span class="badge badge-purple">'+c.tipo+'</span></td><td>'+c.desc+'</td><td class="val-muted">'+c.comp+'</td><td class="r val-purple">'+fmt(c.monto)+'</td></tr>';
+  }
+  html+='<tr class="total-row"><td colspan="6" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-purple">'+fmt(total)+'</td></tr>';
+  tb.innerHTML=html;
+}
+
+function renderEgresos(){
+  var m=getMes();document.getElementById('eg-mes-title').innerHTML='<em>'+m.label+'</em>';
+  var egresos=m.egresos||[];var html='';
+  for(var i=0;i<egresos.length;i++){var e=egresos[i];
+    html+='<tr><td class="val-muted">'+(i+1)+'</td><td class="val-muted">'+e.fecha+'</td><td><span class="badge badge-blue" style="font-size:10px;">'+e.cat+'</span></td><td>'+e.desc+'</td><td class="val-muted">'+e.comp+'</td><td class="r val-red">'+fmt(e.monto)+'</td><td class="val-muted" style="font-size:11px;">'+e.notas+'</td><td class="c"><button class="btn btn-danger btn-sm" onclick="eliminarGasto('+e.id+')">✕</button></td></tr>';
+  }
+  html+='<tr class="total-row"><td colspan="5" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-red">'+fmt(totalEgMes(m))+'</td><td></td></tr>';
+  document.getElementById('eg-tbody').innerHTML=html;
+}
+function eliminarGasto(id){
+  if(!confirm('¿Confirmás eliminar este gasto?'))return;
+  var m2=getMes();
+  var nuevos=[];
+  for(var i=0;i<(m2.egresos||[]).length;i++) if(m2.egresos[i].id!==id) nuevos.push(m2.egresos[i]);
+  m2.egresos=nuevos;
+  guardarDatos();renderEgresos();renderDashboard();
+}
+
+function agregarGasto(){
+  var cat=document.getElementById('gasto-cat').value,fechaRaw=document.getElementById('gasto-fecha').value,
+    monto=parseFloat(document.getElementById('gasto-monto').value),desc=document.getElementById('gasto-desc').value,
+    comp=document.getElementById('gasto-comp').value||'—',notas=document.getElementById('gasto-notas').value||'—';
+  if(!monto||!desc||!fechaRaw){alert('Completá Fecha, Descripción y Monto.');return;}
+  var m2=getMes();if(!m2.egresos)m2.egresos=[];
+  m2.egresos.push({id:nextEgId++,fecha:fmtFecha(fechaRaw),cat:cat,desc:desc,comp:comp,monto:monto,notas:notas});
+  var ids=['gasto-fecha','gasto-monto','gasto-desc','gasto-comp','gasto-notas'];
+  for(var i=0;i<ids.length;i++)document.getElementById(ids[i]).value='';
+  guardarDatos();showAlert('alert-gasto');renderEgresos();renderDashboard();
+}
+
+function renderMora(){
+  var m=getMes();document.getElementById('mora-mes-sub').textContent=m.label;
+  var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    var c=null;var cobros=m.cobros||[];
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
+    var pg=c?c.monto:0;
+    var est=!c?'Sin pago':pg>=EXP_FIJA?'Al día':'Parcial';
+    var rec=recargoMes(mesActivo,pg);
+    var saldo=Math.max(0,EXP_FIJA+rec-pg);
+    html+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td><td class="r">'+fmt(EXP_FIJA)+'</td><td class="c">'+estadoBadge(est)+'</td><td class="r '+(rec>0?'val-red':'val-muted')+'">'+fmt(rec)+'</td><td class="r '+(saldo>0?'val-red':'val-green')+'">'+(saldo>0?fmt(saldo):'$0,00')+'</td></tr>';
+  }
+  document.getElementById('mora-tbody').innerHTML=html;
+  calcMora();
+}
+function calcMora(){
+  var base=parseFloat(document.getElementById('mora-base').value)||50000,mn=parseInt(document.getElementById('mora-meses').value)||1,rec=base*RECARGO_PCT*mn;
+  document.getElementById('mora-result').innerHTML='<div class="mora-calc-title">⚠ Detalle del Recargo</div><div class="mora-row"><span>Expensa fija</span><span>'+fmt(base)+'</span></div><div class="mora-row"><span>Recargo 10% × '+mn+' mes'+(mn>1?'es':'')+'</span><span class="val-red">'+fmt(rec)+'</span></div><div class="mora-row"><span>Total a pagar</span><span class="val-red">'+fmt(base+rec)+'</span></div>';
+}
+
+function renderHistorial(){
+  var cadena=calcularCadenaDeSaldos();var html='';
+  for(var i=0;i<cadena.length;i++){var e=cadena[i];
+    var curr=e.key===mesActivo,nc=e.neto>=0?'hist-net-pos':'hist-net-neg',sign=e.neto>=0?'+':'';
+    html+='<tr class="'+(curr?'hist-curr':'')+'"><td><strong>'+e.label+'</strong>'+(curr?' <span class="badge badge-amber" style="font-size:9px;margin-left:5px;">Activo</span>':'')+'</td><td class="r hist-init">'+fmt(e.saldoInicial)+'</td><td class="r hist-ing">'+fmt(e.ing)+'</td><td class="r hist-eg">'+fmt(e.eg)+'</td><td class="r '+nc+'">'+sign+fmt(e.neto)+'</td><td class="r hist-acum">'+fmt(e.saldoAcum)+'</td><td class="c"><button class="btn btn-ghost btn-sm" onclick="setMes(\''+e.key+'\');navigate(\'dashboard\')">Ver</button></td></tr>';
+  }
+  document.getElementById('hist-tbody').innerHTML=html;
+}
+
+var TEMPLATES={
+  vencimiento:'Estimado/a {nombre}, buenos días 🙂\n\nLe escribimos desde la *Administración del Consorcio Tato Joven* para recordarle amablemente que el próximo *día 10* opera el vencimiento de la expensa mensual.\n\n💰 Importe a abonar: *{monto}*\n\nLe solicitamos, por favor, que realice el pago dentro del plazo para evitar el recargo por mora.\n\nAnte cualquier consulta, no dude en comunicarse. ¡Muchas gracias! 🏠\n_Administración — Consorcio Tato Joven_',
+  mora:'Estimado/a {nombre}, buenos días.\n\nNos comunicamos desde la *Administración del Consorcio Tato Joven* para informarle que registramos un saldo pendiente en su unidad *{uf}*.\n\n📋 Detalle:\n💰 Expensa: *{monto}*\n⚠️ Recargo por mora (10%): *{recargo}*\n📌 *Total a regularizar: {total}*\n\nLe pedimos que gestione la regularización a la brevedad. Si tiene dificultades, podemos evaluar juntos un convenio de pago.\n\nQuedamos a su disposición. Muchas gracias 🙏\n_Administración — Consorcio Tato Joven_',
+  personalizado:'Estimado/a {nombre}, buenos días.\n\nNos comunicamos desde la *Administración del Consorcio Tato Joven* para informarle sobre una novedad relacionada con su unidad *{uf}*.\n\nLe solicitamos que se comunique con la administración a la brevedad.\n\nMuchas gracias 🏠\n_Administración — Consorcio Tato Joven_',
+};
+var tipoAviso='vencimiento';
+function setTipoAviso(t){
+  tipoAviso=t;document.getElementById('aviso-template').value=TEMPLATES[t];
+  var map={vencimiento:'venc',mora:'mora',personalizado:'pers'};
+  var tipos=['vencimiento','mora','personalizado'];
+  for(var i=0;i<tipos.length;i++){var x=tipos[i];var b=document.getElementById('btn-aviso-'+map[x]);if(b)b.className='btn '+(x===t?'btn-primary':'btn-ghost');}
+  renderAvisosTabla();
+}
+function buildMsg(tpl,p,pg,rec){
+  var n=p.nombre.split(' — ')[0];
+  return tpl.replace(/{nombre}/g,n).replace(/{uf}/g,p.uf).replace(/{monto}/g,fmt(EXP_FIJA)).replace(/{recargo}/g,fmt(rec)).replace(/{total}/g,fmt(Math.max(0,EXP_FIJA+rec-pg)));
+}
+function waLink(tel,msg){return 'https://wa.me/'+tel+'?text='+encodeURIComponent(msg);}
+var mostrarTels=false;
+function fmtTel(t){
+  if(!t)return '';
+  if(mostrarTels)return '+'+t;
+  return '+'+t.slice(0,2)+' ••••••• '+t.slice(-4);
+}
+function toggleTels(){
+  mostrarTels=!mostrarTels;
+  var b=document.getElementById('btn-toggle-tels');
+  if(b)b.innerHTML=mostrarTels?'🙈 Ocultar teléfonos':'👁 Mostrar teléfonos';
+  renderAvisosTabla();
+}
+function renderAvisosTabla(){
+  var m=getMes(),tpl=document.getElementById('aviso-template').value;
+  var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    var c=null;var cobros=m.cobros||[];
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
+    var pg=c?c.monto:0;
+    var est=!c?'Sin pago':pg>=EXP_FIJA?'Al día':'Parcial';
+    var rec=recargoMes(mesActivo,pg);
+    var skip=tipoAviso==='mora'&&est==='Al día';
+    var btnWA;
+    if(skip){
+      btnWA='<span class="val-muted" style="font-size:11px;">Sin mora</span>';
+    } else if(p.tel2){
+      btnWA='<a href="'+waLink(p.tel,buildMsg(tpl,p,pg,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;margin-bottom:3px;">💬 '+p.nombre.split(' — ')[0]+'</a><br><a href="'+waLink(p.tel2,buildMsg(tpl,p,pg,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;">💬 '+p.nombre.split(' — ')[1]+'</a>';
+    } else {
+      btnWA='<a href="'+waLink(p.tel,buildMsg(tpl,p,pg,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;">💬 Enviar WA</a>';
+    }
+    html+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td><td style="font-size:12px;color:var(--muted);">'+fmtTel(p.tel)+(p.tel2?'<br>'+fmtTel(p.tel2):'')+'</td><td class="c">'+estadoBadge(est)+'</td><td class="r">'+fmt(EXP_FIJA)+'</td><td class="r '+(rec>0?'val-red':'val-muted')+'">'+fmt(rec)+'</td><td class="c">'+btnWA+'</td></tr>';
+  }
+  document.getElementById('avisos-tbody').innerHTML=html;
+}
+function abrirTodosWhatsApp(){
+  var m=getMes(),tpl=document.getElementById('aviso-template').value;
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    (function(p,idx){
+      var c=null;var cobros=m.cobros||[];
+      for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
+      var pg=c?c.monto:0;
+      var est=!c?'Sin pago':pg>=EXP_FIJA?'Al día':'Parcial';
+      var rec=recargoMes(mesActivo,pg);
+      if(tipoAviso==='mora'&&est==='Al día')return;
+      setTimeout(function(){window.open(waLink(p.tel,buildMsg(tpl,p,pg,rec)),'_blank');},idx*600);
+    })(PROPIETARIOS_BASE[i],i);
+  }
+}
+function renderAvisos(){setTipoAviso(tipoAviso);}
+
+function renderActaForm(){
+  var sorted=PROPIETARIOS_BASE.slice().sort(function(a,b){return parseInt(a.uf.replace('UF ',''))-parseInt(b.uf.replace('UF ',''));});
+  var html='';
+  for(var i=0;i<sorted.length;i++){var p=sorted[i];
+    html+='<label style="display:flex;align-items:center;gap:6px;font-size:12px;text-transform:none;letter-spacing:0;cursor:pointer;padding:4px 8px;background:var(--bg);border-radius:3px;"><input type="checkbox" id="presente-'+p.uf.replace(' ','')+'"> <span class="uf" style="font-size:9px;">'+p.uf+'</span> '+p.nombre+'</label>';
+  }
+  document.getElementById('acta-presentes-checks').innerHTML=html;
+  renderTemasList();
+}
+function renderTemasList(){
+  var html='';
+  for(var i=0;i<(actaTemas||[]).length;i++){
+    html+='<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg);border-radius:3px;margin-bottom:4px;font-size:12px;"><span style="color:var(--muted);">'+(i+1)+'.</span> <span style="flex:1;">'+actaTemas[i]+'</span><button onclick="quitarTema('+i+')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;">✕</button></div>';
+  }
+  document.getElementById('acta-temas-list').innerHTML=html;
+}
+function agregarTema(){
+  var inp=document.getElementById('acta-tema-input');
+  if(!inp.value.trim())return;
+  actaTemas.push(inp.value.trim());inp.value='';
+  guardarDatos();renderTemasList();
+}
+function quitarTema(i){actaTemas.splice(i,1);guardarDatos();renderTemasList();}
+function limpiarActa(){
+  actaTemas=[];guardarDatos();
+  var ids=['acta-fecha','acta-resoluciones','acta-proxima'];
+  for(var i=0;i<ids.length;i++)document.getElementById(ids[i]).value='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){var p=PROPIETARIOS_BASE[i];var el=document.getElementById('presente-'+p.uf.replace(' ',''));if(el)el.checked=false;}
+  renderTemasList();
+  document.getElementById('acta-preview').innerHTML='<div style="color:rgba(255,255,255,.3);font-size:15px;text-align:center;padding:40px 0;">Completá los datos y presioná "Generar Acta"</div>';
+}
+function generarActa(){
+  var fechaRaw=document.getElementById('acta-fecha').value;
+  if(!fechaRaw){alert('Ingresá la fecha de la reunión.');return;}
+  var d=new Date(fechaRaw+'T12:00:00');
+  var fechaStr=DIAS_SEMANA[d.getDay()]+' '+d.getDate()+' de '+MESES_NOMBRES[d.getMonth()]+' de '+d.getFullYear();
+  var hora=document.getElementById('acta-hora').value||'19:00';
+  var lugar=document.getElementById('acta-lugar').value;
+  var tipo=document.getElementById('acta-tipo').value;
+  var presentes=[],ausentes=[];
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    var el=document.getElementById('presente-'+p.uf.replace(' ',''));
+    if(el&&el.checked)presentes.push(p);else ausentes.push(p);
+  }
+  var resoluciones=document.getElementById('acta-resoluciones').value;
+  var proximaRaw=document.getElementById('acta-proxima').value;
+  var proximaStr='';
+  if(proximaRaw){var dp=new Date(proximaRaw+'T12:00:00');proximaStr=dp.getDate()+' de '+MESES_NOMBRES[dp.getMonth()]+' de '+dp.getFullYear();}
+  var ce=getCadenaEntry(mesActivo);
+
+  var presentesTxt=presentes.length>0?presentes.map(function(p){return p.uf+' — '+p.nombre;}).join(', '):'Ninguno registrado';
+  var ausentesTxt=ausentes.map(function(p){return p.uf+' — '+p.nombre;}).join(', ');
+  var temasHtml=actaTemas.length>0?('<ul>'+actaTemas.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'):'<p>No se registraron temas específicos.</p>';
+
+  var html='<h2>'+tipo+'</h2>'+
+    '<div class="acta-meta">Consorcio Tato Joven &nbsp;|&nbsp; '+fechaStr+' &nbsp;|&nbsp; '+hora+' hs &nbsp;|&nbsp; '+lugar+'</div>'+
+    '<h4>1. Apertura</h4>'+
+    '<p>Siendo las '+hora+' horas del día '+fechaStr+', se da inicio a la '+tipo+' del <strong>Consorcio Tato Joven</strong>, llevada a cabo en '+lugar+', con la presencia de los propietarios que se detallan a continuación.</p>'+
+    '<h4>2. Asistencia</h4>'+
+    '<p><strong>Presentes ('+presentes.length+'/10):</strong> '+presentesTxt+'.</p>'+
+    (ausentes.length>0?('<p><strong>Ausentes ('+ausentes.length+'):</strong> '+ausentesTxt+'.</p>'):'')+
+    '<h4>3. Temario</h4>'+temasHtml+
+    '<h4>4. Estado Financiero del Consorcio</h4>'+
+    '<p>Se informa a los presentes el estado financiero del período en curso (<strong>'+getMes().label+'</strong>):</p>'+
+    '<ul><li>Ingresos del mes: <strong>'+fmt(ce.ing)+'</strong></li><li>Egresos del mes: <strong>'+fmt(ce.eg)+'</strong></li><li>Saldo neto del período: <strong>'+fmt(ce.neto)+'</strong></li><li>Saldo acumulado en caja: <strong>'+fmt(ce.saldoAcum)+'</strong></li></ul>'+
+    '<h4>5. Resoluciones y Acuerdos</h4>'+
+    '<p>'+(resoluciones||'No se adoptaron resoluciones formales en esta reunión.')+'</p>'+
+    (proximaStr?('<h4>6. Próxima Reunión</h4><p>Se fija la próxima reunión para el día <strong>'+proximaStr+'</strong>.</p>'):'')+
+    '<h4>'+(proximaStr?'7':'6')+'. Cierre</h4>'+
+    '<p>Sin más temas a tratar, siendo las ______ horas, se da por finalizada la reunión, firmando los presentes al pie en señal de conformidad.</p>'+
+    '<div class="acta-firmas"><div class="firma-box">Administración<br><em>Consorcio Tato Joven</em></div><div class="firma-box">Propietario Presente<br><em>'+(presentes[0]?presentes[0].nombre:'_____________')+'</em></div><div class="firma-box">Propietario Presente<br><em>'+(presentes[1]?presentes[1].nombre:'_____________')+'</em></div></div>';
+
+  document.getElementById('acta-preview').innerHTML=html;
+}
+
+function poblarInformeSel(){
+  var sel=document.getElementById('informe-mes-sel');
+  if(!sel)return;
+  var keys=Object.keys(meses).sort().reverse();var html='';
+  for(var i=0;i<keys.length;i++){var k=keys[i];html+='<option value="'+k+'" '+(k===mesActivo?'selected':'')+'>'+meses[k].label+'</option>';}
+  sel.innerHTML=html;
+}
+function generarInforme(){
+  var sel=document.getElementById('informe-mes-sel');
+  var key=sel?sel.value:mesActivo;
+  var m=meses[key];if(!m)return;
+  var ce=getCadenaEntry(key);
+  var pagaron=[],morosos=[];
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];var pagado=false;var cobros=m.cobros||[];
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf&&cobros[j].monto>=EXP_FIJA) pagado=true;
+    if(pagado)pagaron.push(p);else morosos.push(p);
+  }
+  var hoy=new Date();
+  var fechaEmision=hoy.getDate()+' de '+MESES_NOMBRES[hoy.getMonth()]+' de '+hoy.getFullYear();
+
+  var cobrosHtml='';var cobros=m.cobros||[];
+  for(var i=0;i<cobros.length;i++){var c=cobros[i];
+    cobrosHtml+='<div class="inf-row"><span>'+c.uf+' — '+c.nombre+' <span style="font-size:11px;color:var(--muted);">('+c.fecha+')</span></span><span style="color:var(--green);">'+fmt(c.monto)+'</span></div>';
+  }
+  var convHtml='';var convenios=m.convenios||[];
+  if(convenios.length>0)convHtml+='<div style="font-size:11px;color:var(--muted);margin:6px 0 2px;text-transform:uppercase;letter-spacing:0.8px;">Pagos de convenio</div>';
+  for(var i=0;i<convenios.length;i++){var c=convenios[i];
+    convHtml+='<div class="inf-row"><span>'+c.uf+' — '+c.nombre+': '+c.desc+'</span><span style="color:var(--purple);">'+fmt(c.monto)+'</span></div>';
+  }
+  var egHtml='';var egresos=m.egresos||[];
+  for(var i=0;i<egresos.length;i++){var e=egresos[i];
+    egHtml+='<div class="inf-row"><span>'+e.desc+' <span style="font-size:11px;color:var(--muted);">('+e.fecha+')</span></span><span style="color:var(--red);">'+fmt(e.monto)+'</span></div>';
+  }
+  var pagaronTxt=pagaron.length>0?pagaron.map(function(p){return p.nombre;}).join(', '):'Ninguno';
+  var moroseTxt=morosos.length>0?('⚠️ <strong>Con saldo pendiente ('+morosos.length+'):</strong> Se les recuerda que el vencimiento opera el día 10 de cada mes. Ante dificultades, comunicarse con la administración para acordar un plan de pago.'):'✅ Todos los propietarios se encuentran al día. ¡Excelente!';
+
+  // ===== FONDO DE OBRAS (caja separada, aportes voluntarios) =====
+  var fCobros=(fondoObras&&fondoObras.cobros)?fondoObras.cobros:[];
+  var fGastos=(fondoObras&&fondoObras.gastos)?fondoObras.gastos:[];
+  var fRend=(fondoObras&&fondoObras.rendimientos)?fondoObras.rendimientos:[];
+  var hayFondo=(fCobros.length>0||fGastos.length>0||fRend.length>0);
+  var seccionFondo='';
+  var numObs=hayFondo?6:5;
+
+  if(hayFondo){
+    var totalAportado=0;for(var i=0;i<fCobros.length;i++) totalAportado+=fCobros[i].monto;
+    var totalGastado=0;for(var i=0;i<fGastos.length;i++) totalGastado+=fGastos[i].monto;
+    var totalRend=0;for(var i=0;i<fRend.length;i++) totalRend+=fRend[i].monto;
+    var saldoFondo=totalAportado+totalRend-totalGastado;
+
+    seccionFondo='<h4>5. Fondo de Obras \u2014 Aportes Voluntarios</h4>'+
+      '<p>El consorcio mantiene un <strong>Fondo de Obras</strong> destinado a mejoras del barrio. '+
+      'Se administra como una <strong>caja separada</strong>: no forma parte del saldo operativo detallado en los puntos anteriores.</p>'+
+      (fRend.length>0 ? '<p>El saldo permanece depositado en una cuenta remunerada. Los <strong>rendimientos generados ingresan \u00edntegramente al fondo</strong> y se informan por separado del capital aportado por los propietarios.</p>' : '');
+
+    if(expensasExtra.length>0){
+      seccionFondo+='<p><strong>Obra en curso:</strong> '+expensasExtra[0].motivo+'</p>'+
+        '<div class="inf-row"><span>Aporte sugerido por unidad</span><span style="color:var(--purple);">'+fmt(expensasExtra[0].cuotaUF)+'</span></div>';
+    }
+
+    seccionFondo+='<div class="inf-row"><span><strong>Capital</strong> \u2014 aportes de propietarios</span><span style="color:var(--green);">'+fmt(totalAportado)+'</span></div>'+
+      '<div class="inf-row"><span><strong>Rendimientos</strong> \u2014 generados por la cuenta</span><span style="color:var(--blue);">'+fmt(totalRend)+'</span></div>'+
+      '<div class="inf-row"><span><strong>Gastos de obra</strong> \u2014 ejecutados</span><span style="color:var(--red);">\u2212 '+fmt(totalGastado)+'</span></div>'+
+      '<div class="inf-total"><span>Saldo disponible del fondo</span><span style="color:var(--gold);">'+fmt(saldoFondo)+'</span></div>';
+
+    // Quiénes aportaron (solo los que aportaron: es voluntario)
+    var aportantes=[];
+    for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+      var p=PROPIETARIOS_BASE[i];var ap=0;
+      for(var j=0;j<fCobros.length;j++) if(fCobros[j].uf===p.uf) ap+=fCobros[j].monto;
+      if(ap>0) aportantes.push({uf:p.uf,nombre:p.nombre,monto:ap});
+    }
+    if(aportantes.length>0){
+      seccionFondo+='<div style="font-size:11px;color:var(--muted);margin:14px 0 4px;text-transform:uppercase;letter-spacing:0.8px;">Aportes recibidos ('+aportantes.length+' de '+PROPIETARIOS_BASE.length+' unidades)</div>';
+      for(var i=0;i<aportantes.length;i++){
+        seccionFondo+='<div class="inf-row"><span>'+aportantes[i].uf+' \u2014 '+aportantes[i].nombre+'</span><span style="color:var(--green);">'+fmt(aportantes[i].monto)+'</span></div>';
+      }
+    }
+
+    // Detalle de rendimientos acreditados
+    if(fRend.length>0){
+      seccionFondo+='<div style="font-size:11px;color:var(--muted);margin:14px 0 4px;text-transform:uppercase;letter-spacing:0.8px;">Rendimientos acreditados</div>';
+      for(var i=0;i<fRend.length;i++){
+        var r=fRend[i];
+        seccionFondo+='<div class="inf-row"><span>'+r.desc+' <span style="font-size:11px;color:var(--muted);">('+r.fecha+')</span></span><span style="color:var(--blue);">'+fmt(r.monto)+'</span></div>';
+      }
+    }
+
+    // Detalle de gastos de obra ejecutados
+    if(fGastos.length>0){
+      seccionFondo+='<div style="font-size:11px;color:var(--muted);margin:14px 0 4px;text-transform:uppercase;letter-spacing:0.8px;">Gastos de obra ejecutados</div>';
+      for(var i=0;i<fGastos.length;i++){
+        var g=fGastos[i];
+        seccionFondo+='<div class="inf-row"><span>'+g.desc+' <span style="font-size:11px;color:var(--muted);">('+g.fecha+')</span></span><span style="color:var(--red);">'+fmt(g.monto)+'</span></div>';
+      }
+    }
+
+    seccionFondo+='<div style="background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:4px;padding:12px 16px;margin-top:14px;font-size:12px;color:var(--purple);line-height:1.8;">'+
+      '\ud83e\udd1d <strong>Este aporte es completamente voluntario.</strong> Entendemos que cada familia tiene su propia situaci\u00f3n econ\u00f3mica y no hay ninguna obligaci\u00f3n de participar. '+
+      'Cada aporte \u2014 grande o peque\u00f1o \u2014 nos acerca a un barrio mejor para todos. '+
+      'Quien desee contribuir puede comunicarse con la administraci\u00f3n. <strong>\u00a1Muchas gracias a quienes ya lo hicieron!</strong> \ud83d\ude4f'+
+      '</div>';
+  }
+
+  document.getElementById('informe-preview').innerHTML=
+    '<div class="watermark-bg">'+generarWatermarkHTML()+'</div>'+
+    '<h2>Informe Mensual de Gestión</h2>'+
+    '<div class="inf-meta">Consorcio Tato Joven &nbsp;·&nbsp; Período: '+m.label+' &nbsp;·&nbsp; Emitido: '+fechaEmision+'</div>'+
+    '<p>Estimados propietarios:</p>'+
+    '<p>A continuación les presentamos el informe de gestión correspondiente al período <strong>'+m.label+'</strong>, detallando los movimientos económicos, el estado de cobranza y el saldo disponible en caja.</p>'+
+    '<h4>1. Resumen Financiero del Período</h4>'+
+    '<div class="inf-row"><span>Saldo inicial (arrastrado del mes anterior)</span><span style="color:var(--blue);">'+fmt(ce.saldoInicial)+'</span></div>'+
+    '<div class="inf-row"><span>Total ingresos del período</span><span style="color:var(--green);">'+fmt(ce.ing)+'</span></div>'+
+    '<div class="inf-row"><span>Total egresos del período</span><span style="color:var(--red);">'+fmt(ce.eg)+'</span></div>'+
+    '<div class="inf-total"><span>Saldo disponible en caja</span><span style="color:var(--gold);">'+fmt(ce.saldoAcum)+'</span></div>'+
+    '<h4>2. Detalle de Ingresos</h4>'+cobrosHtml+convHtml+
+    '<div class="inf-total"><span>Total Ingresos</span><span style="color:var(--green);">'+fmt(ce.ing)+'</span></div>'+
+    '<h4>3. Detalle de Egresos</h4>'+egHtml+
+    '<div class="inf-total"><span>Total Egresos</span><span style="color:var(--red);">'+fmt(ce.eg)+'</span></div>'+
+    '<h4>4. Estado de Cobranza</h4>'+
+    '<p>✅ <strong>Pagaron al día ('+pagaron.length+'):</strong> '+pagaronTxt+'.</p>'+
+    '<p>'+moroseTxt+'</p>'+
+    seccionFondo+
+    '<h4>'+numObs+'. Observaciones</h4>'+
+    '<p>Los comprobantes originales de todos los gastos se encuentran disponibles para consulta. Ante cualquier duda o inquietud, no duden en comunicarse con la administración.</p>'+
+    '<br><p style="font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;">Administración — Consorcio Tato Joven &nbsp;·&nbsp; '+fechaEmision+'</p>';
+}
+
+function renderCalendario(){
+  var titulo=MESES_NOMBRES[calMonth]+' '+calYear;
+  document.getElementById('cal-titulo').textContent=titulo;
+  var primerDia=new Date(calYear,calMonth,1).getDay();
+  var diasMes=new Date(calYear,calMonth+1,0).getDate();
+  var hoy=new Date();
+  var mm=String(calMonth+1).padStart(2,'0');
+  var hoyStr=calYear+'-'+mm+'-'+String(hoy.getDate()).padStart(2,'0');
+
+  var autoEventos=[
+    {fecha:calYear+'-'+mm+'-08',tipo:'ev-aviso',desc:'Enviar avisos de vencimiento'},
+    {fecha:calYear+'-'+mm+'-10',tipo:'ev-venc',desc:'Vencimiento expensa'},
+  ];
+  var todosEventos=autoEventos.concat(calEventos||[]);
+
+  var html='';
+  for(var i=0;i<DIAS_SEMANA.length;i++)html+='<div class="cal-head">'+DIAS_SEMANA[i]+'</div>';
+  for(var i=0;i<primerDia;i++)html+='<div class="cal-day empty"></div>';
+  for(var d=1;d<=diasMes;d++){
+    var isoFecha=calYear+'-'+mm+'-'+String(d).padStart(2,'0');
+    var evs=[];
+    for(var i=0;i<todosEventos.length;i++) if(todosEventos[i].fecha===isoFecha) evs.push(todosEventos[i]);
+    var isToday=isoFecha===hoyStr;
+    var evHtml='';
+    for(var i=0;i<evs.length;i++) evHtml+='<div class="cal-event '+evs[i].tipo+'">'+evs[i].desc+'</div>';
+    html+='<div class="cal-day '+(isToday?'today':'')+'"><div class="cal-num">'+d+'</div>'+evHtml+'</div>';
+  }
+  document.getElementById('cal-grid').innerHTML=html;
+}
+function cambiarMesCal(dir){
+  calMonth+=dir;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCalendario();
+}
+function agregarEvento(){
+  var fecha=document.getElementById('cal-ev-fecha').value;
+  var tipo=document.getElementById('cal-ev-tipo').value;
+  var desc=document.getElementById('cal-ev-desc').value;
+  if(!fecha||!desc){alert('Completá fecha y descripción.');return;}
+  if(!calEventos)calEventos=[];
+  calEventos.push({fecha:fecha,tipo:tipo,desc:desc});
+  document.getElementById('cal-ev-desc').value='';
+  guardarDatos();renderCalendario();
+}
+
+var PRESUPUESTO={
+  ingresos:[
+    {label:'Expensas fijas (10 UF × $50.000 × 12 meses)',valor:6000000},
+    {label:'Recargos por mora estimados',valor:60000},
+    {label:'Ingresos extraordinarios estimados',valor:50000},
+  ],
+  egresos:[
+    {label:'Agua — AySA (12 meses)',valor:4328419.56,color:'#3b82f6'},
+    {label:'Luz / Electricidad (12 meses)',valor:36067.08,color:'#f59e0b'},
+    {label:'Mantenimiento — Corte de Pasto',valor:480000,color:'#10b981'},
+    {label:'Mantenimiento — Limpieza',valor:120000,color:'#6366f1'},
+    {label:'Reparaciones y Gastos Imprevistos',valor:150000,color:'#ef4444'},
+    {label:'Administración',valor:60000,color:'#8b5cf6'},
+  ],
+};
+function renderPresupuesto(){
+  var totIng=0;for(var i=0;i<PRESUPUESTO.ingresos.length;i++)totIng+=PRESUPUESTO.ingresos[i].valor;
+  var totEg=0;for(var i=0;i<PRESUPUESTO.egresos.length;i++)totEg+=PRESUPUESTO.egresos[i].valor;
+  var saldo=totIng-totEg;
+  var ingHtml='';
+  for(var i=0;i<PRESUPUESTO.ingresos.length;i++){var x=PRESUPUESTO.ingresos[i];
+    ingHtml+='<div class="inf-row"><span style="font-size:12px;">'+x.label+'</span><span class="val-green">'+fmt(x.valor)+'</span></div>';
+  }
+  document.getElementById('pres-ing-rows').innerHTML=ingHtml;
+  document.getElementById('pres-ing-total').textContent=fmt(totIng);
+  var egHtml='';
+  for(var i=0;i<PRESUPUESTO.egresos.length;i++){var x=PRESUPUESTO.egresos[i];
+    egHtml+='<div class="inf-row"><span style="font-size:12px;">'+x.label+'</span><span class="val-red">'+fmt(x.valor)+'</span></div>';
+  }
+  document.getElementById('pres-eg-rows').innerHTML=egHtml;
+  document.getElementById('pres-eg-total').textContent=fmt(totEg);
+  document.getElementById('pres-resultado').innerHTML=
+    '<div class="inf-row"><span>Total Ingresos Proyectados</span><span class="val-green">'+fmt(totIng)+'</span></div>'+
+    '<div class="inf-row"><span>Total Egresos Proyectados</span><span class="val-red">'+fmt(totEg)+'</span></div>'+
+    '<div class="inf-total"><span>'+(saldo>=0?'Superávit Proyectado':'Déficit Proyectado')+'</span><span class="'+(saldo>=0?'val-green':'val-red')+'">'+fmt(Math.abs(saldo))+'</span></div>'+
+    '<div style="margin-top:14px;padding:12px;background:'+(saldo>=0?'var(--green-bg)':'var(--red-bg)')+';border-radius:4px;font-size:12px;color:'+(saldo>=0?'var(--green)':'var(--red)')+';line-height:1.7;">'+
+    (saldo>=0?('✅ El presupuesto proyecta un <strong>superávit de '+fmt(saldo)+'</strong>. El consorcio estaría en condiciones de afrontar gastos imprevistos o generar un fondo de reserva.'):('⚠️ El presupuesto proyecta un <strong>déficit de '+fmt(Math.abs(saldo))+'</strong>. Se recomienda revisar los gastos o evaluar un ajuste en la expensa fija.'))+
+    '</div>';
+  var maxVal=0;for(var i=0;i<PRESUPUESTO.egresos.length;i++)if(PRESUPUESTO.egresos[i].valor>maxVal)maxVal=PRESUPUESTO.egresos[i].valor;
+  var barrasHtml='';
+  for(var i=0;i<PRESUPUESTO.egresos.length;i++){var x=PRESUPUESTO.egresos[i];
+    barrasHtml+='<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span>'+x.label+'</span><span class="val-red">'+fmt(x.valor)+'</span></div><div class="pres-bar-wrap"><div class="pres-bar" style="width:'+Math.round(x.valor/maxVal*100)+'%;background:'+x.color+';"></div></div></div>';
+  }
+  document.getElementById('pres-barras').innerHTML=barrasHtml;
+}
+
+// ── EXPENSAS EXTRAORDINARIAS ──
+function eliminarRecibo(num){
+  if(!confirm('¿Confirmás eliminar el recibo N° '+String(num).padStart(4,'0')+'? Esta acción no se puede deshacer.'))return;
+  var keys=Object.keys(meses);
+  for(var i=0;i<keys.length;i++){
+    var rs=meses[keys[i]].recibos||[];
+    var nuevos=[];
+    for(var j=0;j<rs.length;j++) if(rs[j].num!==num) nuevos.push(rs[j]);
+    meses[keys[i]].recibos=nuevos;
+  }
+  guardarDatos();
+  renderRecibosHistorial();
+  document.getElementById('recibo-preview-wrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:12px;background:var(--white);border:1px solid var(--line);border-radius:4px;">Recibo eliminado. Completá los datos para generar uno nuevo.</div>';
+}
+
+// ── FONDO DE OBRAS ──
+function calcularDeudaFondoUF(uf){
+  // Cuánto debe este propietario según las expensas extraordinarias activas
+  var deuda=0;
+  for(var i=0;i<expensasExtra.length;i++){
+    var e=expensasExtra[i];
+    deuda+=e.cuotaUF*e.numCuotas;
+  }
+  return deuda;
+}
+
+function calcularPagadoFondoUF(uf){
+  var total=0;
+  for(var i=0;i<fondoObras.cobros.length;i++){
+    if(fondoObras.cobros[i].uf===uf) total+=fondoObras.cobros[i].monto;
+  }
+  return total;
+}
+
+function verificarSaldoFondoUF(){
+  var uf=document.getElementById('fondo-cobro-uf').value;
+  var deuda=calcularDeudaFondoUF(uf);
+  var pagado=calcularPagadoFondoUF(uf);
+  var saldo=deuda-pagado;
+  var aviso=document.getElementById('aviso-fondo-uf');
+  var inputMonto=document.getElementById('fondo-cobro-monto');
+
+  if(deuda>0){
+    if(saldo<=0){
+      aviso.style.display='block';
+      aviso.style.background='var(--green-bg)';aviso.style.borderColor='#bbf7d0';aviso.style.color='var(--green)';
+      aviso.innerHTML='✅ <strong>'+uf+'</strong> ya está al día con el Fondo de Obras.';
+    } else {
+      aviso.style.display='block';
+      aviso.style.background='var(--amber-bg)';aviso.style.borderColor='#fde68a';aviso.style.color='var(--amber)';
+      aviso.innerHTML='📋 <strong>'+uf+'</strong> debe <strong>'+fmt(saldo)+'</strong> al Fondo de Obras. Pagado hasta ahora: '+fmt(pagado);
+      inputMonto.value=saldo>0?Math.min(saldo,25000):25000;
+    }
+  } else {
+    aviso.style.display='none';
+  }
+}
+
+function registrarCobroFondo(){
+  var uf=document.getElementById('fondo-cobro-uf').value;
+  var fechaRaw=document.getElementById('fondo-cobro-fecha').value;
+  var monto=parseFloat(document.getElementById('fondo-cobro-monto').value);
+  var concepto=document.getElementById('fondo-cobro-concepto').value;
+  var obs=document.getElementById('fondo-cobro-obs').value;
+  if(!fechaRaw||!monto){alert('Completá fecha y monto.');return;}
+  var prop=null;for(var i=0;i<PROPIETARIOS_BASE.length;i++) if(PROPIETARIOS_BASE[i].uf===uf) prop=PROPIETARIOS_BASE[i];
+  fondoObras.cobros.push({id:fondoObras.nextCobroId++,uf:uf,nombre:prop.nombre,fecha:fmtFecha(fechaRaw),monto:monto,concepto:concepto,obs:obs});
+  document.getElementById('fondo-cobro-obs').value='';
+  guardarDatos();showAlert('alert-fondo-cobro');renderFondoObras();
+}
+
+function registrarGastoFondo(){
+  var fechaRaw=document.getElementById('fondo-gasto-fecha').value;
+  var monto=parseFloat(document.getElementById('fondo-gasto-monto').value);
+  var desc=document.getElementById('fondo-gasto-desc').value;
+  var cat=document.getElementById('fondo-gasto-cat').value;
+  var comp=document.getElementById('fondo-gasto-comp').value||'—';
+  if(!fechaRaw||!monto||!desc){alert('Completá fecha, monto y descripción.');return;}
+  fondoObras.gastos.push({id:fondoObras.nextGastoId++,fecha:fmtFecha(fechaRaw),monto:monto,desc:desc,cat:cat,comp:comp});
+  ['fondo-gasto-fecha','fondo-gasto-monto','fondo-gasto-desc','fondo-gasto-comp'].forEach(function(id){document.getElementById(id).value='';});
+  guardarDatos();showAlert('alert-fondo-gasto');renderFondoObras();
+}
+
+function eliminarCobroFondo(id){
+  if(!confirm('¿Eliminás este cobro del Fondo de Obras?'))return;
+  var nuevos=[];
+  for(var i=0;i<fondoObras.cobros.length;i++) if(fondoObras.cobros[i].id!==id) nuevos.push(fondoObras.cobros[i]);
+  fondoObras.cobros=nuevos;
+  guardarDatos();renderFondoObras();
+}
+
+function eliminarGastoFondo(id){
+  if(!confirm('¿Eliminás este gasto del Fondo de Obras?'))return;
+  var nuevos=[];
+  for(var i=0;i<fondoObras.gastos.length;i++) if(fondoObras.gastos[i].id!==id) nuevos.push(fondoObras.gastos[i]);
+  fondoObras.gastos=nuevos;
+  guardarDatos();renderFondoObras();
+}
+
+function populateUfFondo(){
+  var el=document.getElementById('fondo-cobro-uf');if(!el)return;
+  var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){var p=PROPIETARIOS_BASE[i];html+='<option value="'+p.uf+'">'+p.uf+' — '+p.nombre+'</option>';}
+  el.innerHTML=html;
+}
+
+function registrarRendimiento(){
+  var fechaRaw=document.getElementById('fondo-rend-fecha').value;
+  var monto=parseFloat(document.getElementById('fondo-rend-monto').value);
+  var desc=document.getElementById('fondo-rend-desc').value.trim();
+  if(!fechaRaw){alert('Indicá la fecha de acreditación.');return;}
+  if(!monto||monto<=0){alert('Ingresá un monto válido.');return;}
+  if(!desc){desc='Rendimiento';}
+  fondoObras.rendimientos.push({id:fondoObras.nextRendId++,fecha:fmtFecha(fechaRaw),monto:monto,desc:desc});
+  guardarDatos();
+  document.getElementById('fondo-rend-monto').value='';
+  document.getElementById('fondo-rend-desc').value='';
+  renderFondoObras();
+  var a=document.getElementById('alert-fondo-rend');
+  a.classList.add('show');setTimeout(function(){a.classList.remove('show');},2600);
+}
+
+function eliminarRendimiento(id){
+  if(!confirm('¿Eliminar este rendimiento?'))return;
+  var nuevos=[];
+  for(var i=0;i<fondoObras.rendimientos.length;i++) if(fondoObras.rendimientos[i].id!==id) nuevos.push(fondoObras.rendimientos[i]);
+  fondoObras.rendimientos=nuevos;
+  guardarDatos();renderFondoObras();
+}
+
+function totalRendimientos(){
+  if(!fondoObras.rendimientos)return 0;
+  var t=0;for(var i=0;i<fondoObras.rendimientos.length;i++) t+=fondoObras.rendimientos[i].monto;
+  return t;
+}
+
+function renderFondoObras(){
+  poblarDatosPagoFondo();
+  populateUfFondo();
+  verificarSaldoFondoUF();
+
+  var totalCobrado=0;for(var i=0;i<fondoObras.cobros.length;i++) totalCobrado+=fondoObras.cobros[i].monto;
+  var totalGastado=0;for(var i=0;i<fondoObras.gastos.length;i++) totalGastado+=fondoObras.gastos[i].monto;
+  var totalRend=totalRendimientos();
+  var saldoFondo=totalCobrado+totalRend-totalGastado;
+
+  // Total que deberían pagar todos
+  var totalDeuda=0;
+  for(var i=0;i<expensasExtra.length;i++) totalDeuda+=expensasExtra[i].cuotaUF*expensasExtra[i].numCuotas*10;
+
+  document.getElementById('fondo-kpis').innerHTML=
+    '<div class="kpi k-green"><div class="kpi-label">Capital Aportado</div><div class="kpi-value green">'+fmt(totalCobrado)+'</div><div class="kpi-sub">Aportes de propietarios</div></div>'+
+    '<div class="kpi k-blue"><div class="kpi-label">Rendimientos</div><div class="kpi-value blue">'+fmt(totalRend)+'</div><div class="kpi-sub">Generados por la cuenta</div></div>'+
+    '<div class="kpi k-red"><div class="kpi-label">Total Gastado</div><div class="kpi-value red">'+fmt(totalGastado)+'</div><div class="kpi-sub">En obras y materiales</div></div>'+
+    '<div class="kpi k-gold"><div class="kpi-label">Saldo Disponible</div><div class="kpi-value gold">'+fmt(saldoFondo)+'</div><div class="kpi-sub">Capital + rendimientos \u2212 gastos</div></div>'+
+    '<div class="kpi k-amber"><div class="kpi-label">Por Cobrar</div><div class="kpi-value amber">'+fmt(Math.max(0,totalDeuda-totalCobrado))+'</div><div class="kpi-sub">Pendiente de propietarios</div></div>';
+
+  // Estado por propietario
+  var estadoHtml='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    var deuda=calcularDeudaFondoUF(p.uf);
+    var pagado=calcularPagadoFondoUF(p.uf);
+    var saldo=deuda-pagado;
+    var est=saldo<=0?'Al día':'Pendiente';
+    estadoHtml+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td>'+
+      '<td class="r">'+fmt(deuda)+'</td>'+
+      '<td class="r '+(pagado>0?'val-green':'val-muted')+'">'+fmt(pagado)+'</td>'+
+      '<td class="r '+(saldo>0?'val-red':'val-green')+'">'+(saldo>0?fmt(saldo):'✓ Al día')+'</td>'+
+      '<td class="c">'+(est==='Al día'?'<span class="badge badge-green">✓ Al día</span>':'<span class="badge badge-amber">⚠ Pendiente</span>')+'</td></tr>';
+  }
+  document.getElementById('fondo-estado-tbody').innerHTML=estadoHtml||'<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:16px;">Sin expensas extraordinarias creadas aún</td></tr>';
+
+  // Gastos
+  var gastosHtml='';
+  if(!fondoObras.gastos.length){
+    gastosHtml='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:16px;">Sin gastos registrados</td></tr>';
+  } else {
+    var totG=0;
+    for(var i=0;i<fondoObras.gastos.length;i++){var g=fondoObras.gastos[i];totG+=g.monto;
+      gastosHtml+='<tr><td class="val-muted">'+g.fecha+'</td><td><span class="badge badge-blue" style="font-size:10px;">'+g.cat+'</span></td><td>'+g.desc+'</td><td class="val-muted">'+g.comp+'</td><td class="r val-red">'+fmt(g.monto)+'</td><td class="c"><button class="btn btn-danger btn-sm" onclick="eliminarGastoFondo('+g.id+')">✕</button></td></tr>';
+    }
+    gastosHtml+='<tr class="total-row"><td colspan="4" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-red">'+fmt(totG)+'</td><td></td></tr>';
+  }
+  document.getElementById('fondo-gastos-tbody').innerHTML=gastosHtml;
+
+  // Historial cobros
+  var cobrosHtml='';
+  if(!fondoObras.cobros.length){
+    cobrosHtml='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">Sin cobros registrados</td></tr>';
+  } else {
+    var totC=0;
+    for(var i=0;i<fondoObras.cobros.length;i++){var c=fondoObras.cobros[i];totC+=c.monto;
+      cobrosHtml+='<tr><td class="val-muted">'+c.fecha+'</td><td><span class="uf">'+c.uf+'</span></td><td>'+c.nombre+'</td><td><span class="badge badge-purple">'+c.concepto+'</span></td><td class="val-muted">'+c.obs+'</td><td class="r val-green">'+fmt(c.monto)+'</td><td class="c"><button class="btn btn-danger btn-sm" onclick="eliminarCobroFondo('+c.id+')">✕</button></td></tr>';
+    }
+    cobrosHtml+='<tr class="total-row"><td colspan="5" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-green">'+fmt(totC)+'</td><td></td></tr>';
+  }
+  document.getElementById('fondo-cobros-tbody').innerHTML=cobrosHtml;
+
+  // Rendimientos
+  var rendHtml='';
+  if(!fondoObras.rendimientos||!fondoObras.rendimientos.length){
+    rendHtml='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:16px;">Sin rendimientos registrados</td></tr>';
+  } else {
+    for(var i=0;i<fondoObras.rendimientos.length;i++){
+      var r=fondoObras.rendimientos[i];
+      rendHtml+='<tr><td class="val-muted">'+r.fecha+'</td><td>'+r.desc+'</td><td class="r val-blue">'+fmt(r.monto)+'</td>'+
+        '<td class="c"><button class="btn btn-danger btn-sm" onclick="eliminarRendimiento('+r.id+')">\u2715</button></td></tr>';
+    }
+    rendHtml+='<tr class="total-row"><td colspan="2" style="text-align:right;color:var(--muted)">TOTAL</td><td class="r val-blue">'+fmt(totalRend)+'</td><td></td></tr>';
+  }
+  document.getElementById('fondo-rend-tbody').innerHTML=rendHtml;
+}
+
+// ── EXPENSAS EXTRAORDINARIAS REDISEÑADAS ──
+function calcularResumenExtra(){
+  var cuotaUF=parseFloat(document.getElementById('extra-cuota-uf').value)||0;
+  var numCuotas=parseInt(document.getElementById('extra-num-cuotas').value)||1;
+  var total=cuotaUF*10*numCuotas;
+  var el=document.getElementById('extra-resumen');
+  if(!el)return;
+  el.innerHTML=
+    '📋 <strong>'+numCuotas+' cuota'+(numCuotas>1?'s':'')+' de '+fmt(cuotaUF)+' por unidad</strong><br>'+
+    '👥 10 propietarios × '+fmt(cuotaUF)+' × '+numCuotas+' cuota'+(numCuotas>1?'s':'')+' = <strong>Total a recaudar: '+fmt(total)+'</strong>';
+}
+
+function crearExpensaExtra(){
+  var motivo=document.getElementById('extra-motivo').value.trim();
+  var cuotaUF=parseFloat(document.getElementById('extra-cuota-uf').value);
+  var numCuotas=parseInt(document.getElementById('extra-num-cuotas').value)||1;
+  var mesInicio=document.getElementById('extra-mes-inicio').value;
+  if(!motivo||!cuotaUF){alert('Completá el motivo y el monto por unidad.');return;}
+
+  // Generar array de cuotas con su mes correspondiente
+  var cuotas=[];
+  var partes=mesInicio.split('-');
+  var anio=parseInt(partes[0]);
+  var mes=parseInt(partes[1])-1; // 0-based
+  for(var i=0;i<numCuotas;i++){
+    var m=mes+i;var a=anio;
+    if(m>11){m=m-12;a++;}
+    var key=a+'-'+String(m+1).padStart(2,'0');
+    cuotas.push({key:key,label:MESES_NOMBRES[m]+' '+a,num:i+1});
+  }
+
+  // Pagos por propietario por cuota
+  var pagos={};
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    pagos[PROPIETARIOS_BASE[i].uf]=[];
+    for(var j=0;j<numCuotas;j++) pagos[PROPIETARIOS_BASE[i].uf].push(0);
+  }
+
+  var extra={
+    id:nextExtraId++,
+    motivo:motivo,
+    cuotaUF:cuotaUF,
+    numCuotas:numCuotas,
+    cuotas:cuotas,
+    pagos:pagos,
+    activa:true
+  };
+  expensasExtra.push(extra);
+
+  document.getElementById('extra-motivo').value='';
+  document.getElementById('extra-resumen').innerHTML='';
+  guardarDatos();
+  showAlert('alert-extra');
+  renderExtraordinaria();
+}
+
+function registrarPagoExtraCuota(extraId, uf, cuotaIdx){
+  var extra=null;
+  for(var i=0;i<expensasExtra.length;i++) if(expensasExtra[i].id===extraId) extra=expensasExtra[i];
+  if(!extra)return;
+  var inputId='pago-extra-'+extraId+'-'+uf.replace(' ','')+'-'+cuotaIdx;
+  var input=document.getElementById(inputId);
+  if(!input)return;
+  var monto=parseFloat(input.value);
+  if(!monto){alert('Ingresá el monto pagado.');return;}
+  extra.pagos[uf][cuotaIdx]=monto;
+  guardarDatos();
+  renderExtraordinaria();
+}
+
+function toggleExtraActiva(id){
+  for(var i=0;i<expensasExtra.length;i++) if(expensasExtra[i].id===id) expensasExtra[i].activa=!expensasExtra[i].activa;
+  guardarDatos();
+  renderExtraordinaria();
+}
+
+function eliminarExpensaExtra(id){
+  if(!confirm('¿Confirmás eliminar esta expensa extraordinaria?'))return;
+  var nuevas=[];
+  for(var i=0;i<expensasExtra.length;i++) if(expensasExtra[i].id!==id) nuevas.push(expensasExtra[i]);
+  expensasExtra=nuevas;
+  guardarDatos();
+  renderExtraordinaria();
+}
+
+function renderExtraordinaria(){
+  calcularResumenExtra();
+
+  // Activas
+  var activasHtml='';
+  for(var a=0;a<expensasExtra.length;a++){
+    var extra=expensasExtra[a];
+    if(!extra.activa)continue;
+    activasHtml+='<div class="section-head"><span class="section-title">🏗 '+extra.motivo+'</span><button class="btn btn-ghost btn-sm" onclick="toggleExtraActiva('+extra.id+')">Archivar</button></div>';
+    activasHtml+='<div class="table-wrap" style="margin-bottom:20px;"><table><thead><tr><th>UF</th><th>Propietario</th>';
+    for(var c=0;c<extra.cuotas.length;c++){
+      activasHtml+='<th class="c">Cuota '+(c+1)+'<br><span style="font-size:10px;color:var(--muted);">'+extra.cuotas[c].label+'</span></th>';
+    }
+    activasHtml+='<th class="r">Total Pagado</th><th class="r">Saldo</th></tr></thead><tbody>';
+
+    for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+      var p=PROPIETARIOS_BASE[i];
+      var ufSafe=p.uf.replace(' ','');
+      var totalPagado=0;
+      for(var j=0;j<extra.numCuotas;j++) totalPagado+=(extra.pagos[p.uf][j]||0);
+      var totalDeuda=extra.cuotaUF*extra.numCuotas;
+      var saldo=totalDeuda-totalPagado;
+
+      activasHtml+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td>';
+      for(var c=0;c<extra.cuotas.length;c++){
+        var pagoCuota=extra.pagos[p.uf][c]||0;
+        var pagado=pagoCuota>=extra.cuotaUF;
+        if(pagado){
+          activasHtml+='<td class="c"><span class="badge badge-green">✓ '+fmt(pagoCuota)+'</span></td>';
+        } else {
+          activasHtml+='<td class="c"><div style="display:flex;gap:4px;justify-content:center;align-items:center;"><input type="number" id="pago-extra-'+extra.id+'-'+ufSafe+'-'+c+'" placeholder="'+extra.cuotaUF+'" style="width:70px;font-size:11px;padding:3px 5px;"><button class="btn btn-purple btn-sm" onclick="registrarPagoExtraCuota('+extra.id+',\''+p.uf+'\','+c+')">✓</button></div></td>';
+        }
+      }
+      activasHtml+='<td class="r '+(totalPagado>0?'val-purple':'val-muted')+'">'+fmt(totalPagado)+'</td>';
+      activasHtml+='<td class="r '+(saldo>0?'val-red':'val-green')+'">'+(saldo>0?fmt(saldo):'✓ Al día')+'</td>';
+      activasHtml+='</tr>';
+    }
+    activasHtml+='</tbody></table></div>';
+  }
+  document.getElementById('extra-activas-wrap').innerHTML=activasHtml;
+
+  // Historial
+  var histHtml='';
+  if(!expensasExtra.length){
+    histHtml='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Sin expensas extraordinarias creadas</td></tr>';
+  } else {
+    for(var i=expensasExtra.length-1;i>=0;i--){
+      var e=expensasExtra[i];
+      var inicio=e.cuotas.length>0?e.cuotas[0].label:'—';
+      histHtml+='<tr><td>'+e.motivo+'</td><td class="r val-purple">'+fmt(e.cuotaUF)+'</td><td class="c">'+e.numCuotas+'</td><td>'+inicio+'</td>'+
+        '<td class="c">'+(e.activa?'<span class="badge badge-amber">En curso</span>':'<span class="badge badge-blue">Archivada</span>')+'</td>'+
+        '<td class="c" style="white-space:nowrap;"><button class="btn btn-ghost btn-sm" onclick="toggleExtraActiva('+e.id+')" style="margin-right:4px;">'+(e.activa?'Archivar':'Reactivar')+'</button><button class="btn btn-danger btn-sm" onclick="eliminarExpensaExtra('+e.id+')">✕</button></td></tr>';
+    }
+  }
+  document.getElementById('extra-historial-tbody').innerHTML=histHtml;
+
+  // Badge topbar
+  var activas=0;for(var i=0;i<expensasExtra.length;i++) if(expensasExtra[i].activa) activas++;
+  var badge=document.getElementById('extra-badge-topbar');
+  if(badge){
+    if(activas>0){badge.style.display='inline-block';badge.textContent='🏗 Expensa Extra. Activa';}
+    else badge.style.display='none';
+  }
+}
+
+// ── COMPARTIR INFORME POR WHATSAPP ──
+function compartirInformeWhatsApp(){
+  var sel=document.getElementById('informe-mes-sel');
+  var key=sel?sel.value:mesActivo;
+  var m=meses[key];if(!m)return;
+  var ce=getCadenaEntry(key);
+  var pagaron=[],morosos=[];
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];var pagado=false;var cobros=m.cobros||[];
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf&&cobros[j].monto>=EXP_FIJA) pagado=true;
+    if(pagado)pagaron.push(p);else morosos.push(p);
+  }
+  var hoy=new Date();
+  var fechaEmision=hoy.getDate()+' de '+MESES_NOMBRES[hoy.getMonth()]+' de '+hoy.getFullYear();
+
+  var msg='*INFORME MENSUAL — CONSORCIO TATO JOVEN*\n';
+  msg+='Período: '+m.label+'\n';
+  msg+='Emitido: '+fechaEmision+'\n\n';
+  msg+='*RESUMEN FINANCIERO*\n';
+  msg+='Saldo inicial: '+fmt(ce.saldoInicial)+'\n';
+  msg+='Ingresos del mes: '+fmt(ce.ing)+'\n';
+  msg+='Egresos del mes: '+fmt(ce.eg)+'\n';
+  msg+='*Saldo en caja: '+fmt(ce.saldoAcum)+'*\n\n';
+  msg+='*ESTADO DE COBRANZA*\n';
+  msg+='✅ Al día ('+pagaron.length+'): '+(pagaron.length>0?pagaron.map(function(p){return p.nombre;}).join(', '):'Ninguno')+'\n';
+  if(morosos.length>0) msg+='⚠️ Pendientes ('+morosos.length+'): se recuerda vencimiento día 10 de cada mes.\n';
+  msg+='\nAnte cualquier consulta, comunicarse con la administración.\n';
+  msg+='_Administración — Consorcio Tato Joven_';
+
+  var link='https://wa.me/?text='+encodeURIComponent(msg);
+  window.open(link,'_blank');
+}
+
+function numeroALetras(n){
+  var u=['','un','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve'];
+  var d=['','','veinte','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+  var c=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+  if(n===0)return 'cero';
+  if(n<20)return u[n];
+  if(n<30)return 'veinti'+u[n-20];
+  if(n<100)return d[Math.floor(n/10)]+(n%10?' y '+u[n%10]:'');
+  if(n===100)return 'cien';
+  if(n<1000)return c[Math.floor(n/100)]+(n%100?' '+numeroALetras(n%100):'');
+  if(n<1000000){
+    var miles=Math.floor(n/1000);
+    var resto=n%1000;
+    var milesTxt=(miles===1?'mil':(numeroALetras(miles)+' mil'));
+    return milesTxt+(resto?' '+numeroALetras(resto):'');
+  }
+  return n.toString();
+}
+
+function renderReciboPreview(rec){
+  var prop=null;
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++) if(PROPIETARIOS_BASE[i].uf===rec.uf) prop=PROPIETARIOS_BASE[i];
+  var nombreProp=prop?prop.nombre:rec.uf;
+  var enteros=Math.floor(rec.monto);
+  var centavos=Math.round((rec.monto-enteros)*100);
+  var enLetras=numeroALetras(enteros).toUpperCase()+(centavos>0?(' CON '+centavos+'/100'):' CON 00/100')+' PESOS';
+  var partes=rec.fecha.split('/');
+  var dia=partes[0],mesNom=MESES_NOMBRES[parseInt(partes[1])-1],anio=partes[2];
+
+  var html='<div class="recibo-preview" id="recibo-imprimible">';
+  html+='<div class="recibo-encabezado">';
+  html+='<div class="recibo-cons">Consorcio Tato Joven</div>';
+  html+='<div class="recibo-subtitulo">Comprobante Oficial de Pago — Buenos Aires, Argentina</div>';
+  html+='</div>';
+  html+='<div class="recibo-num-fecha">';
+  html+='<span>N° <strong>'+String(rec.num).padStart(4,'0')+'</strong></span>';
+  html+='<span>'+dia+' de '+mesNom+' de '+anio+'</span>';
+  html+='</div>';
+  html+='<div class="recibo-campo">';
+  html+='<div class="recibo-campo-label">Recibi de</div>';
+  html+='<div class="recibo-campo-valor">'+nombreProp+' — '+rec.uf+'</div>';
+  html+='</div>';
+  html+='<div class="recibo-campo">';
+  html+='<div class="recibo-campo-label">La cantidad de</div>';
+  html+='<div class="recibo-campo-valor monto">'+fmt(rec.monto)+'</div>';
+  html+='</div>';
+  html+='<div class="recibo-campo">';
+  html+='<div class="recibo-campo-label">Son</div>';
+  html+='<div class="recibo-campo-valor letras">'+enLetras+'</div>';
+  html+='</div>';
+  html+='<div class="recibo-campo">';
+  html+='<div class="recibo-campo-label">En concepto de</div>';
+  html+='<div class="recibo-campo-valor">'+rec.concepto+' — '+getMes().label+'</div>';
+  html+='</div>';
+  html+='<div class="recibo-campo">';
+  html+='<div class="recibo-campo-label">Medio de pago</div>';
+  html+='<div class="recibo-campo-valor">'+rec.medio+(rec.op?(' — N° Op. '+rec.op):'')+'</div>';
+  html+='</div>';
+  html+='<div class="recibo-footer">';
+  html+='<div class="recibo-firma-wrap">';
+  html+='<div class="recibo-firma-nombre">Gustavo Fabián Peredo</div>';
+  html+='<div class="recibo-firma-linea"></div>';
+  html+='<div class="recibo-firma-cargo">Administrador — Consorcio Tato Joven</div>';
+  html+='</div>';
+  html+='<div class="recibo-sello">';
+  html+='<div class="recibo-sello-text">CONSORCIO<br>TATO JOVEN<br>✓ PAGADO</div>';
+  html+='</div>';
+  html+='</div>';
+  html+='</div>';
+
+  document.getElementById('recibo-preview-wrap').innerHTML=html;
+}
+
+function vistaPreviaRapida(){
+  var uf=document.getElementById('rec-uf').value;
+  var fechaRaw=document.getElementById('rec-fecha').value;
+  var monto=parseFloat(document.getElementById('rec-monto').value);
+  var medio=document.getElementById('rec-medio').value;
+  var concepto=document.getElementById('rec-concepto').value;
+  var op=document.getElementById('rec-op').value;
+  var num=parseInt(document.getElementById('rec-num').value);
+
+  if(!fechaRaw||!monto){alert('Completá fecha y monto para ver la vista previa.');return;}
+
+  var d=new Date(fechaRaw+'T12:00:00');
+  var fecha=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+  var rec={num:num,uf:uf,fecha:fecha,monto:monto,medio:medio,concepto:concepto,op:op};
+
+  renderReciboPreview(rec);
+  document.getElementById('recibo-preview-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function generarRecibo(){
+  var uf=document.getElementById('rec-uf').value;
+  var fechaRaw=document.getElementById('rec-fecha').value;
+  var monto=parseFloat(document.getElementById('rec-monto').value);
+  var medio=document.getElementById('rec-medio').value;
+  var concepto=document.getElementById('rec-concepto').value;
+  var op=document.getElementById('rec-op').value;
+  var num=parseInt(document.getElementById('rec-num').value);
+
+  if(!fechaRaw||!monto){alert('Completá fecha y monto.');return;}
+
+  var d=new Date(fechaRaw+'T12:00:00');
+  var fecha=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+  var rec={num:num,uf:uf,fecha:fecha,monto:monto,medio:medio,concepto:concepto,op:op};
+
+  var m=getMes();
+  if(!m.recibos)m.recibos=[];
+  m.recibos.push(rec);
+
+  document.getElementById('rec-num').value=num+1;
+
+  guardarDatos();
+  renderReciboPreview(rec);
+  renderRecibosHistorial();
+}
+
+function renderRecibosHistorial(){
+  var todos=[];
+  var keys=Object.keys(meses).sort();
+  for(var i=0;i<keys.length;i++){
+    var rs=meses[keys[i]].recibos||[];
+    for(var j=0;j<rs.length;j++)todos.push(rs[j]);
+  }
+  var tbody=document.getElementById('recibos-tbody');
+  if(!tbody)return;
+  if(!todos.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Sin recibos emitidos</td></tr>';
+    return;
+  }
+  function propNombre(uf){
+    for(var i=0;i<PROPIETARIOS_BASE.length;i++) if(PROPIETARIOS_BASE[i].uf===uf) return PROPIETARIOS_BASE[i].nombre;
+    return uf;
+  }
+  var html='';
+  for(var i=0;i<todos.length;i++){var r=todos[i];
+    html+='<tr><td><strong>'+String(r.num).padStart(4,'0')+'</strong></td><td class="val-muted">'+r.fecha+'</td><td><span class="uf">'+r.uf+'</span></td><td>'+propNombre(r.uf)+'</td><td style="font-size:11px;">'+r.concepto+'</td><td class="r val-green">'+fmt(r.monto)+'</td><td class="c" style="white-space:nowrap;"><button class="btn btn-ghost btn-sm" onclick="verRecibo(\''+r.uf+'\',\''+r.fecha+'\','+r.monto+',\''+r.medio+'\',\''+r.concepto+'\',\''+(r.op||'')+'\','+r.num+')" style="margin-right:4px;">Ver</button><button class="btn btn-danger btn-sm" onclick="eliminarRecibo('+r.num+')">✕</button></td></tr>';
+  }
+  tbody.innerHTML=html;
+}
+
+function verRecibo(uf,fecha,monto,medio,concepto,op,num){
+  renderReciboPreview({uf:uf,fecha:fecha,monto:monto,medio:medio,concepto:concepto,op:op,num:num});
+  document.getElementById('recibo-preview-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function imprimirRecibo(){
+  window.print();
+}
+
+function guardarDatosPagoFondo(){
+  datosPagoFondo.titular=document.getElementById('fpago-titular').value.trim();
+  datosPagoFondo.banco=document.getElementById('fpago-banco').value.trim();
+  datosPagoFondo.cbu=document.getElementById('fpago-cbu').value.trim();
+  datosPagoFondo.alias=document.getElementById('fpago-alias').value.trim();
+  guardarDatos(true);
+  alert('✅ Datos del Fondo de Obras guardados.');
+}
+function poblarDatosPagoFondo(){
+  var t=document.getElementById('fpago-titular'); if(!t) return;
+  t.value=datosPagoFondo.titular||'';
+  document.getElementById('fpago-banco').value=datosPagoFondo.banco||'';
+  document.getElementById('fpago-cbu').value=datosPagoFondo.cbu||'';
+  document.getElementById('fpago-alias').value=datosPagoFondo.alias||'';
+}
+
+function guardarDatosPago(){
+  datosPago.titular=document.getElementById('pago-titular').value.trim();
+  datosPago.banco=document.getElementById('pago-banco').value.trim();
+  datosPago.cbu=document.getElementById('pago-cbu').value.trim();
+  datosPago.alias=document.getElementById('pago-alias').value.trim();
+  guardarDatos(true);
+  renderLiquidacion();
+  alert('✅ Datos de pago guardados.');
+}
+function renderLiquidacionPage(){
+  document.getElementById('pago-titular').value=datosPago.titular||'';
+  document.getElementById('pago-banco').value=datosPago.banco||'';
+  document.getElementById('pago-cbu').value=datosPago.cbu||'';
+  document.getElementById('pago-alias').value=datosPago.alias||'';
+  var sel=document.getElementById('liq-uf');
+  var prev=sel.value;
+  var html='<option value="TODAS">Todas las unidades</option>';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    html+='<option value="'+p.uf+'">'+p.uf+' — '+p.nombre+'</option>';
+  }
+  sel.innerHTML=html;
+  sel.value=prev||'TODAS';
+  renderLiquidacion();
+}
+function liquidacionUF(p){
+  var m=getMes();
+  var saldoAnt=calcularSaldoFavorUF(p.uf,mesActivo); // positivo = a favor, negativo = debe
+  var cobros=m.cobros||[];
+  var pagado=0;
+  for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) pagado+=cobros[j].monto;
+  var cubierto=pagado+(saldoAnt>0?saldoAnt:0);
+  var interes=(cubierto<EXP_FIJA&&mesVencido(mesActivo))?EXP_FIJA*RECARGO_PCT:0;
+  var total=EXP_FIJA-saldoAnt-pagado+interes;
+  var partes=mesActivo.split('-');
+  var venc='10/'+partes[1]+'/'+partes[0];
+  var seg=new Date(parseInt(partes[0],10),parseInt(partes[1],10)-1,20);
+  var venc2=String(seg.getDate()).padStart(2,'0')+'/'+String(seg.getMonth()+1).padStart(2,'0')+'/'+seg.getFullYear();
+  var fila=function(lbl,val,cls){
+    return '<tr><td style="padding:6px 0;font-size:12px;color:var(--ink2);">'+lbl+'</td>'+
+           '<td class="r" style="padding:6px 0;font-size:12px;font-family:var(--mono);'+(cls||'')+'">'+val+'</td></tr>';
+  };
+  var h='<div class="recibo-preview" style="background:var(--white);border:1px solid var(--line);border-radius:4px;padding:26px 30px;margin-bottom:20px;page-break-after:always;">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:16px;">'+
+     '<div><div style="font-family:var(--serif);font-size:21px;line-height:1.2;">Consorcio Tato Joven</div>'+
+     '<div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px;">Liquidación de expensas</div></div>'+
+     '<div class="r" style="text-align:right;"><div style="font-family:var(--mono);font-size:13px;font-weight:600;">'+m.label+'</div>'+
+     '<div style="font-size:11px;color:var(--muted);margin-top:3px;">Vencimiento '+venc+'</div></div></div>';
+  h+='<div style="display:flex;gap:26px;margin-bottom:16px;font-size:12px;">'+
+     '<div><span style="font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);display:block;">Unidad</span><strong style="font-family:var(--mono);">'+p.uf+'</strong></div>'+
+     '<div><span style="font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);display:block;">Propietario</span><strong>'+p.nombre+'</strong></div>'+
+     '<div><span style="font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);display:block;">Coeficiente</span><strong style="font-family:var(--mono);">10,00%</strong></div></div>';
+  h+='<table style="width:100%;border-collapse:collapse;margin-bottom:14px;">';
+  if(saldoAnt<0) h+=fila('Saldo anterior (deuda)',fmt(Math.abs(saldoAnt)),'color:var(--red);font-weight:600;');
+  else if(saldoAnt>0) h+=fila('Saldo anterior a favor','− '+fmt(saldoAnt),'color:var(--green);font-weight:600;');
+  else h+=fila('Saldo anterior',fmt(0),'color:var(--muted);');
+  h+=fila('Expensa del período',fmt(EXP_FIJA));
+  if(pagado>0) h+=fila('Pagos registrados en el período','− '+fmt(pagado),'color:var(--green);font-weight:600;');
+  h+=fila('Interés por mora (10%)',fmt(interes),interes>0?'color:var(--red);font-weight:600;':'color:var(--muted);');
+  h+='</table>';
+  var pagar=total>0?total:0;
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;padding:12px 16px;border-radius:3px;">'+
+     '<span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Total a pagar</span>'+
+     '<span style="font-family:var(--mono);font-size:19px;font-weight:600;">'+fmt(pagar)+'</span></div>';
+  if(total<0) h+='<div style="margin-top:8px;font-size:11px;color:var(--green);">Queda un saldo a favor de '+fmt(Math.abs(total))+' que se descontará del próximo período.</div>';
+  if(interes===0&&!mesVencido(mesActivo)) h+='<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.6;">Abonando después del '+venc+' se aplica un recargo del 10% sobre la expensa completa, aunque se haya abonado una parte. Segundo vencimiento: '+venc2+'.</div>';
+  if(datosPago.cbu||datosPago.alias){
+    h+='<div style="margin-top:16px;border-top:1px dashed var(--line);padding-top:12px;font-size:11px;line-height:1.8;">'+
+       '<div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Formas de pago — transferencia</div>'+
+       (datosPago.titular?'<div>Titular: <strong>'+datosPago.titular+'</strong></div>':'')+
+       (datosPago.banco?'<div>Banco: '+datosPago.banco+'</div>':'')+
+       (datosPago.cbu?'<div>CBU / CVU: <strong style="font-family:var(--mono);">'+datosPago.cbu+'</strong></div>':'')+
+       (datosPago.alias?'<div>Alias: <strong style="font-family:var(--mono);">'+datosPago.alias+'</strong></div>':'')+
+       '</div>';
+  }
+  h+='</div>';
+  return h;
+}
+function renderLiquidacion(){
+  var wrap=document.getElementById('liq-preview-wrap');
+  if(!wrap) return;
+  var sel=document.getElementById('liq-uf').value||'TODAS';
+  var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){
+    var p=PROPIETARIOS_BASE[i];
+    if(sel!=='TODAS'&&p.uf!==sel) continue;
+    html+=liquidacionUF(p);
+  }
+  wrap.innerHTML=html;
+}
+
+function renderRecibos(){
+  populateUfSelectRecibo();
+  renderRecibosHistorial();
+  var maxNum=23;
+  var keys=Object.keys(meses);
+  for(var i=0;i<keys.length;i++){
+    var rs=meses[keys[i]].recibos||[];
+    for(var j=0;j<rs.length;j++) if(rs[j].num>maxNum) maxNum=rs[j].num;
+  }
+  document.getElementById('rec-num').value=maxNum+1;
+}
+function populateUfSelectRecibo(){
+  var el=document.getElementById('rec-uf');
+  if(!el)return;
+  var html='';
+  for(var i=0;i<PROPIETARIOS_BASE.length;i++){var p=PROPIETARIOS_BASE[i];html+='<option value="'+p.uf+'">'+p.uf+' — '+p.nombre+'</option>';}
+  el.innerHTML=html;
+}
+
+function showNewMonthModal(){document.getElementById('modal-overlay').style.display='flex';}
+function hideModal(){document.getElementById('modal-overlay').style.display='none';}
+function crearMes(){
+  var mes=document.getElementById('new-mes-sel').value,ano=document.getElementById('new-ano').value;
+  var mm={Enero:'01',Febrero:'02',Marzo:'03',Abril:'04',Mayo:'05',Junio:'06',Julio:'07',Agosto:'08',Septiembre:'09',Octubre:'10',Noviembre:'11',Diciembre:'12'};
+  var key=ano+'-'+mm[mes];
+  if(meses[key]){alert('Este mes ya existe.');return;}
+  meses[key]={label:mes+' '+ano,cobros:[],egresos:[],convenios:[],recibos:[]};
+  mesActivo=key;hideModal();guardarDatos();renderMonthSwitcher();
+  document.getElementById('topbar-period').textContent='● '+meses[key].label;
+  navigate('dashboard');
+}
+
+function navigate(page){
+  var ns=document.getElementById('nav-search');
+  if(ns&&ns.value){ns.value='';filtrarNav();}
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++)pages[i].classList.remove('active');
+  var navs=document.querySelectorAll('.nav-item');
+  for(var i=0;i<navs.length;i++)navs[i].classList.remove('active');
+  var el=document.getElementById('page-'+page);
+  if(el)el.classList.add('active');
+  for(var i=0;i<navs.length;i++){
+    var oc=navs[i].getAttribute('onclick');
+    if(oc&&oc.indexOf("'"+page+"'")!==-1)navs[i].classList.add('active');
+  }
+  var r={
+    dashboard:renderDashboard,propietarios:renderPropietarios,
+    expensas:function(){renderExpensas();populateUfSelects();},
+    convenio:function(){renderConvenio();populateUfSelects();},
+    egresos:renderEgresos,mora:renderMora,historial:renderHistorial,
+    avisos:renderAvisos,
+    recibos:renderRecibos,
+    liquidacion:renderLiquidacionPage,
+    fondo_obras:renderFondoObras,
+    extraordinaria:renderExtraordinaria,
+    actas:renderActaForm,
+    informe:function(){poblarInformeSel();generarInforme();},
+    calendario:renderCalendario,
+    presupuesto:renderPresupuesto,
+    backup:actualizarPreview,
+  };
+  if(r[page])r[page]();
+}
+
+function showAlert(id){
+  var el=document.getElementById(id);if(!el)return;
+  el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3000);
+}
+
+setInterval(function(){guardarDatos(false);},60000);
+
+document.addEventListener('DOMContentLoaded',function(){
+  cargarDatos();
+  var today=new Date().toISOString().split('T')[0];
+  var ids=['gasto-fecha','cobro-fecha','conv-fecha','cal-ev-fecha','acta-fecha','rec-fecha','extra-fecha','fondo-cobro-fecha','fondo-gasto-fecha'];
+  for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el)el.value=today;}
+  populateUfSelects();renderMonthSwitcher();
+  document.getElementById('topbar-period').textContent='● '+meses[mesActivo].label;
+  renderExtraordinaria();
+  renderDashboard();
+});
+/* ===== BUSCADOR DEL MENU ===== */
+function navItems(){return document.querySelectorAll('.sidebar .nav-item');}
+
+function filtrarNav(){
+  var input=document.getElementById('nav-search');
+  if(!input)return;
+  var q=input.value.trim().toLowerCase();
+  var items=navItems();
+  var secs=document.querySelectorAll('.sidebar .nav-section');
+  var hits=0,primero=null;
+  for(var i=0;i<items.length;i++){
+    items[i].classList.remove('nav-hit');
+    var coincide = (q==='') || items[i].textContent.toLowerCase().indexOf(q)!==-1;
+    items[i].style.display = coincide ? 'flex' : 'none';
+    if(q!=='' && coincide){hits++; if(!primero){primero=items[i];primero.classList.add('nav-hit');}}
+  }
+  for(var j=0;j<secs.length;j++){secs[j].style.display = (q==='') ? 'block' : 'none';}
+  var clear=document.getElementById('nav-search-clear');
+  if(clear)clear.classList.toggle('show', q!=='');
+  var vacio=document.getElementById('nav-empty');
+  if(vacio)vacio.classList.toggle('show', q!=='' && hits===0);
+}
+
+function moverHit(dir){
+  var visibles=[],items=navItems();
+  for(var i=0;i<items.length;i++){if(items[i].style.display!=='none')visibles.push(items[i]);}
+  if(!visibles.length)return;
+  var idx=-1;
+  for(var k=0;k<visibles.length;k++){if(visibles[k].classList.contains('nav-hit'))idx=k;}
+  if(idx>-1)visibles[idx].classList.remove('nav-hit');
+  var nuevo=(idx+dir+visibles.length)%visibles.length;
+  visibles[nuevo].classList.add('nav-hit');
+  visibles[nuevo].scrollIntoView({block:'nearest'});
+}
+
+function navSearchKey(e){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    var hit=document.querySelector('.sidebar .nav-item.nav-hit');
+    if(hit){hit.click();document.getElementById('nav-search').blur();}
+  }else if(e.key==='Escape'){
+    limpiarNavSearch();
+    document.getElementById('nav-search').blur();
+  }else if(e.key==='ArrowDown'){
+    e.preventDefault();moverHit(1);
+  }else if(e.key==='ArrowUp'){
+    e.preventDefault();moverHit(-1);
+  }
+}
+
+function limpiarNavSearch(){
+  var el=document.getElementById('nav-search');
+  if(!el)return;
+  el.value='';
+  filtrarNav();
+  el.focus();
+}
+
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&(e.key==='k'||e.key==='K')){
+    e.preventDefault();
+    var el=document.getElementById('nav-search');
+    if(el){el.focus();el.select();}
+  }
+});
+</script>
+</body>
+</html>
