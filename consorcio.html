@@ -956,8 +956,8 @@ function conectarDrive(){
       callback: function(resp){
         if(resp && resp.access_token){
           driveToken = resp.access_token;
-          mostrarEstadoDrive('✅ Conectado. Sincronizando ahora mismo...');
-          sincronizarDrive();
+          mostrarEstadoDrive('✅ Conectado. Trayendo la última versión de Drive...');
+          cargarDesdeDrive();
         } else {
           mostrarEstadoDrive('⚠️ No se pudo conectar: ' + JSON.stringify(resp));
         }
@@ -965,6 +965,41 @@ function conectarDrive(){
     });
   }
   driveTokenClient.requestAccessToken();
+}
+
+function cargarDesdeDrive(){
+  if(!driveToken) return;
+  fetch('https://www.googleapis.com/drive/v3/files/' + DRIVE_FILE_ID + '?alt=media', {
+    headers: { 'Authorization': 'Bearer ' + driveToken }
+  }).then(function(r){
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    return r.text();
+  }).then(function(texto){
+    var s = JSON.parse(texto);
+    meses = s.meses || DATOS_INICIALES.meses;
+    mesActivo = s.mesActivo || DATOS_INICIALES.mesActivo;
+    nextEgId = s.nextEgId || DATOS_INICIALES.nextEgId;
+    nextConvId = s.nextConvId || DATOS_INICIALES.nextConvId;
+    calEventos = s.calEventos || DATOS_INICIALES.calEventos;
+    actaTemas = s.actaTemas || [];
+    expensasExtra = s.expensasExtra || [];
+    nextExtraId = s.nextExtraId || 1;
+    fondoObras = s.fondoObras || { cobros: [], gastos: [], rendimientos: [], nextCobroId: 1, nextGastoId: 1, nextRendId: 1 };
+    if(s.datosPago) datosPago = s.datosPago;
+    if(s.datosPagoFondo) datosPagoFondo = s.datosPagoFondo;
+
+    localStorage.setItem(STORAGE_KEY, texto);
+
+    populateUfSelects();
+    renderMonthSwitcher();
+    document.getElementById('topbar-period').textContent = '● ' + meses[mesActivo].label;
+    renderExtraordinaria();
+    renderDashboard();
+
+    mostrarEstadoDrive('✅ Datos actualizados desde Drive — ' + new Date().toLocaleTimeString('es-AR'));
+  }).catch(function(e){
+    mostrarEstadoDrive('⚠️ No se pudo traer los datos de Drive: ' + e.message);
+  });
 }
 
 function programarSincronizacionDrive(){
@@ -2572,6 +2607,9 @@ document.addEventListener('keydown',function(e){
     if(el){el.focus();el.select();}
   }
 });
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
