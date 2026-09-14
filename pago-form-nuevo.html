@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago - Consorcio Tato Joven</title>
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --light-blue: #3b82f6;
+            --sky-blue: #0ea5e9;
+            --cyan: #06b6d4;
+            --white: #ffffff;
+            --gray-dark: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray-lighter: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--sky-blue) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            bottom: -80px;
+            left: -80px;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 14px;
+            opacity: 0.95;
+            margin-bottom: 0;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+            border-bottom: 1px solid var(--gray-light);
+            padding: 16px 20px;
+            font-size: 12px;
+            color: var(--gray-dark);
+        }
+
+        .info-bar-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: #10b981;
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--gray-dark);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            color: var(--gray-dark);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .command-preview {
+            background: var(--gray-lighter);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 24px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: var(--primary-blue);
+            word-break: break-all;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .button {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .button-primary {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: var(--light-blue);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            background: var(--gray-lighter);
+            color: var(--gray-dark);
+            border: 1px solid var(--gray-light);
+        }
+
+        .button-secondary:hover {
+            background: var(--gray-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #15803d;
+            font-size: 13px;
+            margin-top: 16px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Floating Bubbles */
+        .floating-bubbles {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 50;
+        }
+
+        .bubble {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .bubble.whatsapp {
+            background: #25d366;
+        }
+
+        .bubble.telegram {
+            background: #0088cc;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-dark);
+            color: white;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            margin: 4px 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .footer-link {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 30px 20px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .info-bar-container {
+                gap: 12px;
+            }
+
+            .info-item {
+                font-size: 11px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+
+            .floating-bubbles {
+                bottom: 20px;
+                right: 16px;
+                gap: 8px;
+            }
+
+            .bubble {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-light);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="logo-circle">
+                <img src="consorcio-logo.png" alt="Consorcio Tato Joven Logo">
+            </div>
+            <h1>Consorcio Tato Joven</h1>
+            <p>Sistema de Pagos</p>
+        </div>
+    </div>
+
+    <!-- Info Bar -->
+    <div class="info-bar">
+        <div class="info-bar-container">
+            <div class="info-item">
+                📍 Gutemberg 1931, San Miguel BA
+            </div>
+            <div class="info-item">
+                🕐 <span class="clock" id="clock">12:00:00</span>
+            </div>
+            <div class="info-item">
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    En línea
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="card">
+            <form id="pagoForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="uf">UF (Unidad Funcional)</label>
+                        <select id="uf" name="uf" required>
+                            <option value="">-- Seleccionar --</option>
+                            <option value="11">UF 11</option>
+                            <option value="12">UF 12</option>
+                            <option value="13">UF 13</option>
+                            <option value="14">UF 14</option>
+                            <option value="15">UF 15</option>
+                            <option value="16">UF 16</option>
+                            <option value="17">UF 17</option>
+                            <option value="18">UF 18</option>
+                            <option value="19">UF 19</option>
+                            <option value="20">UF 20</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre Propietario</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Sergio" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="monto">Monto ($)</label>
+                        <input type="number" id="monto" name="monto" placeholder="Ej: 55000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo de Mensaje</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="">-- Seleccionar --</option>
+                            <option value="pago">✅ Pago Confirmado</option>
+                            <option value="recordatorio">⏰ Recordatorio</option>
+                            <option value="alerta">⚠️ Alerta de Atraso</option>
+                            <option value="fondo">🏗️ Fondo de Obras</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="command-preview" id="commandPreview">
+                    📋 Vista previa del comando:<br>
+                    <strong>/pago UF__ ___ _____ ____</strong>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="button button-secondary" id="copyBtn">
+                        📋 Copiar para Telegram
+                    </button>
+                    <button type="submit" class="button button-primary" id="submitBtn">
+                        ✈️ Enviar Directo
+                    </button>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    ✅ Mensaje enviado correctamente a Telegram
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>Consorcio Tato Joven</strong> • San Miguel, Buenos Aires</p>
+        <p>Gustavo Fabián Peredo - Administración</p>
+        <div class="footer-links">
+            <a href="https://wa.me/541130591621" class="footer-link">+54 11 3059-1621</a>
+            <span style="opacity: 0.3;">•</span>
+            <a href="mailto:tavoriver@yahoo.com.ar" class="footer-link">tavoriver@yahoo.com.ar</a>
+        </div>
+    </div>
+
+    <!-- Floating Bubbles -->
+    <div class="floating-bubbles">
+        <a href="https://wa.me/541130591621?text=Hola%20Tato%20Joven" class="bubble whatsapp" title="WhatsApp">💬</a>
+        <a href="https://t.me/6224813556" class="bubble telegram" title="Telegram">✈️</a>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Form handling
+        const pagoForm = document.getElementById('pagoForm');
+        const ufSelect = document.getElementById('uf');
+        const nombreInput = document.getElementById('nombre');
+        const montoInput = document.getElementById('monto');
+        const tipoSelect = document.getElementById('tipo');
+        const commandPreview = document.getElementById('commandPreview');
+        const copyBtn = document.getElementById('copyBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+
+        function updatePreview() {
+            const uf = ufSelect.value;
+            const nombre = nombreInput.value || '___';
+            const monto = montoInput.value || '_____';
+            const tipo = tipoSelect.value || '____';
+
+            if (uf && nombreInput.value && montoInput.value && tipoSelect.value) {
+                commandPreview.innerHTML = `
+                    📋 Vista previa del comando:<br>
+                    <strong>/pago UF${uf} ${nombre} ${monto} ${tipo}</strong>
+                `;
+                commandPreview.dataset.command = `/pago UF${uf} ${nombre} ${monto} ${tipo}`;
+            } else {
+                commandPreview.innerHTML = `
+                    📋 Vista previa del comando:<br>
+                    <strong>/pago UF__ ___ _____ ____</strong>
+                `;
+                delete commandPreview.dataset.command;
+            }
+        }
+
+        ufSelect.addEventListener('change', updatePreview);
+        nombreInput.addEventListener('input', updatePreview);
+        montoInput.addEventListener('input', updatePreview);
+        tipoSelect.addEventListener('change', updatePreview);
+
+        // Copy to clipboard
+        copyBtn.addEventListener('click', () => {
+            const command = commandPreview.dataset.command;
+            if (command) {
+                navigator.clipboard.writeText(command).then(() => {
+                    copyBtn.textContent = '✅ Copiado!';
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copiar para Telegram';
+                    }, 2000);
+                }).catch(() => {
+                    alert('Error al copiar. Por favor copia manualmente.');
+                });
+            }
+        });
+
+        // Form submission
+        pagoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                uf: ufSelect.value,
+                nombre: nombreInput.value,
+                monto: montoInput.value,
+                tipo: tipoSelect.value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                // Send to n8n webhook
+                const response = await fetch('https://n8n.example.com/webhook/pago', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    successMessage.classList.add('show');
+                    pagoForm.reset();
+                    updatePreview();
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 3000);
+                }
+            } catch (error) {
+                // Silently handle webhook errors - user can still copy command
+                successMessage.textContent = '✅ Comando generado. Cópialo y úsalo en Telegram.';
+                successMessage.classList.add('show');
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
