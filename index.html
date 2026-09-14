@@ -1,194 +1,629 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consorcio Tato Joven — Consultas</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:#0e0d0b;font-family:'Geist Mono',monospace;color:#fff;min-height:100vh;display:flex;flex-direction:column;}
-.header{padding:24px 32px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:18px;background:#0e0d0b;}
-.logo-circle{width:48px;height:48px;background:transparent;border:1.5px solid #c9921a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.header-text{display:flex;flex-direction:column;gap:3px;}
-.header-title{font-family:'Instrument Serif',serif;font-size:26px;color:#fff;font-style:italic;letter-spacing:.3px;line-height:1;}
-.header-sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:1px;}
-.header-badge{margin-left:auto;background:transparent;border:1px solid rgba(29,107,62,.4);color:#4ade80;font-size:8px;padding:4px 12px;border-radius:20px;letter-spacing:1.5px;}
-.chat-wrap{flex:1;overflow-y:auto;padding:20px 16px;display:flex;flex-direction:column;gap:12px;max-width:700px;width:100%;margin:0 auto;}
-.bienvenida{text-align:center;padding:32px 16px;}
-.bienvenida h2{font-family:'Instrument Serif',serif;font-size:24px;color:#fff;margin-bottom:8px;}
-.bienvenida p{font-size:10px;color:rgba(255,255,255,.4);line-height:1.9;}
-.bienvenida .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
-.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;font-size:10px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;}
-.chip:hover{background:rgba(201,146,26,.15);border-color:rgba(201,146,26,.4);color:#c9921a;}
-.msg{display:flex;flex-direction:column;max-width:85%;}
-.msg.user{align-self:flex-end;align-items:flex-end;}
-.msg.bot{align-self:flex-start;align-items:flex-start;}
-.msg-bubble{padding:11px 15px;border-radius:16px;font-size:11px;line-height:1.75;white-space:pre-wrap;}
-.msg.user .msg-bubble{background:#c9921a;color:#12110f;border-radius:16px 16px 2px 16px;}
-.msg.bot .msg-bubble{background:rgba(255,255,255,.04);color:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.07);border-radius:16px 16px 16px 2px;font-family:'Caveat',cursive;font-size:16px;line-height:1.8;}
-.bienvenida h2{font-family:'Caveat',cursive;font-size:32px;}
-.bienvenida p{font-family:'Caveat',cursive;font-size:16px;}
-.msg-time{font-size:8px;color:rgba(255,255,255,.2);margin-top:3px;padding:0 4px;}
-.typing-bubble{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px 16px 16px 2px;padding:12px 16px;display:flex;gap:5px;align-items:center;}
-.dot{width:6px;height:6px;background:rgba(255,255,255,.3);border-radius:50%;animation:bounce .9s infinite;}
-.dot:nth-child(2){animation-delay:.15s;}
-.dot:nth-child(3){animation-delay:.3s;}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
-.input-area{border-top:1px solid rgba(255,255,255,.08);padding:14px 16px;display:flex;gap:10px;align-items:flex-end;max-width:700px;width:100%;margin:0 auto;}
-textarea{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;font-family:'Geist Mono',monospace;font-size:11px;color:#fff;resize:none;min-height:46px;max-height:120px;outline:none;transition:border .15s;line-height:1.5;}
-textarea::placeholder{color:rgba(255,255,255,.25);}
-textarea:focus{border-color:rgba(201,146,26,.5);}
-.send-btn{width:46px;height:46px;background:#c9921a;border:none;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s;flex-shrink:0;}
-.send-btn:hover{background:#b5820f;}
-.send-btn:disabled{background:rgba(255,255,255,.1);cursor:not-allowed;}
-.footer{text-align:center;padding:8px;font-size:8px;color:rgba(255,255,255,.15);letter-spacing:1px;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consorcio Tato Joven - Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            height: 90vh;
+        }
+
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+
+        .header {
+            background: #0ea5e9;
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header-info {
+            font-size: 13px;
+            opacity: 0.95;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .time-display {
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+            background: #4ade80;
+        }
+
+        .status-closed {
+            background: #f87171;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            gap: 8px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.bot .message-content {
+            background: #e0f2fe;
+            color: #0c4a6e;
+            border-left: 3px solid #0ea5e9;
+        }
+
+        .message.user .message-content {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .input-area {
+            padding: 16px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+            background: white;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+        }
+
+        button {
+            padding: 10px 14px;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #0284c7;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .quick-replies {
+            padding: 0 16px 12px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .quick-reply-btn {
+            padding: 6px 12px;
+            background: #e0f2fe;
+            color: #0c4a6e;
+            border: 1px solid #06b6d4;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .quick-reply-btn:hover {
+            background: #06b6d4;
+            color: white;
+        }
+
+        .image-section {
+            width: 350px;
+            background: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+        }
+
+        .street-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .contact-info {
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact-info h3 {
+            font-size: 14px;
+            color: #0ea5e9;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .contact-item {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-item a {
+            color: #0ea5e9;
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #f0f9ff;
+            border-left: 3px solid #0ea5e9;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #0c4a6e;
+            line-height: 1.4;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            margin-right: 4px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-section {
+                width: 100%;
+                max-height: 300px;
+            }
+
+            .street-image {
+                height: 200px;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            40% {
+                transform: translateY(-8px);
+                opacity: 0.7;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="chat-section">
+            <div class="header">
+                <h1>Consorcio Tato Joven</h1>
+                <div class="header-info">
+                    <span class="time-display"><span class="status-indicator" id="statusIndicator"></span>Horario: <span id="currentTime">--:--</span></span>
+                    <span id="statusText"></span>
+                </div>
+            </div>
 
-<div class="header">
-  <div class="logo-circle">🏠</div>
-  <div class="header-text">
-    <div class="header-title">Consorcio Tato Joven</div>
-    <div class="header-sub">Asistente de Propietarios</div>
-  </div>
-  <div class="header-badge">● En línea</div>
-</div>
+            <div class="messages" id="messages"></div>
 
-<div class="chat-wrap" id="chat">
-  <div class="bienvenida" id="bienvenida">
-    <h2>¡Bienvenido/a! 👋</h2>
-    <p>Soy el asistente del <strong>Consorcio Tato Joven</strong>.<br>Podés consultarme sobre expensas, vencimientos,<br>pagos y todo lo relacionado con el consorcio.</p>
-    <div class="chips">
-      <div class="chip" onclick="enviarChip('¿Cuándo vence la expensa?')">¿Cuándo vence la expensa?</div>
-      <div class="chip" onclick="enviarChip('¿Cuánto tengo que pagar?')">¿Cuánto tengo que pagar?</div>
-      <div class="chip" onclick="enviarChip('¿Qué pasa si pago tarde?')">¿Qué pasa si pago tarde?</div>
-      <div class="chip" onclick="enviarChip('Quiero hacer un convenio de pago')">Quiero hacer un convenio</div>
-      <div class="chip" onclick="enviarChip('¿Cuál es el saldo del consorcio?')">Saldo del consorcio</div>
-      <div class="chip" onclick="enviarChip('¿Cómo me contacto con la administración?')">Contactar administración</div>
+            <div id="quickRepliesContainer" class="quick-replies"></div>
+
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="userInput" placeholder="Escribe tu pregunta aquí..." />
+                    <button id="sendBtn">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-section">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QAqRXhpZgAASUkqAAgAAAABADEBAgAHAAAAGgAAAAAAAABHb29nbGUAAP/bAIQAAwICCAoICgoICAgKCgoKCAoKCAgICggKCAoKCgoKCgoKCggICAgKCgoKCAoKCgoICAgKCgoICgsNCggNCAgKCAEDBAQGBQYKBgYKDQ0KDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0IDQ0ICAgNCAgICAgI/8AAEQgDjwKrAwEiAAIRAQMRAf/EAB0AAAICAwEBAQAAAAAAAAAAAAQFAgMAAQYHCAn/xABREAACAQMDAgQDBQYDBgUBAREBAhEDEiEABDEiQQUTMlEGYXEjQoGRoQcUUrHB8CNi0QgVcoLh8SRDU5KicsIWY9IXGHOTs8MlNERkg6PidP/EABoBAQEBAQEBAQAAAAAAAAAAAAABAgMEBQb/xAAxEQEBAAICAgEDAwIFBQEBAAAAAQIRAyESMUEEE1EiYRQycYEFkaGx0RVCweHwUiP/2gAMAwEAAhEDEQA/AP1T1F2xnXKfAX7Udlvgx2tW4pF9NgUdQeCVP3TBgiRp1UreY7IPSkeYexJEimPwhn+RAzcYtll1U3+F+zWZc9/SPZe34nk/gO2jNaGs1FCeKbsqkgAsYVFPdmwPw7t7KCe2p7DZ2IFmY5J5YnLMfmzEsfmdB7b7SoX+4lyp834d/wAM01OD/ich1011Rms1ms1BxX7X9hfsKkcoUf8AJgD+jHXzltaeOTr6w+I9lft6qfxU3A+tpj9Y18q0Bkj567YXpjIVtSf++vYP2Obwy6nuoPPsf/8AbXkVE69G/ZVu43Cj3DD9P9QNaynSR7TrNZrWvO6M1vWa1oKqyHkcj9R7f6fP8dV7vaJUQq6hlYQQe/8AIgjkEQQR2I0Tqiobc9u/y+f09/zxmQ5XwHxmtRrfu27lgZ/d90eK4/8ATqHgVlH/AOkAJAkdXYg6B8b8Gp1qTU6glW9jBUgyrKeQykBlIyCBpV8J+LP10K7Bq9G0Mwx5tNp8urHYuBDASA4ImCNB0ms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Gp1res1mg3rWazWaDWazWa1GazWazQZrNZrNBms1ms0Gp1res1mg3rNa1rNBms1ms0GazWazQZrNZrNBms1ms0Gp1res0GazWazQZrNZrNBmta1mes1mg3rNa1rNBms1ms0GazWazQZrNZrNBmta1res1mg3res1vWaBms1rWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0GazWazQZrWta3rNBms1ms0GazWazQZrNZrNBms1ms0GazWazQZrWta3rNBms1ms0GazWazQZrNZrNBms1ms0GazWazQZrWta3rNBms1ms0GazWazQZrNZrNBms1ms0Gp1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1ms0Ga1res0GazWazQZrNZrNBms1ms0GazWazQZrNZrNBms1mm==" alt="Gutemberg 1931" class="street-image">
+
+            <div class="contact-info">
+                <h3>📍 Ubicación</h3>
+                <p class="contact-item">Gutemberg 1931</p>
+
+                <h3 style="margin-top: 16px;">📞 Contacto</h3>
+                <p class="contact-item">
+                    <span>Teléfono:</span>
+                    <a href="tel:1130591621">1130591621</a>
+                </p>
+                <p class="contact-item">
+                    <span>Email:</span>
+                    <a href="mailto:tavoriver@yahoo.com.ar">tavoriver@yahoo.com.ar</a>
+                </p>
+
+                <h3 style="margin-top: 16px;">💰 Fondo de Obras</h3>
+                <div class="info-box">
+                    <strong>Saldo Disponible:</strong><br/>$75,000.00
+                </div>
+
+                <h3 style="margin-top: 16px;">⏰ Horario</h3>
+                <div class="info-box">
+                    <strong>Atención:</strong><br/>14:00 - 18:00 hs
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div style="max-width:700px;width:100%;margin:0 auto;">
-  <div class="input-area">
-    <textarea id="inp" placeholder="Escribí tu consulta acá..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviar();}"></textarea>
-    <button class="send-btn" id="send-btn" onclick="enviar()">↑</button>
-  </div>
-</div>
-<div class="footer">CONSORCIO TATO JOVEN · SISTEMA DE CONSULTAS</div>
+    <script>
+        const CLAUDE_API_KEY = 'REEMPLAZAR_CON_TU_API_KEY';
+        const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 
-<script>
-const API_KEY = 'REEMPLAZAR_CON_TU_API_KEY';
-const SYSTEM = `Sos el asistente oficial del Consorcio Tato Joven, un edificio de 10 unidades funcionales (UF 11 a UF 20) ubicado en el conurbano bonaerense, Argentina.
+        const messagesContainer = document.getElementById('messages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const currentTimeDisplay = document.getElementById('currentTime');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        const quickRepliesContainer = document.getElementById('quickRepliesContainer');
 
-ROL: Asistir al administrador y responder consultas de propietarios con tono profesional, cordial y claro. Siempre tratamiento de "usted". Nunca des información de otros propietarios a quien consulta.
+        const businessHoursStart = 14;
+        const businessHoursEnd = 18;
 
-EXPENSA Y MORA:
-- Expensa fija: $50.000/mes por unidad
-- Vencimiento: día 10 de cada mes
-- Recargo por mora: 10% ($5.000) a partir del día 11
-- El recargo se acumula mes a mes hasta regularizar
+        const systemPrompt = `Eres un asistente virtual para el Consorcio Tato Joven ubicado en Gutemberg 1931.
 
-PROPIETARIOS:
-- UF 11: Sergio
-- UF 12: Ivana y Daniel
-- UF 13: Estela
-- UF 14: Ivana y Sebastián
-- UF 15: Mariana y Pedro
-- UF 16: Marianela y Fernando
-- UF 17: Daniela y Gustavo
-- UF 18: Erik
-- UF 19: Cecilia y Leo
-- UF 20: Soledad
+Tu objetivo es proporcionar información precisa y útil sobre asuntos del consorcio a los residentes.
 
-ESTADO FINANCIERO — JUNIO 2026:
-- Saldo en caja: $342.597,59
-- Ingresos del mes: $352.000
-- Egresos del mes: $363.756,52
-- Expensas cobradas: UF 12, UF 15, UF 16, UF 17  Y UF 19 al día. Resto pendiente.
-- Convenio registrado: UF 17 Daniela y Gustavo pagaron $102.000 por convenio deuda AySA
+INFORMACIÓN IMPORTANTE DEL CONSORCIO:
+- Horario de atención: 14:00 a 18:00 horas
+- Teléfono: 1130591621
+- Email: tavoriver@yahoo.com.ar
 
-GASTOS DEL MES:
-- Luz/Electricidad: $3.005,59
-- Agua AySA: $360.750,93
+FONDO DE OBRAS (Circular 004):
+- Saldo actual disponible: $75,000.00
+- Total aportado: $75,000.00
+- Unidades que han aportado: 3 de 10
+- Gastos ejecutados: $0.00
+- Aportes voluntarios de residentes
+- Banco: Brubank
+- Alias: gustavoperedo
+- CBU: 1430001713049409400019
+- Titular: Gustavo Fabián Peredo
+- Comprobantes disponibles por WhatsApp: 11 3059-1621
+- Los aportes se mantienen en cuenta separada con transparencia
+- Los rendimientos van al fondo
 
-POLÍTICAS DEL CONSORCIO:
-- Los comprobantes originales están disponibles para consulta de cualquier propietario
-- Para acordar un convenio de pago contactar a la administración
-- Los gastos extraordinarios se distribuyen en partes iguales entre las 10 unidades y se notifican previamente
-- Las reuniones de propietarios se convocan con al menos 5 días de anticipación por WhatsApp
+DIRECTRICES DE RESPUESTA:
+1. Sé profesional, educado y cordial en todo momento
+2. Si alguien pregunta sobre el Fondo de Obras, explica claramente:
+   - Qué es y para qué sirve
+   - Cómo se pueden hacer aportes voluntarios
+   - Los beneficios de contribuir
+   - Cómo se garantiza la transparencia
+3. Responde preguntas sobre expensas, mora, pagos y estados de cuentas de manera clara
+4. Si la pregunta es fuera de tu conocimiento, sugiere que se comuniquen por teléfono o email
+5. Mantén un tono profesional pero amable y accesible
 
-PREGUNTAS FRECUENTES:
-- Si preguntan cómo pagar: el pago se realiza directamente al administrador del consorcio
-- Si preguntan por reparaciones o problemas edilicios: derivar a la administración
-- Si preguntan por reuniones: las convocatorias se informan con al menos 5 días de anticipación por WhatsApp
-- Si preguntan quién es el administrador: pueden contactarse por WhatsApp con la administración del Consorcio Tato Joven
-- Si saludan o agradecen: respondé amablemente y ofrecé ayuda adicional
-- Si preguntan algo que no sabés: decí "Voy a consultar con la administración y le haremos llegar la respuesta a la brevedad"
+DATOS DE EJEMPLO (actualiza según disponibilidad real):
+- Puedes consultar sobre los servicios del consorcio
+- Puedes explicar cómo acceder a reportes de expensas
+- Puedes dar información sobre el fondo de obras y contribuciones voluntarias`;
 
-CÓMO RESPONDÉS:
-- Siempre en español
-- Tono formal y amable, tratamiento de "usted"
-- Respuestas claras, concretas y breves
-- Nunca des información de otros propietarios
-- Nunca inventes números ni datos que no tengas
-- Firmá siempre como: Administración — Consorcio Tato Joven`;
+        let conversationHistory = [];
 
-let historial = [];
+        // Actualizar hora en tiempo real
+        function updateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'America/Argentina/Buenos_Aires',
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const timeString = now.toLocaleString('es-AR', options);
+            currentTimeDisplay.textContent = timeString;
 
-function hora(){const n=new Date();return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;}
+            const hours = parseInt(timeString.split(':')[0]);
+            const isOpen = hours >= businessHoursStart && hours < businessHoursEnd;
 
-function agregarMsg(rol, texto){
-  const b=document.getElementById('bienvenida');if(b)b.remove();
-  const chat=document.getElementById('chat');
-  const div=document.createElement('div');div.className=`msg ${rol}`;
-  div.innerHTML=`<div class="msg-bubble">${texto}</div><div class="msg-time">${hora()}</div>`;
-  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
-}
+            if (isOpen) {
+                statusIndicator.classList.remove('status-closed');
+                statusText.textContent = '✓ Atendiendo';
+                statusText.style.color = '#4ade80';
+            } else {
+                statusIndicator.classList.add('status-closed');
+                statusText.textContent = '✗ Fuera de horario';
+                statusText.style.color = '#f87171';
+            }
+        }
 
-function mostrarTyping(){
-  const b=document.getElementById('bienvenida');if(b)b.remove();
-  const chat=document.getElementById('chat');
-  const div=document.createElement('div');div.className='msg bot';div.id='typing';
-  div.innerHTML=`<div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
-  chat.appendChild(div);chat.scrollTop=chat.scrollHeight;
-}
-function quitarTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+        updateTime();
+        setInterval(updateTime, 60000);
 
-function enviarChip(txt){document.getElementById('inp').value=txt;enviar();}
+        // Mostrar preguntas rápidas
+        function showQuickReplies(isBusinessHours) {
+            quickRepliesContainer.innerHTML = '';
 
-async function enviar(){
-  const inp=document.getElementById('inp');
-  const txt=inp.value.trim();if(!txt)return;
-  inp.value='';
-  document.getElementById('send-btn').disabled=true;
-  agregarMsg('user',txt);
-  historial.push({role:'user',content:txt});
-  mostrarTyping();
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:800,system:SYSTEM,messages:historial})
-    });
-    const d=await r.json();
-    quitarTyping();
-    if(d.content&&d.content[0]){
-      const resp=d.content[0].text;
-      historial.push({role:'assistant',content:resp});
-      agregarMsg('bot',resp);
-    } else {
-      agregarMsg('bot','Disculpe, hubo un inconveniente. Por favor intente nuevamente.');
-    }
-  }catch(e){
-    quitarTyping();
-    agregarMsg('bot','Disculpe, no es posible conectarse en este momento. Por favor comuníquese directamente con la administración.');
-  }
-  document.getElementById('send-btn').disabled=false;
-  document.getElementById('inp').focus();
-}
-</script>
+            const replies = isBusinessHours ? [
+                '¿Cuál es el saldo del Fondo de Obras?',
+                '¿Cómo puedo aportar al Fondo?',
+                '¿Cuáles son mis expensas?',
+                '¿Cómo consultar mis pagos?'
+            ] : [
+                'Ver información de contacto',
+                '¿Cuál es el horario de atención?',
+                'Más información sobre el Fondo'
+            ];
+
+            replies.forEach(reply => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-reply-btn';
+                btn.textContent = reply;
+                btn.onclick = () => {
+                    userInput.value = reply;
+                    sendMessage();
+                };
+                quickRepliesContainer.appendChild(btn);
+            });
+        }
+
+        // Verificar si es horario de atención
+        function isBusinessHours() {
+            const now = new Date();
+            const hours = now.getHours();
+            return hours >= businessHoursStart && hours < businessHoursEnd;
+        }
+
+        // Agregar mensaje a la interfaz
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+
+            messageDiv.appendChild(contentDiv);
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Mostrar indicador de escritura
+        function showLoadingIndicator() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            messageDiv.id = 'loading-indicator';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+            messageDiv.appendChild(contentDiv);
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Remover indicador de escritura
+        function removeLoadingIndicator() {
+            const loadingEl = document.getElementById('loading-indicator');
+            if (loadingEl) loadingEl.remove();
+        }
+
+        // Enviar mensaje a Claude API
+        async function sendToClaudeAPI(userMessage) {
+            if (!CLAUDE_API_KEY || CLAUDE_API_KEY === 'REEMPLAZAR_CON_TU_API_KEY') {
+                return "⚠️ API Key no configurada. Por favor, reemplaza 'REEMPLAZAR_CON_TU_API_KEY' con tu clave real en el código.";
+            }
+
+            const hours = new Date().getHours();
+            const outsideHours = hours < businessHoursStart || hours >= businessHoursEnd;
+
+            let enhancedSystemPrompt = systemPrompt;
+            if (outsideHours) {
+                enhancedSystemPrompt += `\n\nNOTA IMPORTANTE: El horario de atención es de 14:00 a 18:00 horas. Ahora es ${hours}:${new Date().getMinutes().toString().padStart(2, '0')} fuera del horario de atención.
+Responde de manera formal y cortés, informando que fuera del horario de atención solo puedes proporcionar información general. Sugiere que se comuniquen durante el horario de atención para consultas específicas.`;
+            }
+
+            conversationHistory.push({
+                role: 'user',
+                content: userMessage
+            });
+
+            try {
+                showLoadingIndicator();
+
+                const response = await fetch(CLAUDE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': CLAUDE_API_KEY,
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-3-5-sonnet-20241022',
+                        max_tokens: 1024,
+                        system: enhancedSystemPrompt,
+                        messages: conversationHistory
+                    })
+                });
+
+                removeLoadingIndicator();
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                    if (response.status === 401) {
+                        return "❌ Error de autenticación. Verifica que tu API Key sea válida.";
+                    }
+                    return "❌ Error al procesar la solicitud. Por favor, intenta más tarde.";
+                }
+
+                const data = await response.json();
+                const assistantMessage = data.content[0].text;
+
+                conversationHistory.push({
+                    role: 'assistant',
+                    content: assistantMessage
+                });
+
+                return assistantMessage;
+
+            } catch (error) {
+                removeLoadingIndicator();
+                console.error('Error:', error);
+                return "❌ Error de conexión. Verifica tu conexión a internet.";
+            }
+        }
+
+        // Enviar mensaje
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, true);
+            userInput.value = '';
+
+            const response = await sendToClaudeAPI(message);
+            addMessage(response, false);
+        }
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Inicializar
+        showQuickReplies(isBusinessHours());
+        addMessage('¡Bienvenido al Consorcio Tato Joven! 👋 ¿En qué puedo ayudarte?', false);
+    </script>
 </body>
 </html>
