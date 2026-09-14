@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consorcio Tato Joven - Centro de Consultas</title>
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --light-blue: #3b82f6;
+            --sky-blue: #0ea5e9;
+            --cyan: #06b6d4;
+            --dark-bg: #0f172a;
+            --light-bg: #f0f9ff;
+            --white: #ffffff;
+            --gray-dark: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray-lighter: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--sky-blue) 100%);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .info-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .clock {
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Info Bar below header */
+        .address-bar {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+            border-bottom: 1px solid var(--gray-light);
+            padding: 12px 20px;
+            font-size: 12px;
+            color: var(--gray-dark);
+        }
+
+        .address-bar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .address-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: #10b981;
+            color: white;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--gray-light);
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-dark);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            background: var(--light-bg);
+            color: var(--primary-blue);
+        }
+
+        .tab-button.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--primary-blue);
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chat Tab */
+        .chat-container {
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            gap: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.bot .message-bubble {
+            background: var(--light-bg);
+            color: var(--gray-dark);
+            border-radius: 12px 12px 12px 4px;
+        }
+
+        .message.user .message-bubble {
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 12px 12px 4px 12px;
+        }
+
+        .message-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        .quick-questions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 0 16px 8px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .quick-btn {
+            padding: 8px;
+            border: 1px solid var(--gray-light);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gray-dark);
+            transition: all 0.2s ease;
+            white-space: normal;
+            text-align: left;
+        }
+
+        .quick-btn:hover {
+            background: var(--light-bg);
+            border-color: var(--sky-blue);
+            color: var(--primary-blue);
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--gray-light);
+            background: var(--light-bg);
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid var(--gray-light);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            background: white;
+            color: var(--gray-dark);
+        }
+
+        .chat-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: white;
+        }
+
+        .send-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+
+        .send-btn:hover {
+            background: var(--light-blue);
+        }
+
+        /* Info Tab */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card-icon {
+            font-size: 20px;
+        }
+
+        .info-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin: 8px 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .info-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-light);
+            font-size: 13px;
+        }
+
+        .info-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .alert {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #92400e;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .alert.success {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #15803d;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--gray-light);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--sky-blue);
+            border-radius: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--light-bg);
+            color: var(--primary-blue);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* FAQ Tab */
+        .faq-item {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--gray-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .faq-question-icon {
+            color: var(--primary-blue);
+        }
+
+        .faq-answer {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            max-height: 1000px;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.collapsed .faq-answer {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        /* Payment Tab */
+        .payment-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-section {
+            margin-bottom: 24px;
+        }
+
+        .payment-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .payment-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .payment-detail {
+            background: var(--light-bg);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .payment-label {
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .payment-value {
+            font-weight: 600;
+            color: var(--gray-dark);
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        .payment-note {
+            background: #fef3c7;
+            border-left: 4px solid #fbbf24;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #92400e;
+            margin-top: 12px;
+        }
+
+        /* Floating Bubbles */
+        .floating-bubbles {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 50;
+        }
+
+        .bubble {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .bubble.whatsapp {
+            background: #25d366;
+        }
+
+        .bubble.telegram {
+            background: #0088cc;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-dark);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 4px 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .footer-link {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .info-bar {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .address-bar-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-questions {
+                grid-template-columns: 1fr;
+            }
+
+            .message-bubble {
+                max-width: 90%;
+            }
+
+            .floating-bubbles {
+                bottom: 20px;
+                right: 16px;
+                gap: 8px;
+            }
+
+            .bubble {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .chat-container {
+                height: 400px;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-light);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo-circle">
+                    <img src="consorcio-logo.png" alt="Consorcio Tato Joven Logo">
+                </div>
+                <div class="header-title">
+                    <h1>Consorcio Tato Joven</h1>
+                    <p>Centro de Consultas</p>
+                </div>
+            </div>
+            <div class="info-bar">
+                <div class="info-item">
+                    📍 Gutemberg 1931, San Miguel BA
+                </div>
+                <div class="info-item">
+                    🕐 <span class="clock" id="clock">12:00:00</span>
+                </div>
+                <div class="info-item">
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        En línea
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Address Bar -->
+    <div class="address-bar">
+        <div class="address-bar-container">
+            <div class="address-info">
+                <strong>Horario de atención:</strong> 12:00 - 20:00 hs
+            </div>
+            <div class="address-info">
+                Para consultas urgentes: <strong>+54 11 3059-1621 (WhatsApp)</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="chat">💬 Chat</button>
+            <button class="tab-button" data-tab="info">ℹ️ Información</button>
+            <button class="tab-button" data-tab="faq">❓ FAQs</button>
+            <button class="tab-button" data-tab="pago">💳 Pagos</button>
+        </div>
+
+        <!-- Tab: Chat -->
+        <div class="tab-content active" id="chat">
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <div>
+                            <div class="message-bubble">Hola 👋 Soy el Asistente del Consorcio Tato Joven. Estoy acá para ayudarte con consultas sobre expensas, pagos, el Fondo de Obras y todo lo relacionado con el consorcio.</div>
+                            <div class="message-time">12:00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-questions" id="quickQuestions">
+                    <button class="quick-btn">¿Cuándo vence la expensa?</button>
+                    <button class="quick-btn">¿Cuánto tengo que pagar?</button>
+                    <button class="quick-btn">¿Qué pasa si pago tarde?</button>
+                    <button class="quick-btn">Quiero hacer un convenio</button>
+                    <button class="quick-btn">Saldo del Fondo de Obras</button>
+                    <button class="quick-btn">Contactar administración</button>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Escribí tu consulta...">
+                    <button class="send-btn" id="sendBtn">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Info -->
+        <div class="tab-content" id="info">
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><span class="info-card-icon">📄</span> Expensas</h3>
+                    <div class="info-label">Vencimiento</div>
+                    <div class="info-value">10 del mes</div>
+                    <div class="alert error">Recargo del 10% después del día 11</div>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-light);">
+                        <div class="info-label">Incluye:</div>
+                        <div style="font-size: 13px; color: var(--gray-dark); line-height: 1.6;">
+                            • AySA (agua y cloacas)<br>
+                            • Electricidad<br>
+                            • Mantenimiento
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><span class="info-card-icon">🏗️</span> Fondo de Obras</h3>
+                    <div class="info-label">Saldo Total</div>
+                    <div class="info-value" style="color: #10b981;">$125.880</div>
+                    <div class="info-item-row">
+                        <span>Recaudado</span>
+                        <strong>$125.000</strong>
+                    </div>
+                    <div class="info-item-row">
+                        <span>Rendimientos</span>
+                        <strong>$880</strong>
+                    </div>
+                    <span class="badge">Aporte voluntario</span>
+                </div>
+
+                <div class="info-card">
+                    <h3><span class="info-card-icon">📊</span> Estado del Fondo</h3>
+                    <div class="info-item-row">
+                        <span>Unidades que aportaron</span>
+                        <strong>3 de 10</strong>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%;"></div>
+                    </div>
+                    <div style="font-size: 12px; color: #64748b; margin-top: 8px;">Gastos ejecutados: $0</div>
+                    <div class="alert success" style="margin-top: 12px;">✅ Fondos disponibles para mejoras</div>
+                </div>
+
+                <div class="info-card">
+                    <h3><span class="info-card-icon">📋</span> Propuesta de Recaudación</h3>
+                    <div class="info-label">Para continuar con el Fondo:</div>
+                    <div class="info-value">3 cuotas de $25.000</div>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-light);">
+                        <div class="info-label">Votación activa:</div>
+                        <span class="badge">Voluntario vs Obligatorio</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: FAQ -->
+        <div class="tab-content" id="faq">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-question-icon">❓</span>
+                    ¿Cuándo vence la expensa?
+                </div>
+                <div class="faq-answer">La expensa vence el 10 de cada mes. Después del 11 se aplica un recargo del 10%.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-question-icon">💰</span>
+                    ¿Cuánto tengo que pagar?
+                </div>
+                <div class="faq-answer">El monto varía según los gastos mensuales (AySA, electricidad, mantenimiento). Consultá tu último comprobante o contactá administración.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-question-icon">⏰</span>
+                    ¿Qué pasa si pago tarde?
+                </div>
+                <div class="faq-answer">Si pagás después del 10, se aplica un recargo del 10%. Buscá pagar a tiempo para evitarlo.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-question-icon">📝</span>
+                    ¿Cómo hago un convenio?
+                </div>
+                <div class="faq-answer">Contactá a administración para negociar un plan de pagos. WhatsApp: 11 3059-1621</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span class="faq-question-icon">🏗️</span>
+                    ¿Cuál es la diferencia entre expensa y Fondo de Obras?
+                </div>
+                <div class="faq-answer">La expensa es el gasto operativo mensual. El Fondo de Obras es una recaudación voluntaria/extraordinaria para mejoras del edificio.</div>
+            </div>
+        </div>
+
+        <!-- Tab: Payment -->
+        <div class="tab-content" id="pago">
+            <div class="payment-container">
+                <div class="payment-section">
+                    <h3>💳 EXPENSAS</h3>
+                    <div class="payment-detail">
+                        <div class="payment-label">Alias</div>
+                        <div class="payment-value">tavoriver1973</div>
+                    </div>
+                    <div class="payment-detail">
+                        <div class="payment-label">CVU</div>
+                        <div class="payment-value">0000003100033113124390</div>
+                    </div>
+                    <div class="payment-detail">
+                        <div class="payment-label">Titular</div>
+                        <div class="payment-value">Gustavo Fabián Peredo</div>
+                    </div>
+                </div>
+
+                <div class="payment-section">
+                    <h3>🏗️ FONDO DE OBRAS</h3>
+                    <div class="payment-detail">
+                        <div class="payment-label">Alias</div>
+                        <div class="payment-value">gustavoperedo</div>
+                    </div>
+                    <div class="payment-detail">
+                        <div class="payment-label">CBU</div>
+                        <div class="payment-value">1430001713049409400019</div>
+                    </div>
+                    <div class="payment-detail">
+                        <div class="payment-label">Banco</div>
+                        <div class="payment-value">Brubank (Billetera Virtual)</div>
+                    </div>
+                    <div class="payment-detail">
+                        <div class="payment-label">Titular</div>
+                        <div class="payment-value">Gustavo Fabián Peredo</div>
+                    </div>
+                </div>
+
+                <div class="payment-note">
+                    ⚠️ Son cuentas distintas. Verificá bien cuál transferís según el concepto.
+                </div>
+
+                <div class="payment-section" style="background: var(--light-bg); padding: 16px; border-radius: 8px; margin-top: 16px;">
+                    <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">📱 Dudas o comprobantes:</div>
+                    <div style="font-weight: 600; color: var(--gray-dark); font-size: 14px;">WhatsApp: 11 3059-1621</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>Consorcio Tato Joven</strong> • San Miguel, Buenos Aires</p>
+        <p>Centro de Consultas - Actualizado al 14/09/2026</p>
+        <div class="footer-links">
+            <a href="https://wa.me/541130591621?text=Hola%20Tato%20Joven" class="footer-link">WhatsApp</a>
+            <span style="opacity: 0.3;">•</span>
+            <a href="https://t.me/6224813556" class="footer-link">Telegram</a>
+            <span style="opacity: 0.3;">•</span>
+            <span style="color: white; font-size: 11px;">Gustavo Fabián Peredo</span>
+        </div>
+    </div>
+
+    <!-- Floating Bubbles -->
+    <div class="floating-bubbles">
+        <a href="https://wa.me/541130591621?text=Hola%20Tato%20Joven" class="bubble whatsapp" title="WhatsApp">💬</a>
+        <a href="https://t.me/6224813556" class="bubble telegram" title="Telegram">✈️</a>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Tabs functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
+
+        // Chat functionality
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const quickQuestions = document.getElementById('quickQuestions');
+
+        const qaData = {
+            '¿Cuándo vence la expensa?': 'La expensa vence el 10 de cada mes. Después del 11 se aplica un recargo del 10%.',
+            '¿Cuánto tengo que pagar?': 'El monto varía según los gastos mensuales. Consultá tu último comprobante o contactá administración.',
+            '¿Qué pasa si pago tarde?': 'Si pagás después del 10, se aplica un recargo del 10%. Buscá pagar a tiempo para evitarlo.',
+            'Quiero hacer un convenio': 'Podés hacer un convenio contactando a administración. WhatsApp: 11 3059-1621',
+            'Saldo del Fondo de Obras': 'El Fondo de Obras suma $125.880 (al 14/09/2026). Es una recaudación voluntaria para mejoras del barrio.',
+            'Contactar administración': 'Contactá administración por WhatsApp al 11 3059-1621. También podés enviar consultas por este chat.'
+        };
+
+        function addMessage(text, sender) {
+            const now = new Date();
+            const time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `
+                <div>
+                    <div class="message-bubble">${text}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleMessage(text) {
+            addMessage(text, 'user');
+            chatInput.value = '';
+
+            setTimeout(() => {
+                const response = qaData[text] || 'Gracias por tu consulta. Si necesitas algo específico, probá hacer una pregunta sobre expensas, pagos o el Fondo de Obras. También podés contactar a administración al 11 3059-1621.';
+                addMessage(response, 'bot');
+            }, 500);
+        }
+
+        sendBtn.addEventListener('click', () => {
+            if (chatInput.value.trim()) {
+                handleMessage(chatInput.value);
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim()) {
+                handleMessage(chatInput.value);
+            }
+        });
+
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.textContent;
+                handleMessage(text);
+            });
+        });
+
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.add('collapsed');
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                item.classList.toggle('collapsed');
+            });
+        });
+    </script>
+</body>
+</html>
