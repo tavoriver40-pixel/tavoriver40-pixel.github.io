@@ -1,0 +1,819 @@
+{
+  "meses": {
+    "2026-05": {
+      "label": "Mayo 2026",
+      "cobros": [
+        {
+          "uf": "UF 11",
+          "nombre": "Sergio",
+          "tipo": "expensa",
+          "monto": 200000,
+          "fecha": "10/05/2026",
+          "obs": "Incluye atrasados"
+        },
+        {
+          "uf": "UF 12",
+          "nombre": "Ivana — Daniel",
+          "tipo": "expensa",
+          "monto": 140000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 13",
+          "nombre": "Estela",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 14",
+          "nombre": "Ivana — Sebastián",
+          "tipo": "expensa",
+          "monto": 60000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 15",
+          "nombre": "Mariana — Pedro",
+          "tipo": "expensa",
+          "monto": 30000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 16",
+          "nombre": "Marianela — Fernando",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 17",
+          "nombre": "Daniela — Gustavo",
+          "tipo": "expensa",
+          "monto": 40000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 18",
+          "nombre": "Erik",
+          "tipo": "expensa",
+          "monto": 43000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "UF 19",
+          "nombre": "Cecilia — Leo",
+          "tipo": "expensa",
+          "monto": 180000,
+          "fecha": "10/05/2026",
+          "obs": "Incluye atrasados"
+        },
+        {
+          "uf": "UF 20",
+          "nombre": "Soledad",
+          "tipo": "expensa",
+          "monto": 43000,
+          "fecha": "10/05/2026",
+          "obs": ""
+        },
+        {
+          "uf": "—",
+          "nombre": "Caja Chica",
+          "tipo": "extra",
+          "monto": 4200,
+          "fecha": "17/05/2026",
+          "obs": "Ingreso extra"
+        }
+      ],
+      "egresos": [
+        {
+          "id": 1,
+          "fecha": "11/05/2026",
+          "cat": "Servicios — Agua (AySA)",
+          "desc": "Suministro Agua Central — AySA",
+          "comp": "Fact. AySA",
+          "monto": 355845.89,
+          "notas": "Pago en término"
+        },
+        {
+          "id": 2,
+          "fecha": "30/05/2026",
+          "cat": "Mantenimiento — Corte de Pasto",
+          "desc": "Corte de Pasto",
+          "comp": "Recibo",
+          "monto": 80000,
+          "notas": "Pago en efectivo"
+        }
+      ],
+      "convenios": [],
+      "recibos": []
+    },
+    "2026-06": {
+      "label": "Junio 2026",
+      "cobros": [
+        {
+          "uf": "UF 12",
+          "nombre": "Ivana — Daniel",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "05/06/2026",
+          "obs": "Pago expensa Junio"
+        },
+        {
+          "uf": "UF 15",
+          "nombre": "Mariana — Pedro",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "06/06/2026",
+          "obs": "Pago expensa Junio"
+        },
+        {
+          "uf": "UF 16",
+          "nombre": "Marianela — Fernando",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "01/06/2026",
+          "obs": "Pago expensa Junio"
+        },
+        {
+          "uf": "UF 17",
+          "nombre": "Daniela — Gustavo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "01/06/2026",
+          "obs": "Pago expensa Junio"
+        },
+        {
+          "uf": "UF 19",
+          "nombre": "Cecilia — Leo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/06/2026",
+          "obs": "Pago expensa Junio"
+        },
+        {
+          "uf": "UF 11",
+          "nombre": "Sergio",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas junio"
+        },
+        {
+          "uf": "UF 13",
+          "nombre": "Estela",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "07/07/2026",
+          "obs": "Pago de expensas junio"
+        },
+        {
+          "uf": "UF 14",
+          "nombre": "Ivana — Sebastián",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas junio"
+        },
+        {
+          "uf": "UF 18",
+          "nombre": "Erik",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas junio"
+        },
+        {
+          "uf": "UF 20",
+          "nombre": "Soledad",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/07/2026",
+          "obs": "Pago de expensas junio"
+        }
+      ],
+      "egresos": [
+        {
+          "id": 1,
+          "fecha": "01/06/2026",
+          "cat": "Servicios — Luz / Electricidad",
+          "desc": "Factura Luz — Junio 2026",
+          "comp": "Fact. Luz",
+          "monto": 3005.59,
+          "notas": "Pago en término"
+        },
+        {
+          "id": 23,
+          "fecha": "01/06/2026",
+          "cat": "Servicios — Agua (AySA)",
+          "desc": "Cuenta de servicio AYSA",
+          "comp": "—",
+          "monto": 360750.93,
+          "notas": "—"
+        }
+      ],
+      "convenios": [
+        {
+          "id": 1,
+          "uf": "UF 17",
+          "nombre": "Daniela — Gustavo",
+          "tipo": "Cuota convenio deuda",
+          "monto": 102000,
+          "fecha": "02/06/2026",
+          "desc": "Convenio deuda AySA — Cuota única",
+          "comp": "—"
+        },
+        {
+          "id": 10,
+          "uf": "UF 14",
+          "nombre": "Ivana — Sebastián",
+          "tipo": "Cuota convenio deuda",
+          "monto": 25000,
+          "fecha": "10/06/2026",
+          "desc": "expensas atrasadas",
+          "comp": "—"
+        },
+        {
+          "id": 11,
+          "uf": "UF 13",
+          "nombre": "Estela",
+          "tipo": "Cuota convenio deuda",
+          "monto": 25000,
+          "fecha": "09/06/2026",
+          "desc": "expensas atrasadas",
+          "comp": "—"
+        },
+        {
+          "id": 12,
+          "uf": "UF 11",
+          "nombre": "Sergio",
+          "tipo": "Cuota convenio deuda",
+          "monto": 10000,
+          "fecha": "10/06/2026",
+          "desc": "adelanto de expensas para mes de Julio",
+          "comp": "—"
+        }
+      ],
+      "recibos": []
+    },
+    "2026-07": {
+      "label": "Julio 2026",
+      "cobros": [
+        {
+          "uf": "UF 16",
+          "nombre": "Marianela — Fernando",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "01/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 17",
+          "nombre": "Daniela — Gustavo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "01/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 11",
+          "nombre": "Sergio",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 12",
+          "nombre": "Ivana — Daniel",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "06/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 13",
+          "nombre": "Estela",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "07/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 14",
+          "nombre": "Ivana — Sebastián",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 15",
+          "nombre": "Mariana — Pedro",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "09/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 18",
+          "nombre": "Erik",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 19",
+          "nombre": "Cecilia — Leo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/07/2026",
+          "obs": "Pago de expensas"
+        },
+        {
+          "uf": "UF 20",
+          "nombre": "Soledad",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/07/2026",
+          "obs": "Pago de expensas"
+        }
+      ],
+      "egresos": [
+        {
+          "id": 20,
+          "fecha": "01/07/2026",
+          "cat": "Servicios — Luz / Electricidad",
+          "desc": "Factura Edenor Julio",
+          "comp": "—",
+          "monto": 3601.15,
+          "notas": "—"
+        },
+        {
+          "id": 21,
+          "fecha": "11/07/2026",
+          "cat": "Mantenimiento — Corte de Pasto",
+          "desc": "Mantenimiento corte de pasto",
+          "comp": "—",
+          "monto": 80000,
+          "notas": "—"
+        },
+        {
+          "id": 22,
+          "fecha": "01/07/2026",
+          "cat": "Servicios — Agua (AySA)",
+          "desc": "Cuenta de servicio AYSA",
+          "comp": "—",
+          "monto": 369488.89,
+          "notas": "—"
+        }
+      ],
+      "convenios": [],
+      "recibos": []
+    },
+    "2026-08": {
+      "label": "Agosto 2026",
+      "cobros": [
+        {
+          "uf": "UF 16",
+          "nombre": "Marianela — Fernando",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "06/08/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 17",
+          "nombre": "Daniela — Gustavo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "04/08/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 18",
+          "nombre": "Erik",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "06/08/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 12",
+          "nombre": "Ivana — Daniel",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/08/2026",
+          "obs": " pago de Expensas"
+        },
+        {
+          "uf": "UF 20",
+          "nombre": "Soledad",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/08/2026",
+          "obs": " Pago de Expensas"
+        },
+        {
+          "uf": "UF 13",
+          "nombre": "Estela",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/08/2026",
+          "obs": " Pago de Expensas"
+        },
+        {
+          "uf": "UF 15",
+          "nombre": "Mariana — Pedro",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/08/2026",
+          "obs": " Pago de Expensas"
+        },
+        {
+          "uf": "UF 11",
+          "nombre": "Sergio",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/08/2026",
+          "obs": " Pago de Expensas"
+        },
+        {
+          "uf": "UF 14",
+          "nombre": "Ivana — Sebastián",
+          "tipo": "expensa",
+          "monto": 55000,
+          "fecha": "11/08/2026",
+          "obs": " Pago de Expensas"
+        },
+        {
+          "uf": "UF 19",
+          "nombre": "Cecilia — Leo",
+          "tipo": "expensa",
+          "monto": 55000,
+          "fecha": "02/09/2026",
+          "obs": "Pago de Expensas atrasadas mes de Agosto"
+        }
+      ],
+      "egresos": [
+        {
+          "id": 24,
+          "fecha": "31/07/2026",
+          "cat": "Servicios — Luz / Electricidad",
+          "desc": "Empresa, Edenor",
+          "comp": "000000098353",
+          "monto": 3814.74,
+          "notas": "Pago de servicio Edenor"
+        },
+        {
+          "id": 25,
+          "fecha": "02/08/2026",
+          "cat": "Servicios — Agua (AySA)",
+          "desc": "Factura de AYSA mes de Agosto",
+          "comp": "171852514",
+          "monto": 380403.59,
+          "notas": "Pago de servicio AYSA."
+        },
+        {
+          "id": 26,
+          "fecha": "08/08/2026",
+          "cat": "Mantenimiento — Corte de Pasto",
+          "desc": "Corte de pasto lateral",
+          "comp": "1235974",
+          "monto": 80000,
+          "notas": "—"
+        },
+        {
+          "id": 27,
+          "fecha": "15/08/2026",
+          "cat": "Gasto Extra / Imprevisto",
+          "desc": "Casa d'Alesandro",
+          "comp": "02151251",
+          "monto": 4000,
+          "notas": "Boligrafo negro- Reibo husares- Papel carbonico"
+        }
+      ],
+      "convenios": [],
+      "recibos": []
+    },
+    "2026-09": {
+      "label": "Septiembre 2026",
+      "cobros": [
+        {
+          "uf": "UF 19",
+          "nombre": "Cecilia — Leo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "02/09/2026",
+          "obs": "Pago de Expensas "
+        },
+        {
+          "uf": "UF 17",
+          "nombre": "Daniela — Gustavo",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "03/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 12",
+          "nombre": "Ivana — Daniel",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "04/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 13",
+          "nombre": "Estela",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "07/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 15",
+          "nombre": "Mariana — Pedro",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 16",
+          "nombre": "Marianela — Fernando",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "08/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 18",
+          "nombre": "Erik",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "09/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 11",
+          "nombre": "Sergio",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 20",
+          "nombre": "Soledad",
+          "tipo": "expensa",
+          "monto": 50000,
+          "fecha": "10/09/2026",
+          "obs": "Pago de Expensas"
+        },
+        {
+          "uf": "UF 14",
+          "nombre": "Ivana — Sebastián",
+          "tipo": "expensa",
+          "monto": 55000,
+          "fecha": "11/09/2026",
+          "obs": "Pago de Expensas con recargo "
+        }
+      ],
+      "egresos": [
+        {
+          "id": 28,
+          "fecha": "01/09/2026",
+          "cat": "Servicios — Agua (AySA)",
+          "desc": "Pago de AYSA",
+          "comp": "178707319",
+          "monto": 390288.12,
+          "notas": "Se Pago AYSA por Mercado Pago"
+        },
+        {
+          "id": 29,
+          "fecha": "04/09/2026",
+          "cat": "Gasto Extra / Imprevisto",
+          "desc": "Factura A- AXA Computacion",
+          "comp": "0010-00036625",
+          "monto": 4500,
+          "notas": "Se compro Tinta negra para impresora"
+        },
+        {
+          "id": 30,
+          "fecha": "04/09/2026",
+          "cat": "Servicios — Luz / Electricidad",
+          "desc": "Factura Edenor",
+          "comp": "000759132103",
+          "monto": 4048.02,
+          "notas": "Pago de Factura Edenor."
+        },
+        {
+          "id": 31,
+          "fecha": "12/09/2026",
+          "cat": "Mantenimiento — Corte de Pasto",
+          "desc": "Core de pasto lateral",
+          "comp": " 1235975",
+          "monto": 80000,
+          "notas": "—"
+        }
+      ],
+      "convenios": [],
+      "recibos": []
+    }
+  },
+  "mesActivo": "2026-09",
+  "nextEgId": 32,
+  "nextConvId": 13,
+  "calEventos": [
+    {
+      "fecha": "2026-06-08",
+      "tipo": "ev-aviso",
+      "desc": "Enviar avisos de vencimiento"
+    },
+    {
+      "fecha": "2026-06-10",
+      "tipo": "ev-venc",
+      "desc": "Vencimiento expensa Junio"
+    },
+    {
+      "fecha": "2026-07-08",
+      "tipo": "ev-aviso",
+      "desc": "Enviar avisos de vencimiento"
+    },
+    {
+      "fecha": "2026-07-10",
+      "tipo": "ev-venc",
+      "desc": "Vencimiento expensa Julio"
+    },
+    {
+      "fecha": "2026-08-08",
+      "tipo": "ev-aviso",
+      "desc": "Enviar avisos de vencimiento"
+    },
+    {
+      "fecha": "2026-08-10",
+      "tipo": "ev-venc",
+      "desc": "Vencimiento expensa Agosto"
+    }
+  ],
+  "actaTemas": [],
+  "expensasExtra": [],
+  "nextExtraId": 1,
+  "fondoObras": {
+    "cobros": [
+      {
+        "id": 1,
+        "uf": "UF 16",
+        "nombre": "Marianela — Fernando",
+        "fecha": "01/07/2026",
+        "monto": 25000,
+        "concepto": "Cuota Fondo de Obras",
+        "obs": ""
+      },
+      {
+        "id": 2,
+        "uf": "UF 17",
+        "nombre": "Daniela — Gustavo",
+        "fecha": "01/07/2026",
+        "monto": 25000,
+        "concepto": "Cuota Fondo de Obras",
+        "obs": ""
+      },
+      {
+        "id": 3,
+        "uf": "UF 13",
+        "nombre": "Estela",
+        "fecha": "01/07/2026",
+        "monto": 25000,
+        "concepto": "Cuota Fondo de Obras",
+        "obs": ""
+      },
+      {
+        "id": 4,
+        "uf": "UF 13",
+        "nombre": "Estela",
+        "fecha": "07/08/2026",
+        "monto": 25000,
+        "concepto": "Cuota Fondo de Obras",
+        "obs": "Pago 2-3 fondo de obras"
+      },
+      {
+        "id": 5,
+        "uf": "UF 17",
+        "nombre": "Daniela — Gustavo",
+        "fecha": "15/08/2026",
+        "monto": 25000,
+        "concepto": "Cuota Fondo de Obras",
+        "obs": " Pago 2-3 Fondo de obras"
+      }
+    ],
+    "gastos": [],
+    "nextCobroId": 6,
+    "nextGastoId": 1,
+    "rendimientos": [
+      {
+        "id": 1,
+        "fecha": "19/08/2026",
+        "monto": 880,
+        "desc": "Rendimiento Julio-Agosto capital de $75.000"
+      }
+    ],
+    "nextRendId": 2
+  },
+  "datosPago": {
+    "cbu": "0000003100033113124390",
+    "alias": "tavoriver1973",
+    "titular": "Gustavo Fabián Peredo",
+    "banco": "Billetera virtual (CVU)"
+  },
+  "datosPagoFondo": {
+    "cbu": "1430001713049409400019",
+    "alias": "gustavoperedo",
+    "titular": "Gustavo Fabián Peredo",
+    "banco": "Brubank — Billetera virtual"
+  },
+  "propietarios": [
+    {
+      "uf": "UF 11",
+      "nombre": "Sergio",
+      "tel": "",
+      "codigo": "TJ-11"
+    },
+    {
+      "uf": "UF 12",
+      "nombre": "Ivana — Daniel",
+      "tel": "",
+      "codigo": "TJ-12"
+    },
+    {
+      "uf": "UF 13",
+      "nombre": "Estela",
+      "tel": "",
+      "codigo": "TJ-13"
+    },
+    {
+      "uf": "UF 14",
+      "nombre": "Ivana — Sebastián",
+      "tel": "",
+      "codigo": "TJ-14"
+    },
+    {
+      "uf": "UF 15",
+      "nombre": "Mariana — Pedro",
+      "tel": "",
+      "codigo": "TJ-15"
+    },
+    {
+      "uf": "UF 16",
+      "nombre": "Marianela — Fernando",
+      "tel": "",
+      "codigo": "TJ-16"
+    },
+    {
+      "uf": "UF 17",
+      "nombre": "Daniela — Gustavo",
+      "tel": "",
+      "codigo": "TJ-17"
+    },
+    {
+      "uf": "UF 18",
+      "nombre": "Erik",
+      "tel": "",
+      "codigo": "TJ-18"
+    },
+    {
+      "uf": "UF 19",
+      "nombre": "Cecilia — Leo",
+      "tel": "",
+      "codigo": "TJ-19"
+    },
+    {
+      "uf": "UF 20",
+      "nombre": "Soledad",
+      "tel": "",
+      "codigo": "TJ-20"
+    }
+  ],
+  "config": {
+    "expensaFija": 50000,
+    "recargoPct": 10,
+    "vencDia": 10,
+    "cuotaFondo": 25000,
+    "fondoDesde": "2026-07",
+    "cierreMes": "2026-05",
+    "cierreSaldo": 404354.11,
+    "nextRecibo": 1,
+    "driveUrl": "",
+    "driveAuto": true,
+    "driveUltima": ""
+  }
+}
