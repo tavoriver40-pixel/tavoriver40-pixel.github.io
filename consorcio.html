@@ -309,7 +309,8 @@ textarea{resize:vertical;min-height:54px;}
     <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
       <div class="form-group"><label>Unidad Funcional</label><select id="cobro-uf" onchange="verificarSaldoFavor()"></select></div>
       <div class="form-group"><label>Tipo</label><select id="cobro-tipo"><option value="expensa">Expensa Fija ($75.000)</option><option value="parcial">Pago Parcial</option><option value="adelanto">Adelanto</option><option value="recargo">Recargo por mora (10%)</option></select></div>
-      <div class="form-group"><label>Monto ($)</label><input type="number" id="cobro-monto" value="75000" step="0.01"></div>
+      <div class="form-group"><label>Monto total recibido ($)</label><input type="number" id="cobro-monto" value="75000" step="0.01"></div>
+      <div class="form-group"><label>Del monto, ¿cuánto es recargo por mora? ($)</label><input type="number" id="cobro-recargo" value="0" min="0" step="0.01"><span style="font-size:11px;color:var(--muted);">Si pagó después del día 10, poné acá el recargo (10%) que va incluido en el monto total. Si no hay recargo, dejá 0.</span></div>
       <div class="form-group"><label>Fecha</label><input type="date" id="cobro-fecha"></div>
     </div>
     <div class="form-group" style="margin-top:10px;"><label>Observaciones</label><input type="text" id="cobro-obs" placeholder="Opcional..."></div>
@@ -873,8 +874,8 @@ var PROPIETARIOS_BASE=[
   {uf:'UF 20',nombre:'Soledad',             tel:'5491159059075'},
 ];
 
-// Datos iniciales = backup del 03/11/2026 (Mayo a Noviembre). Se usan solo si el navegador no tiene datos guardados.
-var DATOS_INICIALES={"meses":{"2026-05":{"label":"Mayo 2026","cobros":[{"uf":"UF 11","nombre":"Sergio","tipo":"expensa","monto":200000,"fecha":"10/05/2026","obs":"Incluye atrasados"},{"uf":"UF 12","nombre":"Ivana — Daniel","tipo":"expensa","monto":140000,"fecha":"10/05/2026","obs":""},{"uf":"UF 13","nombre":"Estela","tipo":"expensa","monto":50000,"fecha":"10/05/2026","obs":""},{"uf":"UF 14","nombre":"Ivana — Sebastián","tipo":"expensa","monto":60000,"fecha":"10/05/2026","obs":""},{"uf":"UF 15","nombre":"Mariana — Pedro","tipo":"expensa","monto":30000,"fecha":"10/05/2026","obs":""},{"uf":"UF 16","nombre":"Marianela — Fernando","tipo":"expensa","monto":50000,"fecha":"10/05/2026","obs":""},{"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"expensa","monto":40000,"fecha":"10/05/2026","obs":""},{"uf":"UF 18","nombre":"Erik","tipo":"expensa","monto":43000,"fecha":"10/05/2026","obs":""},{"uf":"UF 19","nombre":"Cecilia — Leo","tipo":"expensa","monto":180000,"fecha":"10/05/2026","obs":"Incluye atrasados"},{"uf":"UF 20","nombre":"Soledad","tipo":"expensa","monto":43000,"fecha":"10/05/2026","obs":""},{"uf":"—","nombre":"Caja Chica","tipo":"extra","monto":4200,"fecha":"17/05/2026","obs":"Ingreso extra"}],"egresos":[{"id":1,"fecha":"11/05/2026","cat":"Servicios — Agua (AySA)","desc":"Suministro Agua Central — AySA","comp":"Fact. AySA","monto":355845.89,"notas":"Pago en término"},{"id":2,"fecha":"30/05/2026","cat":"Mantenimiento — Corte de Pasto","desc":"Corte de Pasto","comp":"Recibo","monto":80000,"notas":"Pago en efectivo"}],"convenios":[],"recibos":[]},"2026-06":{"label":"Junio 2026","cobros":[{"uf":"UF 12","nombre":"Ivana — Daniel","tipo":"expensa","monto":50000,"fecha":"05/06/2026","obs":"Pago expensa Junio"},{"uf":"UF 15","nombre":"Mariana — Pedro","tipo":"expensa","monto":50000,"fecha":"06/06/2026","obs":"Pago expensa Junio"},{"uf":"UF 16","nombre":"Marianela — Fernando","tipo":"expensa","monto":50000,"fecha":"01/06/2026","obs":"Pago expensa Junio"},{"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"expensa","monto":50000,"fecha":"01/06/2026","obs":"Pago expensa Junio"},{"uf":"UF 19","nombre":"Cecilia — Leo","tipo":"expensa","monto":50000,"fecha":"08/06/2026","obs":"Pago expensa Junio"},{"uf":"UF 11","nombre":"Sergio","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas junio"},{"uf":"UF 13","nombre":"Estela","tipo":"expensa","monto":50000,"fecha":"07/07/2026","obs":"Pago de expensas junio"},{"uf":"UF 14","nombre":"Ivana — Sebastián","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas junio"},{"uf":"UF 18","nombre":"Erik","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas junio"},{"uf":"UF 20","nombre":"Soledad","tipo":"expensa","monto":50000,"fecha":"08/07/2026","obs":"Pago de expensas junio"}],"egresos":[{"id":1,"fecha":"01/06/2026","cat":"Servicios — Luz / Electricidad","desc":"Factura Luz — Junio 2026","comp":"Fact. Luz","monto":3005.59,"notas":"Pago en término"},{"id":23,"fecha":"01/06/2026","cat":"Servicios — Agua (AySA)","desc":"Cuenta de servicio AYSA","comp":"—","monto":360750.93,"notas":"—"}],"convenios":[{"id":1,"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"Cuota convenio deuda","monto":102000,"fecha":"02/06/2026","desc":"Convenio deuda AySA — Cuota única","comp":"—"},{"id":10,"uf":"UF 14","nombre":"Ivana — Sebastián","tipo":"Cuota convenio deuda","monto":25000,"fecha":"10/06/2026","desc":"expensas atrasadas","comp":"—"},{"id":11,"uf":"UF 13","nombre":"Estela","tipo":"Cuota convenio deuda","monto":25000,"fecha":"09/06/2026","desc":"expensas atrasadas","comp":"—"},{"id":12,"uf":"UF 11","nombre":"Sergio","tipo":"Cuota convenio deuda","monto":10000,"fecha":"10/06/2026","desc":"adelanto de expensas para mes de Julio","comp":"—"}],"recibos":[]},"2026-07":{"label":"Julio 2026","cobros":[{"uf":"UF 16","nombre":"Marianela — Fernando","tipo":"expensa","monto":50000,"fecha":"01/07/2026","obs":"Pago de expensas"},{"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"expensa","monto":50000,"fecha":"01/07/2026","obs":"Pago de expensas"},{"uf":"UF 11","nombre":"Sergio","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas"},{"uf":"UF 12","nombre":"Ivana — Daniel","tipo":"expensa","monto":50000,"fecha":"06/07/2026","obs":"Pago de expensas"},{"uf":"UF 13","nombre":"Estela","tipo":"expensa","monto":50000,"fecha":"07/07/2026","obs":"Pago de expensas"},{"uf":"UF 14","nombre":"Ivana — Sebastián","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas"},{"uf":"UF 15","nombre":"Mariana — Pedro","tipo":"expensa","monto":50000,"fecha":"09/07/2026","obs":"Pago de expensas"},{"uf":"UF 18","nombre":"Erik","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas"},{"uf":"UF 19","nombre":"Cecilia — Leo","tipo":"expensa","monto":50000,"fecha":"10/07/2026","obs":"Pago de expensas"},{"uf":"UF 20","nombre":"Soledad","tipo":"expensa","monto":50000,"fecha":"08/07/2026","obs":"Pago de expensas"}],"egresos":[{"id":20,"fecha":"01/07/2026","cat":"Servicios — Luz / Electricidad","desc":"Factura Edenor Julio","comp":"—","monto":3601.15,"notas":"—"},{"id":21,"fecha":"11/07/2026","cat":"Mantenimiento — Corte de Pasto","desc":"Mantenimiento corte de pasto","comp":"—","monto":80000,"notas":"—"},{"id":22,"fecha":"01/07/2026","cat":"Servicios — Agua (AySA)","desc":"Cuenta de servicio AYSA","comp":"—","monto":369488.89,"notas":"—"}],"convenios":[],"recibos":[]},"2026-08":{"label":"Agosto 2026","cobros":[{"uf":"UF 16","nombre":"Marianela — Fernando","tipo":"expensa","monto":50000,"fecha":"06/08/2026","obs":"Pago de Expensas"},{"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"expensa","monto":50000,"fecha":"04/08/2026","obs":"Pago de Expensas"},{"uf":"UF 18","nombre":"Erik","tipo":"expensa","monto":50000,"fecha":"06/08/2026","obs":"Pago de Expensas"},{"uf":"UF 12","nombre":"Ivana — Daniel","tipo":"expensa","monto":50000,"fecha":"08/08/2026","obs":" pago de Expensas"},{"uf":"UF 20","nombre":"Soledad","tipo":"expensa","monto":50000,"fecha":"08/08/2026","obs":" Pago de Expensas"},{"uf":"UF 13","nombre":"Estela","tipo":"expensa","monto":50000,"fecha":"08/08/2026","obs":" Pago de Expensas"},{"uf":"UF 15","nombre":"Mariana — Pedro","tipo":"expensa","monto":50000,"fecha":"08/08/2026","obs":" Pago de Expensas"},{"uf":"UF 11","nombre":"Sergio","tipo":"expensa","monto":50000,"fecha":"08/08/2026","obs":" Pago de Expensas"},{"uf":"UF 14","nombre":"Ivana — Sebastián","tipo":"expensa","monto":55000,"fecha":"11/08/2026","obs":" Pago de Expensas"},{"uf":"UF 19","nombre":"Cecilia — Leo","tipo":"expensa","monto":55000,"fecha":"02/09/2026","obs":"Pago de Expensas atrasadas mes de Agosto"}],"egresos":[{"id":24,"fecha":"31/07/2026","cat":"Servicios — Luz / Electricidad","desc":"Empresa, Edenor","comp":"000000098353","monto":3814.74,"notas":"Pago de servicio Edenor"},{"id":25,"fecha":"02/08/2026","cat":"Servicios — Agua (AySA)","desc":"Factura de AYSA mes de Agosto","comp":"171852514","monto":380403.59,"notas":"Pago de servicio AYSA."},{"id":26,"fecha":"08/08/2026","cat":"Mantenimiento — Corte de Pasto","desc":"Corte de pasto lateral","comp":"1235974","monto":80000,"notas":"—"},{"id":27,"fecha":"15/08/2026","cat":"Gasto Extra / Imprevisto","desc":"Casa d'Alesandro","comp":"02151251","monto":4000,"notas":"Boligrafo negro- Reibo husares- Papel carbonico"}],"convenios":[],"recibos":[]},"2026-09":{"label":"Septiembre 2026","cobros":[{"uf":"UF 19","nombre":"Cecilia — Leo","tipo":"expensa","monto":50000,"fecha":"02/09/2026","obs":"Pago de Expensas "},{"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"expensa","monto":50000,"fecha":"03/09/2026","obs":"Pago de Expensas"},{"uf":"UF 12","nombre":"Ivana — Daniel","tipo":"expensa","monto":50000,"fecha":"04/09/2026","obs":"Pago de Expensas"},{"uf":"UF 13","nombre":"Estela","tipo":"expensa","monto":50000,"fecha":"07/09/2026","obs":"Pago de Expensas"},{"uf":"UF 15","nombre":"Mariana — Pedro","tipo":"expensa","monto":50000,"fecha":"08/09/2026","obs":"Pago de Expensas"},{"uf":"UF 16","nombre":"Marianela — Fernando","tipo":"expensa","monto":50000,"fecha":"08/09/2026","obs":"Pago de Expensas"},{"uf":"UF 18","nombre":"Erik","tipo":"expensa","monto":50000,"fecha":"09/09/2026","obs":"Pago de Expensas"},{"uf":"UF 11","nombre":"Sergio","tipo":"expensa","monto":50000,"fecha":"10/09/2026","obs":"Pago de Expensas"},{"uf":"UF 20","nombre":"Soledad","tipo":"expensa","monto":50000,"fecha":"10/09/2026","obs":"Pago de Expensas"},{"uf":"UF 14","nombre":"Ivana — Sebastián","tipo":"expensa","monto":55000,"fecha":"11/09/2026","obs":"Pago de Expensas con recargo "}],"egresos":[{"id":28,"fecha":"01/09/2026","cat":"Servicios — Agua (AySA)","desc":"Pago de AYSA","comp":"178707319","monto":390288.12,"notas":"Se Pago AYSA por Mercado Pago"},{"id":29,"fecha":"04/09/2026","cat":"Gasto Extra / Imprevisto","desc":"Factura A- AXA Computacion","comp":"0010-00036625","monto":4500,"notas":"Se compro Tinta negra para impresora"},{"id":30,"fecha":"04/09/2026","cat":"Servicios — Luz / Electricidad","desc":"Factura Edenor","comp":"000759132103","monto":4048.02,"notas":"Pago de Factura Edenor."},{"id":31,"fecha":"12/09/2026","cat":"Mantenimiento — Corte de Pasto","desc":"Core de pasto lateral","comp":" 1235975","monto":80000,"notas":"—"}],"convenios":[],"recibos":[]},"2026-10":{"label":"Octubre 2026","cobros":[{"uf":"UF 16","nombre":"Marianela — Fernando","tipo":"expensa","monto":50000,"fecha":"01/10/2026","obs":"Pago de Expensas"},{"uf":"UF 17","nombre":"Daniela — Gustavo","tipo":"expensa","monto":50000,"fecha":"02/10/2026","obs":"Pago de Expensas"},{"uf":"UF 12","nombre":"Ivana — Daniel","tipo":"expensa","monto":50000,"fecha":"03/10/2026","obs":"Pago de Expensas"},{"uf":"UF 11","nombre":"Sergio","tipo":"expensa","monto":50000,"fecha":"09/10/2026","obs":"Pago de Expensas"},{"uf":"UF 13","nombre":"Estela","tipo":"expensa","monto":50000,"fecha":"09/10/2026","obs":"Pago de Expensas"},{"uf":"UF 20","nombre":"Soledad","tipo":"expensa","monto":50000,"fecha":"09/10/2026","obs":"Pago de Expensas"},{"uf":"UF 18","nombre":"Erik","tipo":"expensa","monto":50000,"fecha":"09/10/2026","obs":"Pago de Expensas"},{"uf":"UF 15","nombre":"Mariana — Pedro","tipo":"expensa","monto":50000,"fecha":"10/10/2026","obs":"Pago de Expensas"},{"uf":"UF 19","nombre":"Cecilia — Leo","tipo":"expensa","monto":55000,"fecha":"12/10/2026","obs":"Pago de Expensas con recargo "}],"egresos":[{"id":32,"fecha":"01/10/2026","cat":"Servicios — Agua (AySA)","desc":"factura Aysa","comp":"18150265476","monto":403918.87,"notas":"pago de servicio Aysa"},{"id":33,"fecha":"01/10/2026","cat":"Servicios — Luz / Electricidad","desc":"Factura Edenor","comp":"0007591321103","monto":3931.47,"notas":"Pago de Servicio Edenor"},{"id":35,"fecha":"01/10/2026","cat":"Gasto Extra / Imprevisto","desc":"Papelandia San Miguel","comp":"B-00010-0004968","monto":8592,"notas":"Resma A4 75  GR"},{"id":36,"fecha":"14/10/2026","cat":"Mantenimiento — Corte de Pasto","desc":"Corte de pasto lateral","comp":"1235976","monto":80000,"notas":"corte de pasto lateral"}],"convenios":[],"recibos":[]},"2026-11":{"label":"Noviembre 2026","cobros":[],"egresos":[{"id":37,"fecha":"02/11/2026","cat":"Servicios — Agua (AySA)","desc":"Pago de servicio AYSA","comp":"192981814","monto":408663.53,"notas":"Pago de servicio Aysa Noviembre"}],"convenios":[],"recibos":[]}},"mesActivo":"2026-11","nextEgId":38,"nextConvId":13,"calEventos":[{"fecha":"2026-06-08","tipo":"ev-aviso","desc":"Enviar avisos de vencimiento"},{"fecha":"2026-06-10","tipo":"ev-venc","desc":"Vencimiento expensa Junio"},{"fecha":"2026-07-08","tipo":"ev-aviso","desc":"Enviar avisos de vencimiento"},{"fecha":"2026-07-10","tipo":"ev-venc","desc":"Vencimiento expensa Julio"},{"fecha":"2026-08-08","tipo":"ev-aviso","desc":"Enviar avisos de vencimiento"},{"fecha":"2026-08-10","tipo":"ev-venc","desc":"Vencimiento expensa Agosto"}],"actaTemas":[],"expensasExtra":[],"nextExtraId":1,"fondoObras":{"cobros":[{"id":1,"uf":"UF 16","nombre":"Marianela — Fernando","fecha":"01/07/2026","monto":25000,"concepto":"Cuota Fondo de Obras","obs":""},{"id":2,"uf":"UF 17","nombre":"Daniela — Gustavo","fecha":"01/07/2026","monto":25000,"concepto":"Cuota Fondo de Obras","obs":""},{"id":3,"uf":"UF 13","nombre":"Estela","fecha":"01/07/2026","monto":25000,"concepto":"Cuota Fondo de Obras","obs":""},{"id":4,"uf":"UF 13","nombre":"Estela","fecha":"07/08/2026","monto":25000,"concepto":"Cuota Fondo de Obras","obs":"Pago 2-3 fondo de obras"},{"id":5,"uf":"UF 17","nombre":"Daniela — Gustavo","fecha":"15/08/2026","monto":25000,"concepto":"Cuota Fondo de Obras","obs":" Pago 2-3 Fondo de obras"},{"id":6,"uf":"UF 11","nombre":"Sergio","fecha":"09/10/2026","monto":75000,"concepto":"Cuota Fondo de Obras","obs":"Pago 3-3 Fondo de Obras"},{"id":7,"uf":"UF 17","nombre":"Daniela — Gustavo","fecha":"02/10/2026","monto":25000,"concepto":"Cuota Fondo de Obras","obs":"Pago 3-3 Fondo de Obras"}],"gastos":[],"nextCobroId":8,"nextGastoId":1,"rendimientos":[{"id":1,"fecha":"19/08/2026","monto":880,"desc":"Rendimiento Julio-Agosto capital de $75.000"},{"id":2,"fecha":"18/09/2026","monto":1060.24,"desc":"Rendimiento Agosto-Septiembre $775.880"},{"id":3,"fecha":"17/09/2026","monto":698.63,"desc":"Rendimiento Agosto-Septiembre $50.000"}],"nextRendId":4},"datosPago":{"cbu":"","alias":"","titular":"Consorcio Tato Joven","banco":""},"datosPagoFondo":{"cbu":"1430001713049409400019","alias":"gustavoperedo","titular":"Gustavo Fabián Peredo","banco":"Brubank — Billetera virtual"}};
+// Sin datos de cobros/gastos dentro del código (la página es pública). Los datos viven en el navegador / Drive y se restauran desde el backup .json.
+var DATOS_INICIALES={"meses":{"2026-11":{"label":"Noviembre 2026","cobros":[],"egresos":[],"convenios":[],"recibos":[]}},"mesActivo":"2026-11","nextEgId":1,"nextConvId":1,"calEventos":[],"actaTemas":[],"expensasExtra":[],"nextExtraId":1,"fondoObras":{"cobros":[],"gastos":[],"rendimientos":[],"nextCobroId":1,"nextGastoId":1,"nextRendId":1}};
 
 var meses,mesActivo,nextEgId,nextConvId,calEventos,actaTemas,expensasExtra,nextExtraId,fondoObras;
 var calYear=2026, calMonth=5;
@@ -1189,12 +1190,12 @@ function renderPropietarios(){
     for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
     var ct=0;var convenios=m.convenios||[];
     for(var j=0;j<convenios.length;j++) if(convenios[j].uf===p.uf) ct+=convenios[j].monto;
-    var pg=c?c.monto:0;var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';
-    var rec=recargoMes(mesActivo,pg);
+    var rc=c?(c.recargo||0):0;var pg=c?c.monto-rc:0;var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';
+    var rec=(rc>0?rc:recargoMes(mesActivo,pg));
     var saldoFavor=calcularSaldoFavorUF(p.uf);
     html+='<div class="prop-card"><div class="prop-uf">'+p.uf+'</div><div class="prop-name">'+p.nombre+'</div><div class="prop-divider"></div>'+
       '<div class="prop-row"><span class="lbl">Exp. Fija</span><span class="val">'+fmt(expFija(mesActivo))+'</span></div>'+
-      '<div class="prop-row"><span class="lbl">Pagado este mes</span><span class="val">'+fmt(pg)+'</span></div>'+
+      '<div class="prop-row"><span class="lbl">Pagado este mes</span><span class="val">'+fmt(pg+rc)+'</span></div>'+
       '<div class="prop-row"><span class="lbl">Recargo</span><span class="val '+(rec>0?'mora':'')+'">'+fmt(rec)+'</span></div>'+
       (ct>0?'<div class="prop-row"><span class="lbl">Convenio</span><span class="val convenio">'+fmt(ct)+'</span></div>':'')+
       (saldoFavor>0?'<div class="prop-row"><span class="lbl">Recargo por mora</span><span class="val" style="color:var(--green);">'+fmt(saldoFavor)+'</span></div>':'')+
@@ -1229,15 +1230,15 @@ function calcularSaldoFavorUF(uf,hastaExcl){
     if(hastaExcl && keys[i]>=hastaExcl) continue;
     if(keys[i]<MES_INICIO_CTA) continue;
     var cobros=meses[keys[i]].cobros||[];
-    var pagado=0;
-    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===uf) pagado+=cobros[j].monto;
-    // Lo que tiene disponible: lo que pagó este mes más el saldo a favor que traía.
-    var cubierto=pagado+(saldo>0?saldo:0);
+    var pagado=0, recInc=0;
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===uf){ pagado+=cobros[j].monto; recInc+=(cobros[j].recargo||0); }
+    // Lo que tiene disponible: lo que pagó este mes (sin el recargo incluido) más el saldo a favor que traía.
+    var cubierto=(pagado-recInc)+(saldo>0?saldo:0);
     // Si no pagó, no le alcanza el saldo a favor y todavía no venció, sigue en término.
     var ef=expFija(keys[i]);
     if(pagado===0 && cubierto<ef && !mesVencido(keys[i])) continue;
     var rec=(cubierto<ef && mesVencido(keys[i]))?ef*RECARGO_PCT:0;
-    saldo+=pagado-ef-rec;
+    saldo+=pagado-ef-rec-recInc; // el recargo incluido en el pago se cobró y se pagó: no genera saldo a favor
   }
   return saldo; // positivo = a favor, negativo = debe
 }
@@ -1261,7 +1262,8 @@ function verificarSaldoFavor(){
     aviso.style.borderColor='#fecaca';
     aviso.style.color='var(--red)';
     aviso.innerHTML='⚠️ <strong>'+uf+'</strong> tiene un saldo pendiente de <strong>'+fmt(Math.abs(saldo))+'</strong> de meses anteriores.';
-    inputMonto.value=expFija(mesActivo);
+    inputMonto.value=expFija(mesActivo)+Math.abs(saldo);
+    aviso.innerHTML+=' Para ponerse al día este mes debería abonar <strong>'+fmt(expFija(mesActivo)+Math.abs(saldo))+'</strong> (deuda + expensa del mes). Cargalo como un solo cobro y dejá el campo de recargo en 0 (el recargo atrasado ya está sumado en la deuda).';
   } else {
     aviso.style.display='none';
     aviso.style.background='var(--green-bg)';
@@ -1288,8 +1290,8 @@ function renderExpensas(){
     var p=PROPIETARIOS_BASE[i];
     var c=null;var cobros=m.cobros||[];
     for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
-    var pg=c?c.monto:0;
-    var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';var rec=recargoMes(mesActivo,pg);
+    var rc=c?(c.recargo||0):0;var pg=c?c.monto-rc:0;
+    var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';var rec=(rc>0?rc:recargoMes(mesActivo,pg));
     tot+=pg;totR+=rec;
     html+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td><td class="r">'+fmt(expFija(mesActivo))+'</td><td class="c">'+estadoBadge(est)+'</td><td class="r '+(pg>0?'val-green':'val-muted')+'">'+fmt(pg)+'</td><td class="r '+(rec>0?'val-red':'val-muted')+'">'+fmt(rec)+'</td><td class="r val-green">'+fmt(pg+rec)+'</td><td class="val-muted" style="font-size:11px;">'+(c?c.obs:'—')+'</td></tr>';
   }
@@ -1305,8 +1307,13 @@ function registrarCobro(){
   for(var i=0;i<PROPIETARIOS_BASE.length;i++) if(PROPIETARIOS_BASE[i].uf===uf) prop=PROPIETARIOS_BASE[i];
   var nuevos=[];var cobros=m2.cobros||[];
   for(var i=0;i<cobros.length;i++) if(cobros[i].uf!==uf) nuevos.push(cobros[i]);
-  nuevos.push({uf:uf,nombre:prop.nombre,tipo:tipo,monto:monto,fecha:fmtFecha(fechaRaw),obs:obs});
+  var recIn=parseFloat((document.getElementById('cobro-recargo')||{}).value)||0;
+  if(recIn<0||recIn>monto){alert('El recargo no puede ser mayor que el monto recibido.');return;}
+  var nuevoCobro={uf:uf,nombre:prop.nombre,tipo:tipo,monto:monto,fecha:fmtFecha(fechaRaw),obs:obs};
+  if(recIn>0) nuevoCobro.recargo=recIn;
+  nuevos.push(nuevoCobro);
   m2.cobros=nuevos;
+  var _r=document.getElementById('cobro-recargo');if(_r)_r.value=0;
   guardarDatos();showAlert('alert-cobro');renderExpensas();renderDashboard();renderPropietarios();
 }
 
@@ -1375,10 +1382,10 @@ function renderMora(){
     var p=PROPIETARIOS_BASE[i];
     var c=null;var cobros=m.cobros||[];
     for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
-    var pg=c?c.monto:0;
+    var rc=c?(c.recargo||0):0;var pg=c?c.monto-rc:0;
     var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';
-    var rec=recargoMes(mesActivo,pg);
-    var saldo=Math.max(0,expFija(mesActivo)+rec-pg);
+    var rec=(rc>0?rc:recargoMes(mesActivo,pg));
+    var saldo=Math.max(0,expFija(mesActivo)+rec-(pg+rc));
     html+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td><td class="r">'+fmt(expFija(mesActivo))+'</td><td class="c">'+estadoBadge(est)+'</td><td class="r '+(rec>0?'val-red':'val-muted')+'">'+fmt(rec)+'</td><td class="r '+(saldo>0?'val-red':'val-green')+'">'+(saldo>0?fmt(saldo):'$0,00')+'</td></tr>';
   }
   document.getElementById('mora-tbody').innerHTML=html;
@@ -1435,17 +1442,17 @@ function renderAvisosTabla(){
     var p=PROPIETARIOS_BASE[i];
     var c=null;var cobros=m.cobros||[];
     for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
-    var pg=c?c.monto:0;
+    var rc=c?(c.recargo||0):0;var pg=c?c.monto-rc:0;
     var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';
-    var rec=recargoMes(mesActivo,pg);
+    var rec=(rc>0?rc:recargoMes(mesActivo,pg));
     var skip=tipoAviso==='mora'&&est==='Al día';
     var btnWA;
     if(skip){
       btnWA='<span class="val-muted" style="font-size:11px;">Sin mora</span>';
     } else if(p.tel2){
-      btnWA='<a href="'+waLink(p.tel,buildMsg(tpl,p,pg,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;margin-bottom:3px;">💬 '+p.nombre.split(' — ')[0]+'</a><br><a href="'+waLink(p.tel2,buildMsg(tpl,p,pg,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;">💬 '+p.nombre.split(' — ')[1]+'</a>';
+      btnWA='<a href="'+waLink(p.tel,buildMsg(tpl,p,pg+rc,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;margin-bottom:3px;">💬 '+p.nombre.split(' — ')[0]+'</a><br><a href="'+waLink(p.tel2,buildMsg(tpl,p,pg+rc,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;">💬 '+p.nombre.split(' — ')[1]+'</a>';
     } else {
-      btnWA='<a href="'+waLink(p.tel,buildMsg(tpl,p,pg,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;">💬 Enviar WA</a>';
+      btnWA='<a href="'+waLink(p.tel,buildMsg(tpl,p,pg+rc,rec))+'" target="_blank" class="btn btn-success btn-sm" style="text-decoration:none;display:inline-block;">💬 Enviar WA</a>';
     }
     html+='<tr><td><span class="uf">'+p.uf+'</span></td><td>'+p.nombre+'</td><td style="font-size:12px;color:var(--muted);">'+fmtTel(p.tel)+(p.tel2?'<br>'+fmtTel(p.tel2):'')+'</td><td class="c">'+estadoBadge(est)+'</td><td class="r">'+fmt(expFija(mesActivo))+'</td><td class="r '+(rec>0?'val-red':'val-muted')+'">'+fmt(rec)+'</td><td class="c">'+btnWA+'</td></tr>';
   }
@@ -1457,11 +1464,11 @@ function abrirTodosWhatsApp(){
     (function(p,idx){
       var c=null;var cobros=m.cobros||[];
       for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) c=cobros[j];
-      var pg=c?c.monto:0;
+      var rc=c?(c.recargo||0):0;var pg=c?c.monto-rc:0;
       var est=!c?'Sin pago':pg>=expFija(mesActivo)?'Al día':'Parcial';
-      var rec=recargoMes(mesActivo,pg);
+      var rec=(rc>0?rc:recargoMes(mesActivo,pg));
       if(tipoAviso==='mora'&&est==='Al día')return;
-      setTimeout(function(){window.open(waLink(p.tel,buildMsg(tpl,p,pg,rec)),'_blank');},idx*600);
+      setTimeout(function(){window.open(waLink(p.tel,buildMsg(tpl,p,pg+rc,rec)),'_blank');},idx*600);
     })(PROPIETARIOS_BASE[i],i);
   }
 }
@@ -1558,7 +1565,7 @@ function generarInforme(){
   var pagaron=[],morosos=[];
   for(var i=0;i<PROPIETARIOS_BASE.length;i++){
     var p=PROPIETARIOS_BASE[i];var pagado=false;var cobros=m.cobros||[];
-    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf&&cobros[j].monto>=expFija(key)) pagado=true;
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf&&(cobros[j].monto-(cobros[j].recargo||0))>=expFija(key)) pagado=true;
     if(pagado)pagaron.push(p);else morosos.push(p);
   }
   var hoy=new Date();
@@ -2137,7 +2144,7 @@ function compartirInformeWhatsApp(){
   var pagaron=[],morosos=[];
   for(var i=0;i<PROPIETARIOS_BASE.length;i++){
     var p=PROPIETARIOS_BASE[i];var pagado=false;var cobros=m.cobros||[];
-    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf&&cobros[j].monto>=expFija(key)) pagado=true;
+    for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf&&(cobros[j].monto-(cobros[j].recargo||0))>=expFija(key)) pagado=true;
     if(pagado)pagaron.push(p);else morosos.push(p);
   }
   var hoy=new Date();
@@ -2357,10 +2364,11 @@ function liquidacionUF(p){
   var m=getMes();
   var saldoAnt=calcularSaldoFavorUF(p.uf,mesActivo); // positivo = a favor, negativo = debe
   var cobros=m.cobros||[];
-  var pagado=0;
-  for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf) pagado+=cobros[j].monto;
-  var cubierto=pagado+(saldoAnt>0?saldoAnt:0);
+  var pagado=0, recInc=0;
+  for(var j=0;j<cobros.length;j++) if(cobros[j].uf===p.uf){ pagado+=cobros[j].monto; recInc+=(cobros[j].recargo||0); }
+  var cubierto=(pagado-recInc)+(saldoAnt>0?saldoAnt:0);
   var interes=(cubierto<expFija(mesActivo)&&mesVencido(mesActivo))?expFija(mesActivo)*RECARGO_PCT:0;
+  interes+=recInc;
   var total=expFija(mesActivo)-saldoAnt-pagado+interes;
   var partes=mesActivo.split('-');
   var venc='10/'+partes[1]+'/'+partes[0];
