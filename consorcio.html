@@ -1243,34 +1243,48 @@ function calcularSaldoFavorUF(uf,hastaExcl){
   return saldo; // positivo = a favor, negativo = debe
 }
 
+function cuentaUF(uf){
+  // Cuenta del propietario para el mes activo, igual que la liquidación: deuda de meses anteriores + expensa del mes + recargo si corresponde.
+  var saldoAnt=calcularSaldoFavorUF(uf,mesActivo);
+  var cobros=(getMes().cobros)||[], pagado=0, recInc=0;
+  for(var j=0;j<cobros.length;j++) if(cobros[j].uf===uf){ pagado+=cobros[j].monto; recInc+=(cobros[j].recargo||0); }
+  var ef=expFija(mesActivo);
+  var cubierto=(pagado-recInc)+(saldoAnt>0?saldoAnt:0);
+  var recReglas=(cubierto<ef && mesVencido(mesActivo))?ef*RECARGO_PCT:0; // recargo de este mes que todavía no se cobró
+  var total=ef-saldoAnt-pagado+recReglas+recInc;
+  return {saldoAnt:saldoAnt,total:total,recMes:recReglas,pagado:pagado};
+}
+
 function verificarSaldoFavor(){
   var uf=document.getElementById('cobro-uf').value;
-  var saldo=calcularSaldoFavorUF(uf);
+  var c=cuentaUF(uf);
   var aviso=document.getElementById('aviso-saldo-favor');
   var inputMonto=document.getElementById('cobro-monto');
-
-  if(saldo>0){
-    var resta=Math.max(0, expFija(mesActivo)-saldo);
+  var inputRec=document.getElementById('cobro-recargo');
+  var monto=Math.max(0,Math.round(c.total*100)/100);
+  var rec=Math.min(c.recMes,monto);
+  function estilo(t){
     aviso.style.display='block';
-    aviso.innerHTML='✅ <strong>'+uf+'</strong> tiene <strong>'+fmt(saldo)+' a favor</strong> del mes anterior. '+
-      (resta>0?'Solo resta abonar <strong>'+fmt(resta)+'</strong> este mes.':'Ya tiene la expensa de este mes cubierta con el adelanto.');
-    if(resta>0) inputMonto.value=resta;
-    else inputMonto.value=0;
-  } else if(saldo<0){
-    aviso.style.display='block';
-    aviso.style.background='var(--red-bg)';
-    aviso.style.borderColor='#fecaca';
-    aviso.style.color='var(--red)';
-    aviso.innerHTML='⚠️ <strong>'+uf+'</strong> tiene un saldo pendiente de <strong>'+fmt(Math.abs(saldo))+'</strong> de meses anteriores.';
-    inputMonto.value=expFija(mesActivo)+Math.abs(saldo);
-    aviso.innerHTML+=' Para ponerse al día este mes debería abonar <strong>'+fmt(expFija(mesActivo)+Math.abs(saldo))+'</strong> (deuda + expensa del mes). Cargalo como un solo cobro y dejá el campo de recargo en 0 (el recargo atrasado ya está sumado en la deuda).';
+    aviso.style.background=(t==='rojo')?'var(--red-bg)':'var(--green-bg)';
+    aviso.style.borderColor=(t==='rojo')?'#fecaca':'#bbf7d0';
+    aviso.style.color=(t==='rojo')?'var(--red)':'var(--green)';
+  }
+  if(c.saldoAnt>0){
+    estilo('verde');
+    aviso.innerHTML='✅ <strong>'+uf+'</strong> tiene <strong>'+fmt(c.saldoAnt)+' a favor</strong> del mes anterior. '+
+      (monto>0?'Solo resta abonar <strong>'+fmt(monto)+'</strong> este mes.':'Ya tiene la expensa de este mes cubierta con el adelanto.');
+  } else if(c.saldoAnt<0){
+    estilo('rojo');
+    aviso.innerHTML='⚠️ <strong>'+uf+'</strong> tiene un saldo pendiente de <strong>'+fmt(Math.abs(c.saldoAnt))+'</strong> de meses anteriores (ya incluye su recargo). '+
+      'Para ponerse al día debería abonar <strong>'+fmt(monto)+'</strong>'+(rec>0?' (deuda + expensa del mes + recargo de este mes '+fmt(rec)+')':' (deuda + expensa del mes)')+'. Cargalo como un solo cobro.';
+  } else if(rec>0){
+    estilo('rojo');
+    aviso.innerHTML='⏰ Pasó el vencimiento: la expensa de este mes lleva recargo. Total a cobrar: <strong>'+fmt(monto)+'</strong> (expensa + recargo '+fmt(rec)+'). Ya viene cargado.';
   } else {
     aviso.style.display='none';
-    aviso.style.background='var(--green-bg)';
-    aviso.style.borderColor='#bbf7d0';
-    aviso.style.color='var(--green)';
-    inputMonto.value=expFija(mesActivo);
   }
+  inputMonto.value=monto;
+  if(inputRec) inputRec.value=rec;
 }
 
 function populateUfSelects(){
